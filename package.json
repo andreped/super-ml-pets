@@ -1,0 +1,9 @@
+{
+  "name": "SuperAIPets",
+  "version": "1.0.0",
+  "description": "An AI for Super Auto Pets",
+  "main": "index.js",
+  "repository": "https://github.com/HJK-Z/Super-Auto-Pets.git",
+  "author": "Justin Kim <hjk.businessemail@gmail.com>",
+  "license": "GPL-3.0-or-later"
+}
