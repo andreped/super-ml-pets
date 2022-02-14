@@ -7,13 +7,19 @@
     "author": "Justin Kim <hjk.businessemail@gmail.com>",
     "license": "GPL-3.0-or-later",
     "scripts": {
-        "start": "electron ."
+        "start": "electron .",
+        "dist": "yarn compile && electron-builder --win --x64 --ia32",
+        "dist:32": "yarn compile && electron-builder --win --ia32",
+        "dist:64": "yarn compile && electron-builder --win --x64",
+        "publish": "yarn compile && electron-builder --win --x64 --ia32 --publish always",
+        "postinstall": "electron-builder install-app-deps"
     },
     "build": {
         "appId": "com.hjk.saip"
     },
     "devDependencies": {
         "electron": "^17.0.0",
+        "memoryjs": "^3.4.0",
         "typescript": "^4.5.5"
     },
     "dependencies": {}
