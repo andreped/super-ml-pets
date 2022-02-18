@@ -1,5 +1,8 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const memoryjs = require('memoryjs');
+const processName = "Super Auto Pets.exe";
+
 
 const createWindow = () => {
     const win = new BrowserWindow({

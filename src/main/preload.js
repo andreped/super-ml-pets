@@ -4,5 +4,13 @@ window.addEventListener("DOMContentLoaded", () => {
         if (element) element.innerText = text;
     };
 
-    replaceText('status', "success");
+    replaceText("status", "success");
+});
+
+$.ajax({
+    type: "POST",
+    url: "~/pythoncode.py",
+    data: { param: text },
+}).done(function (o) {
+    // do something
 });
