@@ -17,7 +17,6 @@ import {
 	Player,
 	MapType,
 } from '../common/AmongUsState';
-import equal from 'deep-equal';
 import offsetStore, { IOffsets } from './offsetStore';
 import Errors from '../common/Errors';
 
