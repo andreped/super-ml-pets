@@ -1989,6 +1989,11 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
+structron@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/structron/-/structron-0.4.3.tgz#ac0a6f2ff8ef26271f96d0b6a5fbda82d5e7662b"
+  integrity sha512-DaDuI2mQy+QjtxQ8/IjTNPI6FLIF0jxqzwhUn9t1iKneV/0ANHkJfqWl/8pPBepNRc6rl46Q+TpQlnKvDm/9rA==
+
 sumchecker@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/sumchecker/-/sumchecker-3.0.1.tgz#6377e996795abb0b6d348e9b3e1dfb24345a8e42"
