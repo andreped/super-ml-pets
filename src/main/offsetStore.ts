@@ -10,23 +10,70 @@ interface ISignature {
 }
 
 export interface IOffsets {
-	meetingHud: number[];
-	meetingHudCachePtr: number[];
-	meetingHudState: number[];
-	gameState: number[];
-	allPlayersPtr: number[];
-	allPlayers: number[];
-	playerCount: number[];
-	playerAddrPtr: number;
-	exiledPlayerId: number[];
-	gameCode: number[];
-	hostId: number[];
-	clientId: number[];
-	shipStatus: number[];
-	shipStatusSystems: number[];
-	shipStatusMap: number[];
-	miraCompletedCommsConsoles: number[];
-	commsSabotaged: number[];
+	money: number[];
+	hearts: number[];
+	wins: number[];
+	turns: number[];
+	team0: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	team1: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	team2: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	team3: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+    team4: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+    shop0: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	shop0: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	shop0: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	shop3: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	shop4: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	shop5: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
+	shop6: {
+		id: number[];
+		attack: number[];
+		health: number[];
+	};
 	player: {
 		localX: number[];
 		localY: number[];
