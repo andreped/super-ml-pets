@@ -17,6 +17,10 @@ import visualize
 runs_per_net = 5
 simulation_seconds = 60.0
 
+# i will make most of the ai in python, then have it convert to javascript
+
+
+
 
 # Use the NN network phenotype and the discrete actuator force function.
 def eval_genome(genome, config):
