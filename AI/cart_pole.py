@@ -12,11 +12,8 @@ from sapai import Player
 
 
 class SAP(object):
-    gravity = 9.8  # acceleration due to gravity, positive is downward, m/sec^2
-    mcart = 1.0  # cart mass in kg
-    mpole = 0.1  # pole mass in kg
-    lpole = 0.5  # half the pole length in meters
-    time_step = 0.01  # time step in seconds
+    pack = "StandardPack"
+    player = Player(pack=pack)
 
     def __init__(self, x=None, theta=None, dx=None, dtheta=None,
                  position_limit=2.4, angle_limit_radians=45 * pi / 180):
