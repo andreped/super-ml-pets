@@ -13,10 +13,9 @@ from sapai import Player
 
 class SAP(object):
     pack = "StandardPack"
-    player = Player(pack=pack)
+    player = Player(pack=pack) 
 
-    def __init__(self, x=None, theta=None, dx=None, dtheta=None,
-                 position_limit=2.4, angle_limit_radians=45 * pi / 180):
+    def __init__(self):
         pass #FIXME
 
     def step(self, force):
