@@ -27,10 +27,16 @@ class SAP(object):
         money, turn, lives, wins
         """
 
-        team = []
+        state = []
         for teamslot_state in range(self.player.team.state["team"]):
             pet = teamslot_state["pet"]
-            team.extend([pet.pet.attack])
-        return [self.player.team]
+            state.extend([list(data.keys()).index(pet.name), pet.attack, pet.health, pet.status])
+
+        for shopslot_state in range(self.player.state["shop"]):
+            pet = teamslot_state["pet"]
+            state.extend([list(data.keys()).index(pet.name), pet.attack, pet.health, pet.status])
+
+        
+        return state
 
 
