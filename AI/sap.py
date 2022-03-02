@@ -41,7 +41,7 @@ class SAP(object):
             else:
                 state.extend([list(data["pets"].keys()).index(item.name), item.attack, item.health])
 
-        state.extend([self.player.gold, self.player.turn, self.player.lives, wins])
+        state.extend([self.player.gold, self.player.turn, self.player.lives, self.wins])
         
         return state
 
