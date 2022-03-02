@@ -9,6 +9,7 @@ from sapai import Food
 
 class SAP(object):
     score = 0
+    wins = 0
 
     def __init__(self):
         self.player = Player(pack="StandardPack") 
@@ -36,10 +37,11 @@ class SAP(object):
         for shopslot_state in range(self.player.shop.state["shop_slots"]):
             item = shopslot_state["item"]
             if item is Food:
-                state.extend([list(data["foods"].keys()).index(item.name), item.attack, item.health, item.status])
+                state.extend([list(data["foods"].keys()).index(item.name), item.attack, item.health])
             else:
-                state.extend([list(data["pets"].keys()).index(item.name), item.attack, item.health, item.status])
+                state.extend([list(data["pets"].keys()).index(item.name), item.attack, item.health])
 
+        state.extend([self.player.gold, self.player.turn, self.player.lives, wins])
         
         return state
 
