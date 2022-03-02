@@ -4,6 +4,7 @@ General settings and implementation of the SAP Game
 
 from sapai import Player
 from sapai import data
+from sapai import Food
 
 
 class SAP(object):
@@ -30,11 +31,14 @@ class SAP(object):
         state = []
         for teamslot_state in range(self.player.team.state["team"]):
             pet = teamslot_state["pet"]
-            state.extend([list(data.keys()).index(pet.name), pet.attack, pet.health, pet.status])
+            state.extend([list(data["pets"].keys()).index(pet.name), pet.attack, pet.health, pet.status])
 
-        for shopslot_state in range(self.player.state["shop"]):
-            pet = teamslot_state["pet"]
-            state.extend([list(data.keys()).index(pet.name), pet.attack, pet.health, pet.status])
+        for shopslot_state in range(self.player.shop.state["shop_slots"]):
+            item = shopslot_state["item"]
+            if item is Food:
+                state.extend([list(data["foods"].keys()).index(item.name), item.attack, item.health, item.status])
+            else:
+                state.extend([list(data["pets"].keys()).index(item.name), item.attack, item.health, item.status])
 
         
         return state
