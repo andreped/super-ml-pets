@@ -81,6 +81,7 @@ def run():
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
+    population.add_reporter(neat.Checkpointer(1))
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
     winner = population.run(pe.evaluate, num_generations)
