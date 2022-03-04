@@ -2,6 +2,7 @@
 General settings and implementation of the SAP Game
 """
 
+from numpy import argmax, roll
 from sapai import Player
 from sapai import data
 from sapai import Food
@@ -16,9 +17,23 @@ class SAP(object):
 
     def step(self, action):
         """
-        Update the system state every action
+        Update the system state using the best of action
         """
-        pass #FIXME
+        action = argmax(action) + 1
+
+        if action < 35:
+            buyshop
+        elif action < 55:
+            moveteam
+        elif action < 60:
+            sellteam
+        elif action < 67:
+            freezeshop
+        elif action == 68:
+            rollshop
+        else:
+            endturn
+
 
     def get_scaled_state(self):
         """
