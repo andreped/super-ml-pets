@@ -18,12 +18,22 @@ runs_per_net = 5
 simulation_turns = 30
 num_generations = 1000
 
+population = None
+
 # Save the teams from every level, refresh every generation, fight against these
+current_generation = 0
 past_teams = []
 
-# Use the NN network phenotype and the discrete actuator force function.
+
 def eval_genome(genome, config):
+    # Use the NN network phenotype.
     net = neat.nn.FeedForwardNetwork.create(genome, config)
+    global population
+
+    if population.generation > current_generation:
+        current_generation += 1
+        past_teams = [past_teams[i][min(len(past_teams[i]), 10):]
+                      for i in range(len(past_teams))]
 
     fitnesses = []
 
@@ -52,10 +62,11 @@ def eval_genome(genome, config):
     return min(fitnesses)
 
 
+""" Not Used?
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
         genome.fitness = eval_genome(genome, config)
-
+"""
 
 def run():
     # Load the config file, which is assumed to live in
@@ -66,13 +77,13 @@ def run():
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
 
-    pop = neat.Population(config)
+    population = neat.Population(config)
     stats = neat.StatisticsReporter()
-    pop.add_reporter(stats)
-    pop.add_reporter(neat.StdOutReporter(True))
+    population.add_reporter(stats)
+    population.add_reporter(neat.StdOutReporter(True))
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = pop.run(pe.evaluate, num_generations)
+    winner = population.run(pe.evaluate, num_generations)
 
     # Save the winner.
     with open('winner-feedforward', 'wb') as f:
@@ -80,8 +91,10 @@ def run():
 
     print(winner)
 
-    visualize.plot_stats(stats, ylog=True, view=True, filename="feedforward-fitness.svg")
-    visualize.plot_species(stats, view=True, filename="feedforward-speciation.svg")
+    visualize.plot_stats(stats, ylog=True, view=True,
+                         filename="feedforward-fitness.svg")
+    visualize.plot_species(
+        stats, view=True, filename="feedforward-speciation.svg")
 
     node_names = {-1: 'x', -2: 'dx', -3: 'theta', -4: 'dtheta', 0: 'control'}
     visualize.draw_net(config, winner, True, node_names=node_names)
