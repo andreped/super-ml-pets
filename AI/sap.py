@@ -11,6 +11,8 @@ from sapai import Food
 class SAP(object):
     score = 0
     wins = 0
+    turns = 0
+    actions_taken_this_turn = 0
 
     def __init__(self):
         self.player = Player(pack="StandardPack") 

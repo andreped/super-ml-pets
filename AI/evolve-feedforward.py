@@ -15,9 +15,10 @@ import visualize
 
 
 runs_per_net = 5
-simulation_seconds = 60.0
+simulation_turns = 30
+num_generations = 1000
 
-# Save the teams from every level, refresh every genome, fight against these
+# Save the teams from every level, refresh every generation, fight against these
 past_teams = []
 
 # Use the NN network phenotype and the discrete actuator force function.
@@ -31,7 +32,7 @@ def eval_genome(genome, config):
 
         # Run the given simulation for up to num_steps time steps.
         fitness = 0.0
-        while sim.t < simulation_seconds:
+        while sim.turns < simulation_turns:
             inputs = sim.get_scaled_state()
             action = net.activate(inputs)
 
@@ -40,7 +41,7 @@ def eval_genome(genome, config):
 
             # Stop if the network fails to end the game in 30 turns or does 50 actionstakenthisturn without ending turn
             # The per-run fitness is calculated using (wins*50 + draws*20 - losses*10 - max(actionstakenthisturn-20, 0)*.1)
-            if abs(sim.x) >= sim.position_limit or abs(sim.theta) >= sim.angle_limit_radians:
+            if sim.actions_taken_this_turn >= 50:
                 break
 
             fitness = sim.score
@@ -53,7 +54,6 @@ def eval_genome(genome, config):
 
 def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
-        past_teams = []
         genome.fitness = eval_genome(genome, config)
 
 
@@ -72,7 +72,7 @@ def run():
     pop.add_reporter(neat.StdOutReporter(True))
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = pop.run(pe.evaluate)
+    winner = pop.run(pe.evaluate, num_generations)
 
     # Save the winner.
     with open('winner-feedforward', 'wb') as f:
