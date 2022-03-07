@@ -20,15 +20,14 @@ num_generations = 1000
 
 population = 0
 
-# Save the teams from every level, refresh every generation, fight against these
+# Save the teams from every level, refresh every generation to fight against
 current_generation = 0
-past_teams = []
 
 def replace_teams():
     if population.generation > current_generation:
         current_generation += 1
-        past_teams = [past_teams[i][min(len(past_teams[i]), 10):]
-                      for i in range(len(past_teams))]
+        sap.past_teams = [sap.past_teams[i][min(len(sap.past_teams[i]), 10):]
+                      for i in range(len(sap.past_teams))]
 
 
 
@@ -37,6 +36,7 @@ def eval_genome(genome, config):
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
+    replace_teams()
 
     for runs in range(runs_per_net):
         sim = sap.SAP()

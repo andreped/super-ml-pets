@@ -2,11 +2,14 @@
 General settings and implementation of the SAP Game
 """
 
+import random
 from numpy import argmax, roll
 from sapai import Player
 from sapai import data
 from sapai import Food
+from sapai.battle import Battle
 
+past_teams = []
 
 class SAP(object):
     score = 0
@@ -70,8 +73,22 @@ class SAP(object):
                 # endturn
                 self.player.end_turn()
 
+                battle = Battle(self.player.team, past_teams[random.randint(0, len(past_teams)-1)])
+                winner = battle.battle()
+
+                if winner == 0:
+                    wins += 1
+                    score += 50
+
+
+
+                past_teams.append(self.player.team)
+
         except:
             score -= 10
+
+    def battle():
+        print("BATTLE")
 
     def get_scaled_state(self):
         """
