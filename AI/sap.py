@@ -26,7 +26,6 @@ class SAP(object):
         try:
             if action < 35:
                 # buyshop
-                # 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
                 tm_idx = action/7
                 shp_idx = action%7
                 tm_slot = self.player.team[tm_idx]
@@ -39,9 +38,14 @@ class SAP(object):
                         self.player.team.move(len(self.player.team)-1, tm_idx)
                     else:
                         self.player.buy_combine(shp_slot, tm_slot)
+                else:
+                    self.player.buy_food(shp_slot, tm_slot)
                     
             elif action < 55:
-                moveteam
+                # moveteam
+                tm1_idx = action/5
+                tm2_idx = action%5
+                self.player.team.move(tm1_idx, tm2_idx)
             elif action < 60:
                 sellteam
             elif action < 67:
