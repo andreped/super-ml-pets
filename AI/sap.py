@@ -43,17 +43,32 @@ class SAP(object):
                     
             elif action < 55:
                 # moveteam
+                action -= 35
                 tm1_idx = action/5
                 tm2_idx = action%5
-                self.player.team.move(tm1_idx, tm2_idx)
+                
+                if self.player.team[tm1_idx].name == self.player.team[tm2_idx].name and not self.player.team[tm1_idx].empty:
+                    self.player.combine(tm2_idx, tm1_idx)
+                else:
+                    self.player.team.move(tm1_idx, tm2_idx)
             elif action < 60:
-                sellteam
+                # sellteam
+                action -= 55
+                tm_slot = self.player.team[action]
+                
+                self.player.sell(tm_slot)
             elif action < 67:
-                freezeshop
+                # freezeshop
+                action -= 60
+                shp_slot = self.player.shop[action]
+
+                self.player.freeze(shp_slot)
             elif action == 68:
-                rollshop
+                # rollshop
+                self.player.roll()
             else:
-                endturn
+                # endturn
+                self.player.end_turn()
 
         except:
             score -= 10
