@@ -82,6 +82,7 @@ def run():
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
                         
+    global population
     population = neat.Population(config)
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
