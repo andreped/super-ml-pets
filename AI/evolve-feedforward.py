@@ -18,22 +18,23 @@ runs_per_net = 5
 simulation_turns = 30
 num_generations = 1000
 
-population = None
+population = 0
 
 # Save the teams from every level, refresh every generation, fight against these
 current_generation = 0
 past_teams = []
 
-
-def eval_genome(genome, config):
-    # Use the NN network phenotype.
-    net = neat.nn.FeedForwardNetwork.create(genome, config)
-    global population
-
+def replace_teams():
     if population.generation > current_generation:
         current_generation += 1
         past_teams = [past_teams[i][min(len(past_teams[i]), 10):]
                       for i in range(len(past_teams))]
+
+
+
+def eval_genome(genome, config):
+    # Use the NN network phenotype.
+    net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
 
@@ -76,7 +77,7 @@ def run():
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
-
+                        
     population = neat.Population(config)
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
