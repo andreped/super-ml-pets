@@ -22,27 +22,37 @@ class SAP(object):
         Update the system state using the best of action
         """
         action = argmax(action)
+        
+        try:
+            if action < 35:
+                # buyshop
+                # 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+                tm_idx = action/7
+                shp_idx = action%7
+                tm_slot = self.player.team[tm_idx]
+                shp_slot = self.player.shop[shp_idx]
+                
+                # buy pet (always puts in last slot), buy combine 
+                if shp_slot.slot_type == "pet":
+                    if tm_slot.empty:
+                        self.player.buy_pet(shp_slot)
+                        self.player.team.move(len(self.player.team)-1, tm_idx)
+                    else:
+                        self.player.buy_combine(shp_slot, tm_slot)
+                    
+            elif action < 55:
+                moveteam
+            elif action < 60:
+                sellteam
+            elif action < 67:
+                freezeshop
+            elif action == 68:
+                rollshop
+            else:
+                endturn
 
-        if action < 35:
-            # buyshop
-            # 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-            tm_slot = self.player.team[action/7]
-            shp_slot = self.player.shop[action%7]
-            
-            # buy pet (always puts in last slot), buy combine 
-            if (shp_slot.slot_type == "pet")
-            self.player.buy_pet(self.player.shop[shp_slot])
-            self.player.team[]
-        elif action < 55:
-            moveteam
-        elif action < 60:
-            sellteam
-        elif action < 67:
-            freezeshop
-        elif action == 68:
-            rollshop
-        else:
-            endturn
+        except:
+            score -= 10
 
     def get_scaled_state(self):
         """
