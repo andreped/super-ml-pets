@@ -25,6 +25,8 @@ class SAP(object):
         Update the system state using the best of action
         """
         action = argmax(action)
+
+        self.actions_taken_this_turn += 1
         
         try:
             if action < 35:
@@ -71,21 +73,24 @@ class SAP(object):
                 self.player.roll()
             else:
                 # endturn
+                self.actions_taken_this_turn = 0
                 self.player.end_turn()
 
                 battle = Battle(self.player.team, past_teams[random.randint(0, len(past_teams)-1)])
                 winner = battle.battle()
 
                 if winner == 0:
-                    wins += 1
-                    score += 50
-
-
+                    self.wins += 1
+                    self.score += 50
+                elif winner == 1:
+                    self.score -= 10
+                else:
+                    self.score += 20
 
                 past_teams.append(self.player.team)
 
         except:
-            score -= 10
+            self.score -= 10
 
     def battle():
         print("BATTLE")

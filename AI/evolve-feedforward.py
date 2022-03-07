@@ -23,6 +23,10 @@ population = 0
 # Save the teams from every level, refresh every generation to fight against
 current_generation = 0
 
+total_wins = 0
+total_losses = 0
+total_draws = 0
+
 def replace_teams():
     if population.generation > current_generation:
         current_generation += 1
