@@ -26,11 +26,11 @@ class SAP(object):
         if action < 35:
             # buyshop
             # 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-            tm_slot = action/7
-            shp_slot = action%7
-
-            # buy slot, buy combine (always puts in last slot)
-
+            tm_slot = self.player.team[action/7]
+            shp_slot = self.player.shop[action%7]
+            
+            # buy pet (always puts in last slot), buy combine 
+            if (shp_slot.slot_type == "pet")
             self.player.buy_pet(self.player.shop[shp_slot])
             self.player.team[]
         elif action < 55:
