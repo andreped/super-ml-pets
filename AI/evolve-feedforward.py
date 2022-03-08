@@ -25,12 +25,11 @@ total_wins = 0
 total_losses = 0
 total_draws = 0
 
-def replace_teams():
-    if population.generation > current_generation:
-        current_generation += 1
-        sap.past_teams = [sap.past_teams[i][min(len(sap.past_teams[i]), 10):]
-                      for i in range(len(sap.past_teams))]
-
+class TeamReplacer(neat.StdOutReporter):
+    """Replaces part of the past teams with every generation"""
+    def start_generation(self, generation):
+        sap.past_teams = [sap.past_teams[i][len(sap.past_teams[i])/5:]
+                    for i in range(len(sap.past_teams))]
 
 
 def eval_genome(genome, config):
@@ -38,7 +37,6 @@ def eval_genome(genome, config):
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
-    replace_teams()
 
     for runs in range(runs_per_net):
         sim = sap.SAP()
@@ -71,7 +69,7 @@ def eval_genomes(genomes, config):
         genome.fitness = eval_genome(genome, config)
 """
 
-def run()
+def run():
     # Load the config file, which is assumed to live in
     # the same directory as this script.
     local_dir = os.path.dirname(__file__)
@@ -85,6 +83,7 @@ def run()
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
     population.add_reporter(neat.Checkpointer(1))
+    population.add_reporter(TeamReplacer())
 
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
     winner = population.run(pe.evaluate, num_generations)
