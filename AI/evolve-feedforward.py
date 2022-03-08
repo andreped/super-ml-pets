@@ -18,9 +18,6 @@ runs_per_net = 5
 simulation_turns = 30
 num_generations = 1000
 
-# Save the teams from every level, refresh every generation to fight against
-current_generation = 0
-
 total_wins = 0
 total_losses = 0
 total_draws = 0
@@ -56,6 +53,10 @@ def eval_genome(genome, config):
                 break
 
             fitness = sim.score
+
+        total_wins += sim.wins
+        total_losses += sim.losses
+        total_draws += sim.draws
 
         fitnesses.append(fitness)
 

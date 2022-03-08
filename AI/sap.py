@@ -9,16 +9,18 @@ from sapai import data
 from sapai import Food
 from sapai.battle import Battle
 
+# Save the teams from every level, refresh every generation to fight against
 past_teams = []
 
 class SAP(object):
-    score = 0
-    wins = 0
-    turns = 0
-    actions_taken_this_turn = 0
-
     def __init__(self):
         self.player = Player(pack="StandardPack")
+        self.score = 0
+        self.wins = 0
+        self.losses = 0
+        self.draws = 0
+        self.turns = 0
+        self.actions_taken_this_turn = 0
 
     def step(self, action):
         """
@@ -83,8 +85,10 @@ class SAP(object):
                     self.wins += 1
                     self.score += 50
                 elif winner == 1:
+                    self.losses += 1
                     self.score -= 10
                 else:
+                    self.draws += 1
                     self.score += 20
 
                 past_teams.append(self.player.team)
@@ -92,8 +96,6 @@ class SAP(object):
         except:
             self.score -= 10
 
-    def battle():
-        print("BATTLE")
 
     def get_scaled_state(self):
         """
