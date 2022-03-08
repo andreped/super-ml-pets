@@ -22,7 +22,7 @@ total_wins = 0
 total_losses = 0
 total_draws = 0
 
-class TeamReplacer(neat.StdOutReporter):
+class TeamReplacer(neat.reporting.BaseReporter):
     """Replaces part of the past teams with every generation"""
     def __init__(self):
         pass
@@ -87,10 +87,10 @@ def run():
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
-    population.add_reporter(neat.Checkpointer(1))
+    population.add_reporter(neat.Checkpointer(1, filename_prefix='ckpt/ckpt-'))
     population.add_reporter(TeamReplacer())
 
-    pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
+    pe = neat.ParallelEvaluator(1, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
 
     # Save the winner.
