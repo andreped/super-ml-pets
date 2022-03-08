@@ -91,7 +91,7 @@ def run():
     population.add_reporter(TeamReplacer())
 
     # so basically just alt-f4 to stop the program :)
-    pe = neat.ParallelEvaluator(multiprocessing.cpu_count()/2, eval_genome)
+    pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
 
     # Save the winner.

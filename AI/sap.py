@@ -7,10 +7,11 @@ from numpy import argmax, roll
 from sapai import Player
 from sapai import data
 from sapai import Food
+from sapai import Team
 from sapai.battle import Battle
 
 # Save the teams from every level, refresh every generation to fight against
-past_teams = []
+past_teams = [[]]
 
 class SAP(object):
     def __init__(self):
@@ -19,7 +20,7 @@ class SAP(object):
         self.wins = 0
         self.losses = 0
         self.draws = 0
-        self.turns = 0
+        self.turns = 1
         self.actions_taken_this_turn = 0
 
     def step(self, action):
@@ -78,7 +79,14 @@ class SAP(object):
                 self.actions_taken_this_turn = 0
                 self.player.end_turn()
 
-                battle = Battle(self.player.team, past_teams[random.randint(0, len(past_teams)-1)])
+
+                prev_team = Team([])
+                if len(past_teams[self.turns]) == 0:
+                    past_teams[self.turns].append(Team([]))
+                
+                prev_team = past_teams[self.turns][random.randint(0, len(past_teams[self.turns])-1)]
+
+                battle = Battle(self.player.team, prev_team)
                 winner = battle.battle()
 
                 if winner == 0:
@@ -91,7 +99,8 @@ class SAP(object):
                     self.draws += 1
                     self.score += 20
 
-                past_teams.append(self.player.team)
+                past_teams[self.turns].append(self.player.team)
+                self.turns += 1
 
         except:
             self.score -= 10
