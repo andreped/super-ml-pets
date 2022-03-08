@@ -18,8 +18,6 @@ runs_per_net = 5
 simulation_turns = 30
 num_generations = 1000
 
-population = 0
-
 # Save the teams from every level, refresh every generation to fight against
 current_generation = 0
 
@@ -73,46 +71,40 @@ def eval_genomes(genomes, config):
         genome.fitness = eval_genome(genome, config)
 """
 
-def run():
-    # Load the config file, which is assumed to live in
-    # the same directory as this script.
-    local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'config-feedforward')
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                         neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                         config_path)
-                        
-    global population
-    population = neat.Population(config)
-    stats = neat.StatisticsReporter()
-    population.add_reporter(stats)
-    population.add_reporter(neat.StdOutReporter(True))
-    population.add_reporter(neat.Checkpointer(1))
+# Load the config file, which is assumed to live in
+# the same directory as this script.
+local_dir = os.path.dirname(__file__)
+config_path = os.path.join(local_dir, 'config-feedforward')
+config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                        neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                        config_path)
+                    
+population = neat.Population(config)
+stats = neat.StatisticsReporter()
+population.add_reporter(stats)
+population.add_reporter(neat.StdOutReporter(True))
+population.add_reporter(neat.Checkpointer(1))
 
-    pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
-    winner = population.run(pe.evaluate, num_generations)
+pe = neat.ParallelEvaluator(multiprocessing.cpu_count(), eval_genome)
+winner = population.run(pe.evaluate, num_generations)
 
-    # Save the winner.
-    with open('winner-feedforward', 'wb') as f:
-        pickle.dump(winner, f)
+# Save the winner.
+with open('winner-feedforward', 'wb') as f:
+    pickle.dump(winner, f)
 
-    print(winner)
+print(winner)
 
-    visualize.plot_stats(stats, ylog=True, view=True,
-                         filename="feedforward-fitness.svg")
-    visualize.plot_species(
-        stats, view=True, filename="feedforward-speciation.svg")
+visualize.plot_stats(stats, ylog=True, view=True,
+                        filename="feedforward-fitness.svg")
+visualize.plot_species(
+    stats, view=True, filename="feedforward-speciation.svg")
 
-    node_names = {-1: 'x', -2: 'dx', -3: 'theta', -4: 'dtheta', 0: 'control'}
-    visualize.draw_net(config, winner, True, node_names=node_names)
+node_names = {-1: 'x', -2: 'dx', -3: 'theta', -4: 'dtheta', 0: 'control'}
+visualize.draw_net(config, winner, True, node_names=node_names)
 
-    visualize.draw_net(config, winner, view=True, node_names=node_names,
-                       filename="winner-feedforward.gv")
-    visualize.draw_net(config, winner, view=True, node_names=node_names,
-                       filename="winner-feedforward-enabled.gv", show_disabled=False)
-    visualize.draw_net(config, winner, view=True, node_names=node_names,
-                       filename="winner-feedforward-enabled-pruned.gv", show_disabled=False, prune_unused=True)
-
-
-if __name__ == '__main__':
-    run()
+visualize.draw_net(config, winner, view=True, node_names=node_names,
+                    filename="winner-feedforward.gv")
+visualize.draw_net(config, winner, view=True, node_names=node_names,
+                    filename="winner-feedforward-enabled.gv", show_disabled=False)
+visualize.draw_net(config, winner, view=True, node_names=node_names,
+                    filename="winner-feedforward-enabled-pruned.gv", show_disabled=False, prune_unused=True)
