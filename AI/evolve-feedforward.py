@@ -90,7 +90,8 @@ def run():
     population.add_reporter(neat.Checkpointer(1, filename_prefix='ckpt/ckpt-'))
     population.add_reporter(TeamReplacer())
 
-    pe = neat.ParallelEvaluator(1, eval_genome)
+    # so basically just alt-f4 to stop the program :)
+    pe = neat.ParallelEvaluator(multiprocessing.cpu_count()/2, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
 
     # Save the winner.
