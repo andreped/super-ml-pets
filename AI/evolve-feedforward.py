@@ -24,6 +24,9 @@ total_draws = 0
 
 class TeamReplacer(neat.StdOutReporter):
     """Replaces part of the past teams with every generation"""
+    def __init__(self):
+        pass
+
     def start_generation(self, generation):
         sap.past_teams = [sap.past_teams[i][len(sap.past_teams[i])/5:]
                     for i in range(len(sap.past_teams))]
@@ -54,6 +57,7 @@ def eval_genome(genome, config):
 
             fitness = sim.score
 
+        global total_wins, total_losses, total_draws
         total_wins += sim.wins
         total_losses += sim.losses
         total_draws += sim.draws
