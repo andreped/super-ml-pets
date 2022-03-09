@@ -28,7 +28,7 @@ class TeamReplacer(neat.reporting.BaseReporter):
         pass
 
     def start_generation(self, generation):
-        sap.past_teams = [sap.past_teams[i][len(sap.past_teams[i])/5:]
+        sap.past_teams = [sap.past_teams[i][len(sap.past_teams[i])//5:]
                     for i in range(len(sap.past_teams))]
 
 
@@ -90,14 +90,19 @@ def run():
     population.add_reporter(neat.Checkpointer(1, filename_prefix='ckpt/ckpt-'))
     population.add_reporter(TeamReplacer())
 
-    pe = neat.ParallelEvaluator(1, eval_genome)
+    # so basically just alt-f4 to stop the program :)
+    pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
 
     # Save the winner.
     with open('winner-feedforward', 'wb') as f:
         pickle.dump(winner, f)
 
-    print(winner)
+    # print(winner)
+
+    print(sap.past_teams)
+
+    return
 
     visualize.plot_stats(stats, ylog=True, view=True,
                             filename="feedforward-fitness.svg")
