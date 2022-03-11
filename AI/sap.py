@@ -107,6 +107,7 @@ class SAP(object):
 
         except:
             self.score -= 20
+            self.turns += 1
 
     def get_scaled_state(self):
         """
