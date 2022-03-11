@@ -16,7 +16,7 @@ import visualize
 
 runs_per_net = 5
 simulation_turns = 30
-num_generations = 1000
+num_generations = 10000
 
 total_wins = 0
 total_losses = 0
