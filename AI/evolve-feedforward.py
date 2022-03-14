@@ -104,6 +104,8 @@ def run():
 
     # print(winner)
 
+    print("stats: ", total_wins, "/", total_draws, "/", total_losses)
+
     print(sap.past_teams)
 
     return
