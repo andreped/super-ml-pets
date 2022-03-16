@@ -91,7 +91,7 @@ def run():
     stats = neat.StatisticsReporter()
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
-    population.add_reporter(neat.Checkpointer(1, filename_prefix='ckpt/ckpt-'))
+    population.add_reporter(neat.Checkpointer(10, filename_prefix='ckpt/ckpt-'))
     population.add_reporter(TeamReplacer())
 
     # so basically just alt-f4 to stop the program :)
