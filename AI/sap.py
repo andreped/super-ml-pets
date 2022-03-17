@@ -97,7 +97,7 @@ class SAP(object):
                     self.score += 50
                 elif winner == 1:
                     self.losses += 1
-                    self.score -= 10
+                    self.score += 5
                 else:
                     self.draws += 1
                     self.score += 20

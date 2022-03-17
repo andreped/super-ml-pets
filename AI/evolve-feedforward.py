@@ -31,6 +31,8 @@ class TeamReplacer(neat.reporting.BaseReporter):
         sap.past_teams = [sap.past_teams[i][len(sap.past_teams[i])//5:]
                     for i in range(len(sap.past_teams))]
 
+        print("stats: ", total_wins, "/", total_draws, "/", total_losses)
+
 
 def eval_genome(genome, config):
     # Use the NN network phenotype.
@@ -83,7 +85,7 @@ def run():
                             neat.DefaultSpeciesSet, neat.DefaultStagnation,
                             config_path)
                         
-    if True:
+    if False:
         population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-12330')
     else:
         population = neat.Population(config)
@@ -103,8 +105,6 @@ def run():
         pickle.dump(winner, f)
 
     # print(winner)
-
-    print("stats: ", total_wins, "/", total_draws, "/", total_losses)
 
     print(sap.past_teams)
 
