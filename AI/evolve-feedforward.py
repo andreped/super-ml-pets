@@ -18,11 +18,11 @@ runs_per_net = 5
 simulation_turns = 30
 num_generations = 10000
 
-total_wins = 0
-total_losses = 0
-total_draws = 0
-
 class TeamReplacer(neat.reporting.BaseReporter):
+    total_wins = 0
+    total_losses = 0
+    total_draws = 0
+
     """Replaces part of the past teams with every generation"""
     def __init__(self):
         pass
@@ -31,8 +31,10 @@ class TeamReplacer(neat.reporting.BaseReporter):
         sap.past_teams = [sap.past_teams[i][len(sap.past_teams[i])//5:]
                     for i in range(len(sap.past_teams))]
 
-        print("stats: ", total_wins, "/", total_draws, "/", total_losses)
 
+        print("stats: ", self.total_wins, "/", self.total_draws, "/", self.total_losses)
+
+temrep = TeamReplacer()
 
 def eval_genome(genome, config):
     # Use the NN network phenotype.
@@ -59,10 +61,11 @@ def eval_genome(genome, config):
 
             fitness = sim.score
 
-        global total_wins, total_losses, total_draws
-        total_wins += sim.wins
-        total_losses += sim.losses
-        total_draws += sim.draws
+        sim.wins += 1
+
+        temrep.total_wins += sim.wins
+        temrep.total_losses += sim.losses
+        temrep.total_draws += sim.draws
 
         fitnesses.append(fitness)
 
@@ -94,7 +97,7 @@ def run():
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
     population.add_reporter(neat.Checkpointer(10, filename_prefix='ckpt/ckpt-'))
-    population.add_reporter(TeamReplacer())
+    population.add_reporter(temrep)
 
     # so basically just alt-f4 to stop the program :)
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
@@ -105,6 +108,9 @@ def run():
         pickle.dump(winner, f)
 
     # print(winner)
+
+    print("stats: ", temrep.total_wins, "/", temrep.total_draws, "/", temrep.total_losses)
+
 
     print(sap.past_teams)
 
