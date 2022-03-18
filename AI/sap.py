@@ -99,12 +99,15 @@ class SAP(object):
                 if winner == 0:
                     self.wins += 1
                     self.score += 50
+                    print("won battle")
                 elif winner == 1:
                     self.losses += 1
                     self.score += 5
+                    print("lost battle")
                 else:
                     self.draws += 1
                     self.score += 20
+                    print("drew battle")
 
                 past_teams[self.turns].append(self.player.team)
                 self.turns += 1

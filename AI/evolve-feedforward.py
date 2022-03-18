@@ -59,8 +59,6 @@ def eval_genome(genome, config):
         sap.total_wins += sim.wins
         sap.total_losses += sim.losses
         sap.total_draws += sim.draws
-        if (sim.wins>0 or sim.losses>0 or sim.draws>0):
-            print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
 
         fitnesses.append(fitness)
 
