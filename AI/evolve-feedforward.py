@@ -19,12 +19,9 @@ simulation_turns = 30
 num_generations = 10000
 
 class TeamReplacer(neat.reporting.BaseReporter):
-    total_wins = 0
-    total_losses = 0
-    total_draws = 0
 
     """Replaces part of the past teams with every generation"""
-    def __init__(self):
+    def __init__(self):    
         pass
 
     def start_generation(self, generation):
@@ -32,9 +29,7 @@ class TeamReplacer(neat.reporting.BaseReporter):
                     for i in range(len(sap.past_teams))]
 
 
-        print("stats: ", self.total_wins, "/", self.total_draws, "/", self.total_losses)
-
-temrep = TeamReplacer()
+        print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
 
 def eval_genome(genome, config):
     # Use the NN network phenotype.
@@ -61,11 +56,11 @@ def eval_genome(genome, config):
 
             fitness = sim.score
 
-        sim.wins += 1
-
-        temrep.total_wins += sim.wins
-        temrep.total_losses += sim.losses
-        temrep.total_draws += sim.draws
+        sap.total_wins += sim.wins
+        sap.total_losses += sim.losses
+        sap.total_draws += sim.draws
+        if (sim.wins>0 or sim.losses>0 or sim.draws>0):
+            print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
 
         fitnesses.append(fitness)
 
@@ -88,8 +83,8 @@ def run():
                             neat.DefaultSpeciesSet, neat.DefaultStagnation,
                             config_path)
                         
-    if False:
-        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-12330')
+    if True:
+        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-879')
     else:
         population = neat.Population(config)
 
@@ -97,7 +92,7 @@ def run():
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
     population.add_reporter(neat.Checkpointer(10, filename_prefix='ckpt/ckpt-'))
-    population.add_reporter(temrep)
+    population.add_reporter(TeamReplacer())
 
     # so basically just alt-f4 to stop the program :)
     pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
@@ -109,7 +104,7 @@ def run():
 
     # print(winner)
 
-    print("stats: ", temrep.total_wins, "/", temrep.total_draws, "/", temrep.total_losses)
+    print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
 
 
     print(sap.past_teams)

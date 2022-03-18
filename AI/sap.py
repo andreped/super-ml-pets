@@ -13,6 +13,10 @@ from sapai.battle import Battle
 # Save the teams from every level, refresh every generation to fight against
 past_teams = [[]]
 
+total_wins = 0
+total_losses = 0
+total_draws = 0 
+
 class SAP(object):
     def __init__(self):
         self.player = Player(pack="StandardPack")
