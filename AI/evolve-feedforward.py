@@ -81,8 +81,8 @@ def run():
                             neat.DefaultSpeciesSet, neat.DefaultStagnation,
                             config_path)
                         
-    if False:
-        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-879')
+    if True:
+        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-2638')
     else:
         population = neat.Population(config)
 
