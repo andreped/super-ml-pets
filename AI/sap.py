@@ -61,6 +61,7 @@ class SAP(object):
                 action -= 35
                 tm1_idx = action/5
                 tm2_idx = action % 5
+                self.score -= .5
 
                 if self.player.team[tm1_idx].name == self.player.team[tm2_idx].name and not self.player.team[tm1_idx].empty:
                     self.player.combine(tm2_idx, tm1_idx)
@@ -112,9 +113,10 @@ class SAP(object):
                 past_teams[self.turns].append(self.player.team)
                 self.turns += 1
 
+            return True
+
         except:
-            self.score -= 20
-            self.turns += 1
+            return False
 
     def get_scaled_state(self):
         """

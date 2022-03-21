@@ -47,7 +47,11 @@ def eval_genome(genome, config):
             action = net.activate(inputs)
 
             # Apply action to the simulated sap game
-            sim.step(action)
+            result = sim.step(action)
+
+            if result == False:
+                fitness = -1000
+                break
 
             # Stop if the network fails to end the game in 30 turns or does 50 actionstakenthisturn without ending turn
             # The per-run fitness is calculated using (wins*50 + draws*20 - losses*10 - max(actionstakenthisturn-20, 0)*.1)
@@ -81,7 +85,7 @@ def run():
                             neat.DefaultSpeciesSet, neat.DefaultStagnation,
                             config_path)
                         
-    if True:
+    if False:
         population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-14229')
     else:
         population = neat.Population(config)
