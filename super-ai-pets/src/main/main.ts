@@ -12,7 +12,7 @@ import path from 'path';
 import { app, BrowserWindow, shell } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
+import AIRenderer from './ai';
 import { resolveHtmlPath } from './util';
 
 export default class AppUpdater {
@@ -87,8 +87,8 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  const ai = new AIRenderer(mainWindow);
+  ai.build();
 
   // Open urls in the user's browser
   mainWindow.webContents.setWindowOpenHandler((edata) => {

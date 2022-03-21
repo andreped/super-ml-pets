@@ -1,19 +1,17 @@
 import {
   app,
-  Menu,
   shell,
   BrowserWindow,
-  MenuItemConstructorOptions,
 } from 'electron';
 
-export default class MenuBuilder {
+export default class AIRenderer {
   mainWindow: BrowserWindow;
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
   }
 
-  buildMenu(): Menu {
+  build(): void {
     if (
       process.env.NODE_ENV === 'development' ||
       process.env.DEBUG_PROD === 'true'
@@ -23,24 +21,11 @@ export default class MenuBuilder {
 
     const template = this.buildDefaultTemplate();
 
-    const menu = Menu.buildFromTemplate(template);
-    Menu.setApplicationMenu(menu);
-
-    return menu;
+        
   }
 
   setupDevelopmentEnvironment(): void {
     this.mainWindow.webContents.on('context-menu', (_, props) => {
-      const { x, y } = props;
-
-      Menu.buildFromTemplate([
-        {
-          label: 'Inspect element',
-          click: () => {
-            this.mainWindow.webContents.inspectElement(x, y);
-          },
-        },
-      ]).popup({ window: this.mainWindow });
     });
   }
 
