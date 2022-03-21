@@ -18,10 +18,6 @@ export default class AIRenderer {
     ) {
       this.setupDevelopmentEnvironment();
     }
-
-    const template = this.buildDefaultTemplate();
-
-        
   }
 
   setupDevelopmentEnvironment(): void {
