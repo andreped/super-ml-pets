@@ -10,15 +10,12 @@ from sapai import Food
 from sapai import Team
 from sapai.battle import Battle
 
-import pickle
-
 # Save the teams from every level, refresh every generation to fight against
 past_teams = [[]]
 
 total_wins = 0
 total_losses = 0
 total_draws = 0 
-saved_actions = [[]]
 
 class SAP(object):
     def __init__(self):
@@ -35,8 +32,6 @@ class SAP(object):
         Update the system state using the best of action
         """
         action = argmax(action)
-
-        saved_actions.append(action)
 
         self.actions_taken_this_turn += 1
 

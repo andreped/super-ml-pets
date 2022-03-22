@@ -17,6 +17,8 @@ total_wins = 0
 total_losses = 0
 total_draws = 0 
 
+actions = []
+
 class SAP(object):
     def __init__(self):
         self.player = Player(pack="StandardPack")
@@ -32,6 +34,8 @@ class SAP(object):
         Update the system state using the best of action
         """
         action = argmax(action)
+
+        print(action)
 
         self.actions_taken_this_turn += 1
 
@@ -85,6 +89,7 @@ class SAP(object):
             else:
                 # endturn
                 self.actions_taken_this_turn = 0
+                print("start end turn")
                 self.player.end_turn()
 
                 prev_team = Team([])
@@ -112,6 +117,8 @@ class SAP(object):
 
                 past_teams[self.turns].append(self.player.team)
                 self.turns += 1
+
+                print("finish end turn")
 
             return True
 
