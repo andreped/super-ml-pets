@@ -119,6 +119,7 @@ def run():
     visualize.plot_species(
         stats, view=True, filename="feedforward-speciation.svg")
 
+    return
     node_names = {-1: 'x', -2: 'dx', -3: 'theta', -4: 'dtheta', 0: 'control'}
     visualize.draw_net(config, winner, True, node_names=node_names)
 
