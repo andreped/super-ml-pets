@@ -105,6 +105,11 @@ def run():
     with open('winner-feedforward', 'wb') as f:
         pickle.dump(winner, f)
 
+    print(sap.past_teams)
+
+    with open('feiojw', 'wb') as f:
+        pickle.dump(sap.saved_actions, f)
+
     # print(winner)
 
     print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
