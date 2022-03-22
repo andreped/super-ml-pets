@@ -33,6 +33,8 @@ class SAP(object):
         """
         action = argmax(action)
 
+        print(action)
+
         self.actions_taken_this_turn += 1
 
         if self.actions_taken_this_turn > 20:

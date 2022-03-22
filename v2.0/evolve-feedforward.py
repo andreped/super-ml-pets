@@ -15,7 +15,7 @@ import visualize
 
 
 runs_per_net = 5
-num_generations = 10000
+num_generations = 1
 
 class TeamReplacer(neat.reporting.BaseReporter):
 
@@ -28,7 +28,8 @@ class TeamReplacer(neat.reporting.BaseReporter):
         #             for i in range(len(sap.past_teams))]
 
 
-        print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
+        # print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
+        pass
 
 def eval_genome(genome, config):
     # Use the NN network phenotype.
@@ -90,13 +91,14 @@ def run():
         population = neat.Population(config)
 
     stats = neat.StatisticsReporter()
-    population.add_reporter(stats)
-    population.add_reporter(neat.StdOutReporter(True))
-    population.add_reporter(neat.Checkpointer(10, filename_prefix='ckpt/ckpt-'))
+    # population.add_reporter(stats)
+    # population.add_reporter(neat.StdOutReporter(True))
+    # population.add_reporter(neat.Checkpointer(10, filename_prefix='ckpt/ckpt-'))
     population.add_reporter(TeamReplacer())
 
     # so basically just alt-f4 to stop the program :)
-    pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
+    # pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
+    pe = neat.ThreadedEvaluator(1, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
 
     # Save the winner.
