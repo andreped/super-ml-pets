@@ -6,6 +6,8 @@ body {
   position: relative;
   color: white;
   height: 100vh;
+  margin: 0 auto;
+  width: 100%;
   background: linear-gradient(
     200.96deg,
     #fedc2a -29.09%,
@@ -42,21 +44,39 @@ li {
   list-style: none;
 }
 
-a {
+#run {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  height: fit-content;
-  width: fit-content;
   margin: 10px;
+  padding: 50 + 'px' 
 }
 
-a:hover {
+#run:hover {
   opacity: 1;
   text-decoration: none;
 }
 
-.Hello {
+.ai {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 20px 0;
 }
+
+#logo {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  display: flex;
+}
+
+
+/* @media (max-width:400px){ 
+	.logo{ 
+		width: 10%;
+	} 
+}  */

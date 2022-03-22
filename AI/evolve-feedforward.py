@@ -50,7 +50,7 @@ def eval_genome(genome, config):
             result = sim.step(action)
 
             if result == False:
-                fitness = -1000
+                fitness -= 1000
                 break
 
             # Stop if the network fails to end the game in 30 turns or does 50 actionstakenthisturn without ending turn
