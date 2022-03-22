@@ -7,6 +7,7 @@ from __future__ import print_function
 import multiprocessing
 import os
 import pickle
+import csv
 
 import neat
 
@@ -42,7 +43,7 @@ def eval_genome(genome, config):
 
         # Run the given simulation for up to num_steps time steps.
         fitness = 0.0
-        while sim.isGameOver():
+        while not sim.isGameOver():
             inputs = sim.get_scaled_state()
             action = net.activate(inputs)
 
@@ -60,9 +61,9 @@ def eval_genome(genome, config):
 
             fitness = sim.score
 
-        sap.total_wins += sim.wins
-        sap.total_losses += sim.losses
-        sap.total_draws += sim.draws
+        sap.SAP.total_wins += sim.wins
+        sap.SAP.total_losses += sim.losses
+        sap.SAP.total_draws += sim.draws
 
         fitnesses.append(fitness)
 
@@ -105,15 +106,20 @@ def run():
     with open('winner-feedforward', 'wb') as f:
         pickle.dump(winner, f)
 
-    with open('feiojw', 'wb') as f:
-        pickle.dump(sap.actions, f)
+    with open('feiojw', 'w', newline='') as f:
+        a = csv.writer(f)
+        a.writerow(sap.SAP.actions)
+
+    with open('wjijdo', 'w', newline='') as f:
+        a = csv.writer(f)
+        a.writerows(sap.SAP.past_teams)
 
     # print(winner)
 
-    print("stats: ", sap.total_wins, "/", sap.total_draws, "/", sap.total_losses)
+    print("stats: ", sap.SAP.total_wins, "/", sap.SAP.total_draws, "/", sap.SAP.total_losses)
 
 
-    print(sap.past_teams)
+    print(sap.SAP.past_teams)
 
     return
 

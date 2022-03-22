@@ -10,16 +10,17 @@ from sapai import Food
 from sapai import Team
 from sapai.battle import Battle
 
-# Save the teams from every level, refresh every generation to fight against
-past_teams = [[]]
-
-total_wins = 0
-total_losses = 0
-total_draws = 0 
-
-actions = []
 
 class SAP(object):
+    # Save the teams from every level, refresh every generation to fight against
+    past_teams = [[]]
+
+    total_wins = 0
+    total_losses = 0
+    total_draws = 0 
+
+    actions = []
+
     def __init__(self):
         self.player = Player(pack="StandardPack")
         self.score = 0
@@ -35,7 +36,7 @@ class SAP(object):
         """
         action = argmax(action)
 
-        print(action)
+        SAP.actions.append(action)
 
         self.actions_taken_this_turn += 1
 
@@ -93,11 +94,11 @@ class SAP(object):
                 self.player.end_turn()
 
                 prev_team = Team([])
-                if len(past_teams[self.turns]) == 0:
-                    past_teams[self.turns].append(Team([]))
+                if len(SAP.past_teams[self.turns]) == 0:
+                    SAP.past_teams[self.turns].append(Team([]))
 
-                prev_team = past_teams[self.turns][random.randint(
-                    0, len(past_teams[self.turns])-1)]
+                prev_team = SAP.past_teams[self.turns][random.randint(
+                    0, len(SAP.past_teams[self.turns])-1)]
 
                 battle = Battle(self.player.team, prev_team)
                 winner = battle.battle()
@@ -115,7 +116,7 @@ class SAP(object):
                     self.score += 20
                     print("drew battle")
 
-                past_teams[self.turns].append(self.player.team)
+                SAP.past_teams[self.turns].append(self.player.team)
                 self.turns += 1
 
                 print("finish end turn")
