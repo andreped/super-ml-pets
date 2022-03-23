@@ -18,7 +18,7 @@ class SAP(object):
     total_wins = 0
     total_losses = 0
     total_draws = 0 
-    
+
     def __init__(self):
         self.player = Player(pack="StandardPack")
         self.score = 0
