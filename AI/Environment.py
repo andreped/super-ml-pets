@@ -21,28 +21,21 @@ class Environment:
 
         reward += self.sim.score
 
-        if done and self.repaired:
-            # Calculate the final reward by adding costs and sales price.
-            transport_cost = np.sum(transport_cond * self.transport_cost)
-            brand_related_transport_costs = np.random.normal(self.average_brand_related_transport_cost[self.brand],
-                                                             self.brand_related_transport_cost_variance[self.brand])
-            brand_sales_price = self.brand_sale_price[self.brand]
-            reward += brand_sales_price - transport_cost - brand_related_transport_costs
-            self.list.append(transport_cost)
-        newstate = np.array([self.repaired] + transport_cond.tolist() + [self.brand, self.time],
+        done = self.sim.isGameOver()
+
+        newstate = np.array(self.sim.get_scaled_state,
                             dtype=np.int32), reward, done
         return newstate
 
     # Used for Q-table initialization, provides shape.
     def get_state_max_values(self):
-        return [2] + np.repeat(self.transport_time, self.n_transport_conditions).tolist() + [self.n_brands,
-                                                                                             self.transport_time + 1]
+        return [1]
 
     def get_state_shape(self):
-        return [3 + self.n_transport_conditions]
+        return [45]
 
     def get_n_actions(self):
-        return [2]
+        return [69]
 
 
 class TabularActor:
