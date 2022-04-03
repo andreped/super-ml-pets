@@ -10,9 +10,17 @@ class Environment:
         # sap
         self.sim = sap.SAP()
 
+        self.total_wins = 0
+        self.total_losses = 0
+        self.total_draws = 0 
+
     def reset(self):
+        self.total_wins += self.sim.wins
+        self.total_losses += self.sim.losses
+        self.total_draws += self.sim.draws 
+
         self.sim = sap.SAP()
-        return np.array(self.sim.get_scaled_state, dtype=np.int32)
+        return np.array(self.sim.get_scaled_state(), dtype=np.int32)
 
     def step(self, action):
         reward = -1000
@@ -21,9 +29,9 @@ class Environment:
 
         reward += self.sim.score
 
-        done = self.sim.isGameOver()
+        done = self.sim.isGameOver() or not result
 
-        newstate = np.array(self.sim.get_scaled_state,
+        newstate = np.array(self.sim.get_scaled_state(),
                             dtype=np.int32), reward, done
         return newstate
 
@@ -32,7 +40,7 @@ class Environment:
         return [1]
 
     def get_state_shape(self):
-        return [45]
+        return [2]
 
     def get_n_actions(self):
         return [69]

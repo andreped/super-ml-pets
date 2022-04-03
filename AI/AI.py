@@ -1,5 +1,6 @@
 import argparse
 import time
+import pickle
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -63,7 +64,7 @@ print("Episode |    # poor | brand/ | % good decisions | runtime stats")
 print("        | decisions | action |      goal: > 90% |              ")
 pbar = tqdm.tqdm(desc="        |           |      n |                  | ", ncols=0)
 
-while len(env.optimal_actions_list) < avg_window or np.mean(env.optimal_actions_list) < 0.95:
+while episode < 5000:
     episode += 1
     state = eps_agent.reset()
     done = False
@@ -95,23 +96,18 @@ while len(env.optimal_actions_list) < avg_window or np.mean(env.optimal_actions_
             improve_policy(eps_agent, states, actions, rewards)
             
             # Update the progressbar
-            desc = f"{episode:7} | {episode - env.optimal_choices:9} |    {states[0, -2]}/{actions[0]} |" \
-                   f"           {np.mean(env.optimal_actions_list):0.4f} |"
+            desc = f"{episode:7} |    {states[0, -2]}/{actions[0]} |"
             pbar.set_description(desc)
             pbar.update(1)
             pbar.refresh()
-            
-            # Track performance for final plots.
-            all_suboptimal_actions.append(episode - env.optimal_choices)
+
+    if episode % 10 == 0:
+        with open('ckptrew-'+episode, 'wb') as f:
+            pickle.dump(rewards, f)
+        with open('ckptstates-'+episode, 'wb') as f:
+            pickle.dump(states, f)
+        with open('ckptactions-'+episode, 'wb') as f:
+            pickle.dump(actions, f)
 
 print()
 print(f"Done! (runtime: {time.time() - start_time}")
-
-# Plot results
-fig, ax = plt.subplots()
-ax.scatter(y=all_suboptimal_actions, x=np.arange(len(all_suboptimal_actions)))
-ax.set_title("Total number of poor decisions")
-ax.set_ylabel("#poor decisions")
-ax.set_xlabel("#episodes")
-plt.tight_layout()
-plt.show(block=True)
