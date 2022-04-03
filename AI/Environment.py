@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class WatchRepairEnvironment:
+class Environment:
 
     def __init__(self, avg_window, transport_time=50):
         self.list = []
