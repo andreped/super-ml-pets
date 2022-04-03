@@ -4,7 +4,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-from Environment import WatchRepairEnvironment, TabularActor
+from Environment import Environment, TabularActor
 from rudder import LessonBuffer
 from rudder import RRLSTM as LSTM
 import tqdm
@@ -40,7 +40,7 @@ lstm_lr = 1e-2
 l2_regularization = 1e-6
 avg_window = 750
 
-env = WatchRepairEnvironment(avg_window=avg_window, transport_time=max_time)
+env = Environment(avg_window=avg_window, transport_time=max_time)
 state = env.reset()
 
 reward_history = []
