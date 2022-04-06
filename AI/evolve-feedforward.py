@@ -58,16 +58,7 @@ def eval_genome(genome, config):
             action = net.activate(inputs)
 
             # Apply action to the simulated sap game
-            result = sim.step(action)
-
-            if result == False:
-                fitness -= 1000
-                break
-
-            # Stop if the network fails to end the game in 30 turns or does 50 actionstakenthisturn without ending turn
-            # The per-run fitness is calculated using (wins*50 + draws*20 - losses*10 - max(actionstakenthisturn-20, 0)*.1)
-            if sim.actions_taken_this_turn >= 50:
-                break
+            sim.step(action)
 
             fitness = sim.score
 
@@ -79,13 +70,6 @@ def eval_genome(genome, config):
 
     # The genome's fitness is its worst performance across all runs.
     return min(fitnesses)
-
-
-""" Not Used?
-def eval_genomes(genomes, config):
-    for genome_id, genome in genomes:
-        genome.fitness = eval_genome(genome, config)
-"""
 
 def run():
     # Load the config file, which is assumed to live in

@@ -33,8 +33,6 @@ class SAP(object):
         if self.actions_taken_this_turn > 20:
             self.score -= 1
 
-        self.wins += 1
-
         try:
             if action < 35:
                 # buyshop
@@ -60,6 +58,7 @@ class SAP(object):
                 action -= 35
                 tm1_idx = action/5
                 tm2_idx = action % 5
+
                 self.score -= .5
 
                 if self.player.team[tm1_idx].name == self.player.team[tm2_idx].name and not self.player.team[tm1_idx].empty:
@@ -71,6 +70,8 @@ class SAP(object):
                 action -= 55
                 tm_slot = self.player.team[action]
 
+                self.score -= .2
+
                 self.player.sell(tm_slot)
             elif action < 67:
                 # freezeshop
@@ -81,6 +82,8 @@ class SAP(object):
             elif action < 68:
                 # rollshop
                 self.player.roll()
+
+                self.score += .2
             else:
                 # endturn
                 self.actions_taken_this_turn = 0
@@ -115,10 +118,8 @@ class SAP(object):
 
                 print("finish end turn")
 
-            return True
-
         except:
-            return False
+            self.score -= 100
 
     def get_scaled_state(self):
         """
@@ -159,7 +160,7 @@ class SAP(object):
         return state
 
     def isGameOver(self):
-        if self.player.lives <= 0 or self.player.wins >= 10 or self.turns >= 30:
+        if self.player.lives <= 0 or self.player.wins >= 10 or self.turns >= 30 or self.actions_taken_this_turn >= 30:
             return True
         
         return False
