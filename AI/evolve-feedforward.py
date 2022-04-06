@@ -4,7 +4,7 @@ Super Auto Pets AI using a feed-forward neural network.
 
 from __future__ import print_function
 
-import multiprocessing
+import multiprocessing as mp
 import os
 import pickle
 import csv
@@ -16,7 +16,7 @@ import visualize
 
 
 runs_per_net = 5
-num_generations = 2
+num_generations = 10000
 
 class Data():
     # Save the teams from every level, refresh every generation to fight against
@@ -24,12 +24,12 @@ class Data():
 
     total_wins = 0
     total_losses = 0
-    total_draws = 0 
+    total_draws = 0
+
 
 data = Data()
 
 class TeamReplacer(neat.reporting.BaseReporter):
-
     """Replaces part of the past teams with every generation"""
     def __init__(self):    
         pass
@@ -47,6 +47,8 @@ def eval_genome(genome, config):
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
+
+    global data
 
     for runs in range(runs_per_net):
         sim = sap.SAP(data)
@@ -71,6 +73,9 @@ def eval_genome(genome, config):
     # The genome's fitness is its worst performance across all runs.
     return min(fitnesses)
 
+def eval_genomes(genomes, config):
+    for genome_id, genome in genomes:
+        genome.fitness = eval_genome(genome, config)
 
 def run():
     # Load the config file, which is assumed to live in
@@ -80,9 +85,19 @@ def run():
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                             neat.DefaultSpeciesSet, neat.DefaultStagnation,
                             config_path)
+
+    sim = sap.SAP(data)
+    end_turn = [0]*69
+    end_turn[68] = 1
+    sim.step(end_turn)
+    data.total_wins += sim.wins
+    data.total_losses += sim.losses
+    data.total_draws += sim.draws
+    print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
+    return
                         
     if False:
-        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-3159')
+        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-1289')
     else:
         population = neat.Population(config)
 
@@ -93,9 +108,10 @@ def run():
     population.add_reporter(TeamReplacer())
 
     # so basically just alt-f4 to stop the program :)
-    # pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
+    # pe = neat.ParallelEvaluator(mp.cpu_count()-4, eval_genome)
     pe = neat.ThreadedEvaluator(1, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
+    # winner = population.run(eval_genomes, num_generations)
 
     # Save the winner.
     with open('winner-feedforward', 'wb') as f:
@@ -105,26 +121,9 @@ def run():
         a = csv.writer(f)
         a.writerows(data.past_teams)
 
-    # print(winner)
-
+    
     print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
 
-    return
-
-    visualize.plot_stats(stats, ylog=True, view=True,
-                            filename="feedforward-fitness.svg")
-    visualize.plot_species(
-        stats, view=True, filename="feedforward-speciation.svg")
-
-    node_names = {-1: 'x', -2: 'dx', -3: 'theta', -4: 'dtheta', 0: 'control'}
-    visualize.draw_net(config, winner, True, node_names=node_names)
-
-    visualize.draw_net(config, winner, view=True, node_names=node_names,
-                        filename="winner-feedforward.gv")
-    visualize.draw_net(config, winner, view=True, node_names=node_names,
-                        filename="winner-feedforward-enabled.gv", show_disabled=False)
-    visualize.draw_net(config, winner, view=True, node_names=node_names,
-                        filename="winner-feedforward-enabled-pruned.gv", show_disabled=False, prune_unused=True)
 
 if __name__ == "__main__":
     run()

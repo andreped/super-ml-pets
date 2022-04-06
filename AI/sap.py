@@ -87,9 +87,13 @@ class SAP(object):
             else:
                 # endturn
                 self.actions_taken_this_turn = 0
+                print("start end turn")
                 self.player.end_turn()
 
                 prev_team = Team([])
+                while len(self.past_teams) <= self.turns:
+                    self.past_teams.append([])
+
                 if len(self.past_teams[self.turns]) == 0:
                     self.past_teams[self.turns].append(Team([]))
 
@@ -109,10 +113,13 @@ class SAP(object):
                     self.draws += 1
                     self.score += 20
 
-                SAP.past_teams[self.turns].append(self.player.team)
+                self.past_teams[self.turns].append(self.player.team)
                 self.turns += 1
-
-        except:
+                
+                print("finish end turn")
+        
+        except Exception as e:
+            print(e)
             self.score -= 100
 
     def get_scaled_state(self):
