@@ -4,7 +4,7 @@ Super Auto Pets AI using a feed-forward neural network.
 
 from __future__ import print_function
 
-import multiprocessing
+import multiprocessing as mp
 import os
 import pickle
 import csv
@@ -24,12 +24,12 @@ class Data():
 
     total_wins = 0
     total_losses = 0
-    total_draws = 0 
+    total_draws = 0
+
 
 data = Data()
 
 class TeamReplacer(neat.reporting.BaseReporter):
-
     """Replaces part of the past teams with every generation"""
     def __init__(self):    
         pass
@@ -47,6 +47,8 @@ def eval_genome(genome, config):
     net = neat.nn.FeedForwardNetwork.create(genome, config)
 
     fitnesses = []
+
+    global data
 
     for runs in range(runs_per_net):
         sim = sap.SAP(data)
@@ -71,6 +73,10 @@ def eval_genome(genome, config):
     # The genome's fitness is its worst performance across all runs.
     return min(fitnesses)
 
+def eval_genomes(genomes, config):
+    for genome_id, genome in genomes:
+        genome.fitness = eval_genome(genome, config)
+
 def run():
     # Load the config file, which is assumed to live in
     # the same directory as this script.
@@ -92,9 +98,10 @@ def run():
     population.add_reporter(TeamReplacer())
 
     # so basically just alt-f4 to stop the program :)
-    # pe = neat.ParallelEvaluator(multiprocessing.cpu_count()-4, eval_genome)
+    # pe = neat.ParallelEvaluator(mp.cpu_count()-4, eval_genome)
     pe = neat.ThreadedEvaluator(1, eval_genome)
     winner = population.run(pe.evaluate, num_generations)
+    # winner = population.run(eval_genomes, num_generations)
 
     # Save the winner.
     with open('winner-feedforward', 'wb') as f:
@@ -103,6 +110,9 @@ def run():
     with open('past_teams', 'w', newline='') as f:
         a = csv.writer(f)
         a.writerows(data.past_teams)
+
+    
+    print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
 
 
 if __name__ == "__main__":

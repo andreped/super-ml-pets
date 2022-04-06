@@ -87,7 +87,6 @@ class SAP(object):
             else:
                 # endturn
                 self.actions_taken_this_turn = 0
-                print("start end turn")
                 self.player.end_turn()
 
                 prev_team = Team([])
@@ -103,20 +102,15 @@ class SAP(object):
                 if winner == 0:
                     self.wins += 1
                     self.score += 50
-                    print("won battle")
                 elif winner == 1:
                     self.losses += 1
                     self.score += 5
-                    print("lost battle")
                 else:
                     self.draws += 1
                     self.score += 20
-                    print("drew battle")
 
                 SAP.past_teams[self.turns].append(self.player.team)
                 self.turns += 1
-
-                print("finish end turn")
 
         except:
             self.score -= 100
