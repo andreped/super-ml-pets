@@ -12,7 +12,7 @@ from sapai.battle import Battle
 
 
 class SAP(object):
-    def __init__(self, data):
+    def __init__(self):
         self.player = Player(pack="StandardPack")
         self.score = 0
         self.wins = 0
@@ -20,7 +20,6 @@ class SAP(object):
         self.draws = 0
         self.turns = 1
         self.actions_taken_this_turn = 0
-        self.past_teams = data.past_teams
 
     def step(self, action):
         """
@@ -31,9 +30,7 @@ class SAP(object):
         self.actions_taken_this_turn += 1
 
         if self.actions_taken_this_turn > 20:
-            self.score -= 1
-
-        self.wins += 1
+            self.score -= .1
 
         try:
             if action < 35:
@@ -42,8 +39,6 @@ class SAP(object):
                 shp_idx = action % 7
                 tm_slot = self.player.team[tm_idx]
                 shp_slot = self.player.shop[shp_idx]
-
-                self.score += 1.2
 
                 # buy pet (always puts in last slot), buy combine
                 if shp_slot.slot_type == "pet":
@@ -84,15 +79,14 @@ class SAP(object):
             else:
                 # endturn
                 self.actions_taken_this_turn = 0
-                print("start end turn")
                 self.player.end_turn()
 
                 prev_team = Team([])
-                if len(self.past_teams[self.turns]) == 0:
-                    self.past_teams[self.turns].append(Team([]))
+                if len(past_teams[self.turns]) == 0:
+                    past_teams[self.turns].append(Team([]))
 
-                prev_team = self.past_teams[self.turns][random.randint(
-                    0, len(self.past_teams[self.turns])-1)]
+                prev_team = past_teams[self.turns][random.randint(
+                    0, len(past_teams[self.turns])-1)]
 
                 battle = Battle(self.player.team, prev_team)
                 winner = battle.battle()
@@ -110,19 +104,17 @@ class SAP(object):
                     self.score += 20
                     print("drew battle")
 
-                SAP.past_teams[self.turns].append(self.player.team)
+                past_teams[self.turns].append(self.player.team)
                 self.turns += 1
-
-                print("finish end turn")
 
             return True
 
         except:
             return False
 
-    def get_scaled_state(self):
+    def get_state(self):
         """
-        Get full state, scaled into (approximately) [0, 1].
+        Get full state
         State is: 
         team states {id, atk, def, food},
         shop states {id, atk, def},
@@ -133,25 +125,25 @@ class SAP(object):
         for teamslot_state in self.player.team.state["team"]:
             pet = teamslot_state["pet"]
             if pet["name"] == "pet-none":
-                state.extend([89/len(data["pets"]), 0, 0, 1])
+                state.extend([89, 0, 0, 1])
             else:
-                state.extend([(list(data["pets"].keys()).index(
-                    pet["name"]))/len(data["pets"]), pet["attack"]/50, pet["health"]/50,
-                    (list(data["statuses"].keys()).index(pet["status"]))/(len(data["statuses"])+1)])
+                state.extend([list(data["pets"].keys()).index(
+                    pet["name"]), pet["attack"], pet["health"],
+                    list(data["statuses"].keys()).index(pet["status"])])
 
         for shopslot_state in self.player.shop.state["shop_slots"]:
             item = shopslot_state["item"]
             if item["name"] == "pet-none" or item["name"] == "food-none":
-                state.extend([89/len(data["pets"]), 0, 0])
+                state.extend([89, 0, 0])
             elif item["type"] == "Food":
-                state.extend([(list(data["foods"].keys()).index(item["name"])+len(data["pets"]))
-                              / (len(data["foods"])+len(data["pets"])), item["attack"]/50, item["health"]/50])
+                state.extend([list(data["foods"].keys()).index(
+                    item["name"]), item["attack"], item["health"]])
             else:
-                state.extend([(list(data["pets"].keys()).index(
-                            item["name"]))/len(data["pets"]), item["attack"]/50, item["health"]/50])
+                state.extend([list(data["pets"].keys()).index(
+                    item["name"]), item["attack"], item["health"]])
 
         for i in range(7-len(self.player.shop)):
-            state.extend([89/len(data["pets"]), 0, 0])
+            state.extend([89, 0, 0])
 
         state.extend([self.player.gold, self.player.turn,
                      self.player.lives, self.wins])
@@ -161,5 +153,5 @@ class SAP(object):
     def isGameOver(self):
         if self.player.lives <= 0 or self.player.wins >= 10 or self.turns >= 30:
             return True
-        
+
         return False
