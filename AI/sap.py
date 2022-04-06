@@ -125,7 +125,7 @@ class SAP(object):
         """
         Get full state, scaled into (approximately) [0, 1].
         State is: 
-        team states {id, atk, def, food},
+        team states {id, exp, atk, def, food},
         shop states {id, atk, def},
         money, turn, lives, wins
         """
@@ -134,10 +134,16 @@ class SAP(object):
         for teamslot_state in self.player.team.state["team"]:
             pet = teamslot_state["pet"]
             if pet["name"] == "pet-none":
-                state.extend([89/len(data["pets"]), 0, 0, 1])
+                state.extend([89/len(data["pets"]), 0, 0, 0, 1])
             else:
+                exp = pet["experience"]
+                lvl = pet["level"]
+                if lvl == 2:
+                    exp += 2
+                elif lvl == 3:
+                    exp = 5
                 state.extend([(list(data["pets"].keys()).index(
-                    pet["name"]))/len(data["pets"]), pet["attack"]/50, pet["health"]/50,
+                    pet["name"]))/len(data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
                     (list(data["statuses"].keys()).index(pet["status"]))/(len(data["statuses"])+1)])
 
         for shopslot_state in self.player.shop.state["shop_slots"]:
