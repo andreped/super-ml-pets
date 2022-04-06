@@ -21,6 +21,7 @@ class SAP(object):
         self.turns = 1
         self.actions_taken_this_turn = 0
         self.past_teams = data.past_teams
+        self.logs = data
 
     def step(self, action):
         """
@@ -87,7 +88,6 @@ class SAP(object):
             else:
                 # endturn
                 self.actions_taken_this_turn = 0
-                print("start end turn")
                 self.player.end_turn()
 
                 prev_team = Team([])
@@ -115,11 +115,9 @@ class SAP(object):
 
                 self.past_teams[self.turns].append(self.player.team)
                 self.turns += 1
-                
-                print("finish end turn")
         
         except Exception as e:
-            print(e)
+            self.logs.logs.append(e)
             self.score -= 100
 
     def get_scaled_state(self):

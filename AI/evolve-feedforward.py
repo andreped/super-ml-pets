@@ -8,6 +8,7 @@ import multiprocessing as mp
 import os
 import pickle
 import csv
+import sys
 
 import neat
 
@@ -25,6 +26,8 @@ class Data():
     total_wins = 0
     total_losses = 0
     total_draws = 0
+
+    logs = []
 
 
 data = Data()
@@ -77,6 +80,15 @@ def eval_genomes(genomes, config):
     for genome_id, genome in genomes:
         genome.fitness = eval_genome(genome, config)
 
+def save_logs():
+    with open('past_teams', 'w', newline='') as f:
+        a = csv.writer(f)
+        a.writerows(data.past_teams)
+
+    with open('logs', 'w', newline='') as f:
+        a = csv.writer(f)
+        a.writerows(data.logs)
+
 def run():
     # Load the config file, which is assumed to live in
     # the same directory as this script.
@@ -85,16 +97,6 @@ def run():
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                             neat.DefaultSpeciesSet, neat.DefaultStagnation,
                             config_path)
-
-    sim = sap.SAP(data)
-    end_turn = [0]*69
-    end_turn[68] = 1
-    sim.step(end_turn)
-    data.total_wins += sim.wins
-    data.total_losses += sim.losses
-    data.total_draws += sim.draws
-    print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
-    return
                         
     if False:
         population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-1289')
@@ -110,17 +112,24 @@ def run():
     # so basically just alt-f4 to stop the program :)
     # pe = neat.ParallelEvaluator(mp.cpu_count()-4, eval_genome)
     pe = neat.ThreadedEvaluator(1, eval_genome)
-    winner = population.run(pe.evaluate, num_generations)
     # winner = population.run(eval_genomes, num_generations)
+
+    try:
+        winner = population.run(pe.evaluate, num_generations)
+    except KeyboardInterrupt:
+        print('Interrupted')
+        save_logs()
+        print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
 
     # Save the winner.
     with open('winner-feedforward', 'wb') as f:
         pickle.dump(winner, f)
 
-    with open('past_teams', 'w', newline='') as f:
-        a = csv.writer(f)
-        a.writerows(data.past_teams)
-
+    save_logs()
     
     print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
 
