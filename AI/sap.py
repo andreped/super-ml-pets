@@ -21,7 +21,7 @@ class SAP(object):
         self.turns = 1
         self.actions_taken_this_turn = 0
         self.past_teams = data.past_teams
-        self.logs = data
+        self.data = data
 
     def step(self, action):
         """
@@ -37,7 +37,7 @@ class SAP(object):
         try:
             if action < 35:
                 # buyshop
-                tm_idx = action/7
+                tm_idx = int(action/7)
                 shp_idx = action % 7
                 tm_slot = self.player.team[tm_idx]
                 shp_slot = self.player.shop[shp_idx]
@@ -57,7 +57,7 @@ class SAP(object):
             elif action < 55:
                 # moveteam
                 action -= 35
-                tm1_idx = action/5
+                tm1_idx = int(action/5)
                 tm2_idx = action % 5
 
                 self.score -= .5
@@ -97,6 +97,10 @@ class SAP(object):
                 if len(self.past_teams[self.turns]) == 0:
                     self.past_teams[self.turns].append(Team([]))
 
+
+                if len(self.past_teams[self.turns]) > 1000:
+                    self.past_teams[self.turns] = self.past_teams[self.turns][500:]
+
                 prev_team = self.past_teams[self.turns][random.randint(
                     0, len(self.past_teams[self.turns])-1)]
 
@@ -117,7 +121,8 @@ class SAP(object):
                 self.turns += 1
         
         except Exception as e:
-            self.logs.logs.append(e)
+            self.data.logs.append(e)
+
             self.score -= 100
 
     def get_scaled_state(self):
@@ -141,9 +146,16 @@ class SAP(object):
                     exp += 2
                 elif lvl == 3:
                     exp = 5
-                state.extend([(list(data["pets"].keys()).index(
-                    pet["name"]))/len(data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
-                    (list(data["statuses"].keys()).index(pet["status"]))/(len(data["statuses"])+1)])
+
+                if pet["status"] != 'none':
+                    state.extend([(list(data["pets"].keys()).index(
+                        pet["name"]))/len(data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
+                        (list(data["statuses"].keys()).index(pet["status"]))/(len(data["statuses"])+1)])
+
+                else:
+                    state.extend([(list(data["pets"].keys()).index(
+                        pet["name"]))/len(data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
+                        (11)/(len(data["statuses"])+1)])
 
         for shopslot_state in self.player.shop.state["shop_slots"]:
             item = shopslot_state["item"]

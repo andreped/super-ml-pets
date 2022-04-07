@@ -38,8 +38,11 @@ class TeamReplacer(neat.reporting.BaseReporter):
         pass
 
     def start_generation(self, generation):
-        data.past_teams = [data.past_teams[i][len(data.past_teams[i])//5:]
-                    for i in range(len(data.past_teams))]
+        # data.past_teams = [data.past_teams[i][len(data.past_teams[i])//5:]
+        #             for i in range(len(data.past_teams))]
+
+        save_logs()
+        data.logs = []
 
 
         print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
@@ -87,7 +90,8 @@ def save_logs():
 
     with open('logs', 'w', newline='') as f:
         a = csv.writer(f)
-        a.writerows(data.logs)
+        for l in data.logs:
+            a.writerow([str(l)])
 
 def run():
     # Load the config file, which is assumed to live in
