@@ -103,7 +103,7 @@ def run():
                             config_path)
                         
     if False:
-        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-1289')
+        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-1939')
     else:
         population = neat.Population(config)
 

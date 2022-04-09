@@ -123,7 +123,7 @@ class SAP(object):
         except Exception as e:
             self.data.logs.append(e)
 
-            self.score -= 100
+            self.score -= 5
 
     def get_scaled_state(self):
         """
