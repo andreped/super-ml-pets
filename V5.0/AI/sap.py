@@ -25,16 +25,14 @@ class SAP(object):
 
     def step(self, action):
         """
-        Update the system state using the best of action (0-68)
+        Update the system state using the best of action
         """
         action = argmax(action)
 
         self.actions_taken_this_turn += 1
 
-        self.score = 0
-
         if self.actions_taken_this_turn > 20:
-            self.score -= 10
+            self.score -= 1
 
         try:
             if action < 35:
@@ -44,7 +42,7 @@ class SAP(object):
                 tm_slot = self.player.team[tm_idx]
                 shp_slot = self.player.shop[shp_idx]
 
-                self.score += 1
+                self.score += 1.2
 
                 # buy pet (always puts in last slot), buy combine
                 if shp_slot.slot_type == "pet":
@@ -62,7 +60,7 @@ class SAP(object):
                 tm1_idx = int(action/5)
                 tm2_idx = action % 5
 
-                self.score -= 1
+                self.score -= .5
 
                 if self.player.team[tm1_idx].name == self.player.team[tm2_idx].name and not self.player.team[tm1_idx].empty:
                     self.player.combine(tm2_idx, tm1_idx)
@@ -73,7 +71,7 @@ class SAP(object):
                 action -= 55
                 tm_slot = self.player.team[action]
 
-                self.score -= 1
+                self.score -= .2
 
                 self.player.sell(tm_slot)
             elif action < 67:
@@ -81,14 +79,12 @@ class SAP(object):
                 action -= 60
                 shp_slot = self.player.shop[action]
 
-                self.score -= 1
-
                 self.player.freeze(shp_slot)
             elif action < 68:
                 # rollshop
                 self.player.roll()
 
-                self.score += 1
+                self.score += .2
             else:
                 # endturn
                 self.actions_taken_this_turn = 0

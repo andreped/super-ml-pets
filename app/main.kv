@@ -1,0 +1,23 @@
+<Root>:
+    FloatLayout:
+        canvas.before:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'resources/SAIPoutline.png' 
+
+        Button:
+            text: "Start"
+            pos: 150, 390
+            size: 340, 100
+            size_hint: None, None
+            on_press: root.start_ai()
+
+    AIVisualize:
+
+<AIVisualize>:
+    FloatLayout:
+        Graph:
+            pos: 3, 3
+            size: 340, 360
+            size_hint: None, None
