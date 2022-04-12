@@ -17,7 +17,7 @@ import visualize
 
 
 runs_per_net = 5
-num_generations = 10000
+num_generations = 2000
 
 class Data():
     # Save the teams from every level, refresh every generation to fight against
@@ -88,23 +88,34 @@ def save_logs():
         a = csv.writer(f)
         a.writerows(data.past_teams)
 
+    with open('past_teams_bin', 'wb') as f:
+        pickle.dump(data.past_teams, f)
+
     with open('logs', 'w', newline='') as f:
         a = csv.writer(f)
         for l in data.logs:
             a.writerow([str(l)])
 
-def run():
-    # Load the config file, which is assumed to live in
-    # the same directory as this script.
-    local_dir = os.path.dirname(__file__)
-    config_path = os.path.join(local_dir, 'config-feedforward')
-    config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
-                            neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                            config_path)
-                        
-    if False:
-        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-1939')
+def run():                    
+    if True:
+        population = neat.Checkpointer.restore_checkpoint('ckpt/ckpt-9992')
+        data.total_wins = 96920
+        data.total_draws = 127698
+        data.total_losses = 90426
+        with open('past_teams_bin', 'rb') as f:
+            data.past_teams = pickle.load(f)
+
+        print("loaded")
+
+        # species # 531, id 2479534, Total extinctions: 435
     else:
+        # Load the config file, which is assumed to live in
+        # the same directory as this script.
+        local_dir = os.path.dirname(__file__)
+        config_path = os.path.join(local_dir, 'config-feedforward')
+        config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
+                                neat.DefaultSpeciesSet, neat.DefaultStagnation,
+                                config_path)
         population = neat.Population(config)
 
     stats = neat.StatisticsReporter()

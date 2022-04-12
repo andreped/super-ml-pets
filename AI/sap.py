@@ -98,8 +98,8 @@ class SAP(object):
                     self.past_teams[self.turns].append(Team([]))
 
 
-                if len(self.past_teams[self.turns]) > 1000:
-                    self.past_teams[self.turns] = self.past_teams[self.turns][500:]
+                if len(self.past_teams[self.turns]) > 500:
+                    self.past_teams[self.turns] = self.past_teams[self.turns][150:]
 
                 prev_team = self.past_teams[self.turns][random.randint(
                     0, len(self.past_teams[self.turns])-1)]
