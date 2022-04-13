@@ -3,9 +3,12 @@ General settings and implementation of the SAP Game
 """
 
 import random
-from numpy import argmax, roll
+import traceback
+
+import numpy as np
+
+import sapai
 from sapai import Player
-from sapai import data
 from sapai import Food
 from sapai import Team
 from sapai.battle import Battle
@@ -21,13 +24,13 @@ class SAP(object):
         self.turns = 1
         self.actions_taken_this_turn = 0
         self.past_teams = data.past_teams
-        self.data = data
+        self.logs = data.logs
 
     def step(self, action):
         """
         Update the system state using the best of action (0-68)
         """
-        action = argmax(action)
+        action = np.argmax(action)
 
         self.actions_taken_this_turn += 1
 
@@ -64,7 +67,7 @@ class SAP(object):
 
                 self.score -= 1
 
-                if self.player.team[tm1_idx].name == self.player.team[tm2_idx].name and not self.player.team[tm1_idx].empty:
+                if not self.player.team[tm1_idx].empty and self.player.team[tm1_idx].pet.name == self.player.team[tm2_idx].pet.name:
                     self.player.combine(tm2_idx, tm1_idx)
                 else:
                     self.player.team.move(tm1_idx, tm2_idx)
@@ -124,8 +127,8 @@ class SAP(object):
                 self.past_teams[self.turns].append(self.player.team)
                 self.turns += 1
         
-        except Exception as e:
-            self.data.logs.append(e)
+        except Exception:
+            self.logs.append(traceback.format_exc())
 
             self.score -= 5
 
@@ -142,7 +145,7 @@ class SAP(object):
         for teamslot_state in self.player.team.state["team"]:
             pet = teamslot_state["pet"]
             if pet["name"] == "pet-none":
-                state.extend([89/len(data["pets"]), 0, 0, 0, 1])
+                state.extend([89/len(sapai.data["pets"]), 0, 0, 0, 1])
             else:
                 exp = pet["experience"]
                 lvl = pet["level"]
@@ -152,33 +155,33 @@ class SAP(object):
                     exp = 5
 
                 if pet["status"] != 'none':
-                    state.extend([(list(data["pets"].keys()).index(
-                        pet["name"]))/len(data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
-                        (list(data["statuses"].keys()).index(pet["status"]))/(len(data["statuses"])+1)])
+                    state.extend([(list(sapai.data["pets"].keys()).index(
+                        pet["name"]))/len(sapai.data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
+                        (list(sapai.data["statuses"].keys()).index(pet["status"]))/(len(sapai.data["statuses"])+1)])
 
                 else:
-                    state.extend([(list(data["pets"].keys()).index(
-                        pet["name"]))/len(data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
-                        (11)/(len(data["statuses"])+1)])
+                    state.extend([(list(sapai.data["pets"].keys()).index(
+                        pet["name"]))/len(sapai.data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
+                        (11)/(len(sapai.data["statuses"])+1)])
 
         for shopslot_state in self.player.shop.state["shop_slots"]:
             item = shopslot_state["item"]
             if item["name"] == "pet-none" or item["name"] == "food-none":
-                state.extend([89/len(data["pets"]), 0, 0])
+                state.extend([89/len(sapai.data["pets"]), 0, 0])
             elif item["type"] == "Food":
-                state.extend([(list(data["foods"].keys()).index(item["name"])+len(data["pets"]))
-                              / (len(data["foods"])+len(data["pets"])), item["attack"]/50, item["health"]/50])
+                state.extend([(list(sapai.data["foods"].keys()).index(item["name"])+len(sapai.data["pets"]))
+                              / (len(sapai.data["foods"])+len(sapai.data["pets"])), item["attack"]/50, item["health"]/50])
             else:
-                state.extend([(list(data["pets"].keys()).index(
-                            item["name"]))/len(data["pets"]), item["attack"]/50, item["health"]/50])
+                state.extend([(list(sapai.data["pets"].keys()).index(
+                            item["name"]))/len(sapai.data["pets"]), item["attack"]/50, item["health"]/50])
 
         for i in range(7-len(self.player.shop)):
-            state.extend([89/len(data["pets"]), 0, 0])
+            state.extend([89/len(sapai.data["pets"]), 0, 0])
 
         state.extend([self.player.gold, self.player.turn,
                      self.player.lives, self.wins])
 
-        return state
+        return np.array(state)
 
     def isGameOver(self):
         if self.player.lives <= 0 or self.player.wins >= 10 or self.turns >= 30 or self.actions_taken_this_turn >= 30:

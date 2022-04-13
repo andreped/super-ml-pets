@@ -97,12 +97,12 @@ def main():
     # 1. Initialize the Target and Main models
     # Main Model (updated every 4 steps)
     if True:
-        model = agent((50,), (69,))
+        model = agent((50, ), 69)
     else:
         model = keras.models.load_model('ckpt/ckpt-')
     
     # Target Model (updated every 100 steps)
-    target_model = agent((50,), (69,))
+    target_model = agent((50, ), 69)
     target_model.set_weights(model.get_weights())
 
     replay_memory = deque(maxlen=50_000)
@@ -130,7 +130,7 @@ def main():
                 # 2. Explore using the Epsilon Greedy Exploration Strategy
                 if random_number <= epsilon:
                     # Explore
-                    action = [0*69]
+                    action = [0]*69
                     action[np.random.randint(0, 69)] = 1
                 else:
                     # Exploit best known action
@@ -140,6 +140,8 @@ def main():
                     action = model.predict(encoded_reshaped).flatten()
 
                 env.step(action)
+
+                action = np.argmax(action)
 
                 new_observation = env.get_scaled_state()
                 reward = env.score 
@@ -174,7 +176,7 @@ def main():
 
             if episode % 100 == 0:
                 save_logs(data)
-                model.save('ckpt/ckpt-'+episode)
+                model.save('ckpt/ckpt-'+str(episode))
 
     except KeyboardInterrupt:
         print('Interrupted')
@@ -188,7 +190,7 @@ def main():
 
     
     save_logs(data)
-    model.save('ckpt/ckpt-'+episode)
+    model.save('ckpt/ckpt-'+str(episode))
 
 if __name__ == '__main__':
     main()
