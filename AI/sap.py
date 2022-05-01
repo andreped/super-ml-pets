@@ -120,6 +120,12 @@ class SAP(object):
                 elif winner == 1:
                     self.losses += 1
                     self.score += 5
+                    if self.turns <= 2:
+                        self.player.lives -= 1
+                    elif self.turns <= 4:
+                        self.player.lives -= 2
+                    else:
+                        self.player.lives -= 3
                 else:
                     self.draws += 1
                     self.score += 20
@@ -184,7 +190,7 @@ class SAP(object):
         return np.array(state)
 
     def isGameOver(self):
-        if self.player.lives <= 0 or self.player.wins >= 10 or self.turns >= 30 or self.actions_taken_this_turn >= 30:
+        if self.player.lives <= 0 or self.wins >= 10 or self.turns >= 30 or self.actions_taken_this_turn >= 30:
             return True
         
         return False

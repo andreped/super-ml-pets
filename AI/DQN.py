@@ -1,3 +1,7 @@
+"""
+Main application to train SAIP
+"""
+
 import sys, os
 from collections import deque
 import time
@@ -21,7 +25,8 @@ class Data():
     logs = []
 
 # An episode a full game
-train_episodes = 10000
+start_episode = 0
+train_episodes = 100000
 test_episodes = 100
 
 def agent(state_shape, action_shape):
@@ -94,20 +99,30 @@ def main():
     min_epsilon = 0.01 # At a minimum, we'll always explore 1% of the time
     decay = 0.01
 
+    data = Data()
+
     # 1. Initialize the Target and Main models
     # Main Model (updated every 4 steps)
-    if True:
+    if False:
         model = agent((50, ), 69)
     else:
-        model = keras.models.load_model('ckpt/ckpt-')
+        model = keras.models.load_model('ckpt/ckpt-600000')
+        data.total_wins = 2559962 
+        data.total_draws = 3490824
+        data.total_losses = 2574569
+        start_episode = 600001
+
+        with open('past_teams_bin', 'rb') as f:
+            data.past_teams = pickle.load(f)
+
+        print("loaded")
+
     
     # Target Model (updated every 100 steps)
     target_model = agent((50, ), 69)
     target_model.set_weights(model.get_weights())
 
     replay_memory = deque(maxlen=50_000)
-
-    data = Data()
 
     target_update_counter = 0
 
@@ -118,7 +133,7 @@ def main():
     steps_to_update_target_model = 0
 
     try:
-        for episode in range(train_episodes):
+        for episode in range(start_episode, start_episode+train_episodes):
             total_training_rewards = 0
             env = sap.SAP(data)
             observation = env.get_scaled_state()
@@ -157,7 +172,7 @@ def main():
                 total_training_rewards += reward
 
                 if done:
-                    print('Total training rewards: {} after n steps = {} with final reward = {}'.format(total_training_rewards, episode, reward))
+                    print('After n steps = {} : Total training rewards: {} '.format(episode, total_training_rewards))
                     total_training_rewards += 1
 
                     if steps_to_update_target_model >= 100:
@@ -180,7 +195,7 @@ def main():
 
     except KeyboardInterrupt:
         print('Interrupted')
-        save_logs()
+        save_logs(data)
         model.save('ckpt/ckpt-'+episode)
         print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
         try:
