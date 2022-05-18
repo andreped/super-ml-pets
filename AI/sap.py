@@ -11,12 +11,13 @@ import sapai
 from sapai import Player
 from sapai import Food
 from sapai import Team
+from sapai import Pet
 from sapai.battle import Battle
 
 
 class SAP(object):
     def __init__(self, data):
-        self.player = Player(pack="StandardPack")
+        self.player = Player(pack="ExpansionPack1")
         self.score = 0
         self.wins = 0
         self.losses = 0
@@ -45,6 +46,8 @@ class SAP(object):
                 tm_idx = int(action/7)
                 shp_idx = action % 7
                 tm_slot = self.player.team[tm_idx]
+                if shp_idx > len(self.player.shop):
+                    print(shp_idx)
                 shp_slot = self.player.shop[shp_idx]
 
                 self.score += 1
@@ -97,21 +100,13 @@ class SAP(object):
                 self.actions_taken_this_turn = 0
                 self.player.end_turn()
 
-                prev_team = Team([])
                 while len(self.past_teams) <= self.turns:
                     self.past_teams.append([])
-
-                if len(self.past_teams[self.turns]) == 0:
-                    self.past_teams[self.turns].append(Team([]))
-
 
                 if len(self.past_teams[self.turns]) > 500:
                     self.past_teams[self.turns] = self.past_teams[self.turns][150:]
 
-                prev_team = self.past_teams[self.turns][random.randint(
-                    0, len(self.past_teams[self.turns])-1)]
-
-                battle = Battle(self.player.team, prev_team)
+                battle = Battle(self.player.team, self.generate_enemy())
                 winner = battle.battle()
 
                 if winner == 0:
@@ -119,7 +114,7 @@ class SAP(object):
                     self.score += 50
                 elif winner == 1:
                     self.losses += 1
-                    self.score += 5
+                    self.score -= 15
                     if self.turns <= 2:
                         self.player.lives -= 1
                     elif self.turns <= 4:
@@ -132,20 +127,31 @@ class SAP(object):
 
                 self.past_teams[self.turns].append(self.player.team)
                 self.turns += 1
-        
+
         except Exception:
             self.logs.append(traceback.format_exc())
+            print(traceback.format_exc())
 
-            self.score -= 5
+            self.score -= 15
+
+    def generate_enemy(self):
+        team = []
+        if self.turns <= 2:
+            team.append()
+
+
+
+        return Team(team)
 
     def get_scaled_state(self):
         """
         Get full state, scaled into (approximately) [0, 1].
         State is: 
         team states {id, exp, atk, def, food},
-        shop states {id, atk, def},
+        shop states {id, atk, def, frozen},
         money, turn, lives, wins
         """
+        DATA_LENGTH = len(sapai.data["foods"])+len(sapai.data["pets"])
 
         state = []
         for teamslot_state in self.player.team.state["team"]:
@@ -161,28 +167,29 @@ class SAP(object):
                     exp = 5
 
                 if pet["status"] != 'none':
-                    state.extend([(list(sapai.data["pets"].keys()).index(
-                        pet["name"]))/len(sapai.data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
-                        (list(sapai.data["statuses"].keys()).index(pet["status"]))/(len(sapai.data["statuses"])+1)])
+                    state.extend([list(sapai.data["pets"].keys()).index(pet["name"])/DATA_LENGTH,
+                                  exp/6, pet["attack"]/50, pet["health"]/50,
+                                  list(sapai.data["statuses"].keys()).index(pet["status"])/(len(sapai.data["statuses"])+1)])
 
                 else:
-                    state.extend([(list(sapai.data["pets"].keys()).index(
-                        pet["name"]))/len(sapai.data["pets"]), exp/6, pet["attack"]/50, pet["health"]/50,
-                        (11)/(len(sapai.data["statuses"])+1)])
+                    state.extend([list(sapai.data["pets"].keys()).index(pet["name"])/DATA_LENGTH,
+                                  exp/6, pet["attack"]/50, pet["health"]/50, 1])
 
         for shopslot_state in self.player.shop.state["shop_slots"]:
             item = shopslot_state["item"]
+            frozen = 1 if shopslot_state["frozen"] == "frozen" else 0
             if item["name"] == "pet-none" or item["name"] == "food-none":
-                state.extend([89/len(sapai.data["pets"]), 0, 0])
-            elif item["type"] == "Food":
-                state.extend([(list(sapai.data["foods"].keys()).index(item["name"])+len(sapai.data["pets"]))
-                              / (len(sapai.data["foods"])+len(sapai.data["pets"])), item["attack"]/50, item["health"]/50])
+                state.extend([89/DATA_LENGTH, 0, 0, 0])
             else:
-                state.extend([(list(sapai.data["pets"].keys()).index(
-                            item["name"]))/len(sapai.data["pets"]), item["attack"]/50, item["health"]/50])
+                if item["type"] == "Food":
+                    state.extend([(list(sapai.data["foods"].keys()).index(item["name"])+len(sapai.data["pets"])) / DATA_LENGTH,
+                                  0, 0, frozen])
+                else:
+                    state.extend([(list(sapai.data["pets"].keys()).index(item["name"]))/DATA_LENGTH,
+                                  item["attack"]/50, item["health"]/50, frozen])
 
         for i in range(7-len(self.player.shop)):
-            state.extend([89/len(sapai.data["pets"]), 0, 0])
+            state.extend([89/DATA_LENGTH, 0, 0, 0])
 
         state.extend([self.player.gold, self.player.turn,
                      self.player.lives, self.wins])
@@ -190,7 +197,7 @@ class SAP(object):
         return np.array(state)
 
     def isGameOver(self):
-        if self.player.lives <= 0 or self.wins >= 10 or self.turns >= 30 or self.actions_taken_this_turn >= 30:
+        if self.player.lives <= 0 or self.wins >= 10 or self.turns >= 30 or self.actions_taken_this_turn > 30:
             return True
-        
+
         return False

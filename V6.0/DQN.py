@@ -107,7 +107,7 @@ def main():
         model = agent((50, ), 69)
     else:
         model = keras.models.load_model('ckpt/ckpt-600000')
-        data.total_wins = 2559962 
+        data.total_wins = 2559962
         data.total_draws = 3490824
         data.total_losses = 2574569
         start_episode = 600001
