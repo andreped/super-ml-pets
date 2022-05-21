@@ -13,12 +13,10 @@ def read_offsets(proc, base_addr, offsets):
 
 process = process_by_name("Super Auto Pets.exe")
 
-# base_address = process["modules"]["GameAssembly.dll"]["baseaddr"] + 0x029A8598
 base_address = process["modules"]["GameAssembly.dll"]["baseaddr"] + 0x03b1fe20
 
 print("BASE ADDRESS: ", hex(base_address))
 
-# obj_offsets = [0x80, 0x50, 0xb8, 0x20, 0x30, 0x20]
 obj_offsets = [0x20, 0xb8, 0x40, 0x30, 0x20]
 
 obj_addr = read_offsets(process, base_address, obj_offsets)
@@ -45,8 +43,8 @@ print("WINS :", hex(wins_addr), " value:", wins)
 print()
 print()
 
-minion_dict = {0: "ant", 3: "beaver", 5: "bison", 7: "blowfish", 8: "buffalo", 10: "camel", 12: "caterpillar", 14: "chicken", 15: "cow", 16: "crab", 17: "cricket", 20: "deer", 21: "dodo", 22: "dog", 23: "dolphin", 26: "duck", 27: "eagle", 28: "elephant",
-               29: "flamingo", 32: "fish", 33: "giraffe", 37: "hedgehog", 39: "horse", 40: "kangaroo", 44: "llama", 45: "mammoth", 47: "mosquito", 50: "octopus", 51: "otter", 52: "ox", 54: "peacock", 55: "rhino", 57: "rat", 59: "pig", 60: "rabbit", 63: "rooster", 65: "scorpion", 66: "seal", 67: "shrimp", 68: "sheep", 70: "skunk", 72: "snail", 74: "spider", 75: "squirrel", 76: "swan", 77: "tiger", 80: "turtle", 82: "worm", 87: "bat", 88: "beetle", 89: "bluebird", 91: "hatching chick", 92: "ladybug", 93: "lobster", 94: "microbe", 95: "owl", 96: "poodle", 97: "puppy", 99: "tabby cat", 100: "tropical fish", 103: "boar", 104: "dromedary"}
+minion_dict = {0: "ant", 3: "beaver", 4: "bee", 5: "bison", 7: "blowfish", 8: "buffalo", 10: "camel", 12: "caterpillar", 13: "chick", 14: "chicken", 15: "cow", 16: "crab", 17: "cricket", 20: "deer", 21: "dodo", 22: "dog", 23: "dolphin", 26: "duck", 27: "eagle", 28: "elephant",
+               29: "flamingo", 32: "fish", 33: "giraffe", 34: "goat", 37: "hedgehog", 39: "horse", 40: "kangaroo", 44: "llama", 45: "mammoth", 47: "mosquito", 50: "octopus", 51: "otter", 52: "ox", 54: "peacock", 55: "rhino", 57: "rat", 59: "pig", 60: "rabbit", 62: "ram", 63: "rooster", 65: "scorpion", 66: "seal", 67: "shrimp", 68: "sheep", 70: "skunk", 72: "snail", 74: "spider", 75: "squirrel", 76: "swan", 77: "tiger", 78: "tyrannosaurus", 80: "turtle", 82: "worm", 86: "zombie cricket", 87: "bat", 88: "beetle", 89: "bluebird", 91: "hatching chick", 92: "ladybug", 93: "lobster", 94: "microbe", 95: "owl", 96: "poodle", 97: "puppy", 99: "tabby cat", 100: "tropical fish", 103: "boar", 104: "dromedary"}
 print(len(minion_dict), "minions identified")
 minion_shop_list_addr = read_offsets(process, obj_addr, [0x78, 0x10])
 print("SHOP MINIONS :", hex(minion_shop_list_addr))
@@ -85,11 +83,11 @@ print()
 
 # food shop listed backwards
 food_dict = {0: "apple", 9: "meat bone", 16: "canned food", 22: "chili", 23: "chocolate", 38: "garlic", 40: "honey",
-             50: "cupcake", 58: "pear", 63: "pizza", 73: "salad bowl", 82: "sushi", 92: "sleeping pill", 96: "melon"}
+             50: "cupcake", 51: "mushroom", 58: "pear", 63: "pizza", 73: "salad bowl", 79: "steak", 82: "sushi", 92: "sleeping pill", 96: "melon"}
 print(len(food_dict), " foods identified")
 food_shop_list_addr = read_offsets(process, obj_addr, [0x88, 0x10])
 print("SHOP FOOD :", hex(food_shop_list_addr))
-food_arr_offsets = [0x20, 0x28] #, 0x30, 0x38, 0x40, 0x48, 0x50, 0x58, 0x60, 0x68
+food_arr_offsets = [0x20, 0x28, 0x30, 0x38, 0x40, 0x48, 0x50] #, 0x58, 0x60, 0x68
 for i in range(len(food_arr_offsets)):
     try:
         food = read_offsets(process, food_shop_list_addr,
@@ -112,8 +110,8 @@ for i in range(len(food_arr_offsets)):
 print()
 print()
 
-perk_dict = {0: "none", 6: "status-bone-attack",
-             8: "status-honey-bee", 9: "status-garlic-armor", 10: "status-weak"}
+perk_dict = {0: "none", 1: "status-extra-life", 5: "status-splash-attack", 6: "status-bone-attack",
+             8: "status-honey-bee", 9: "status-garlic-armor", 10: "status-weak", 12: "status-steak-attack", 13: "status-melon-armor"}
 print(len(perk_dict), "perks identified")
 minion_team_list_addr = read_offsets(process, obj_addr, [0x60, 0x18, 0x10])
 print("My Minions: ", hex(minion_team_list_addr))
@@ -129,7 +127,6 @@ for i in range(len(minion_arr_offsets)):
         minion_atk_tmp_addr = read_offsets(process, minion, [0x58, 0x14])
         minion_def_tmp_addr = read_offsets(process, minion, [0x50, 0x14])
         minion_exp_addr = read_offsets(process, minion, [0x44])
-        # minion_perk_addr = read_int64(process, minion) + 0x60
         minion_perk_addr = read_offsets(process, minion, [0x64])
 
         minion_id = read_int(process, minion_id_addr)
@@ -153,15 +150,3 @@ for i in range(len(minion_arr_offsets)):
         print()
     except:
         print("empty slot")
-
-
-# print(minion_id)
-# for i in range(16*16):
-#     try:
-#         minion_perk_addr = read_offsets(process, minion, [i])
-#         # minion_perk_addr = read_int64(process, minion) + 0x60
-#         # print(read_int64(process, minion) + 0x60, read_offsets(process, minion, [0x60]))
-#         minion_perk_id = read_int(process, minion_perk_addr)
-#         print(hex(i), minion_perk_id)
-#     except:
-#         print("not", hex(i))
