@@ -7,3 +7,8 @@ node_modules
 out/
 ckpt
 cheatengine
+staging/
+AI/gen_teams
+AI/logs
+AI/metadata
+AI/past_teams
