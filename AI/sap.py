@@ -2,7 +2,7 @@
 General settings and implementation of the SAP Game
 """
 
-import random
+from random import randrange, randint
 import traceback
 
 import numpy as np
@@ -13,6 +13,7 @@ from sapai import Food
 from sapai import Team
 from sapai import Pet
 from sapai.battle import Battle
+from sklearn import random_projection
 
 
 class SAP(object):
@@ -26,16 +27,18 @@ class SAP(object):
         self.actions_taken_this_turn = 0
         self.past_teams = data.past_teams
         self.logs = data.logs
+        self.gen_teams = data.preset_teams
 
     def step(self, action):
         """
         Update the system state using the best of action (0-68)
         """
-        action = np.argmax(action)
+        if np.min(action) == 0 and np.max(action) == 0:
+            action = len(action) - 1
+        else:
+            action = np.argmax(action)
 
         self.actions_taken_this_turn += 1
-
-        self.score = 0
 
         if self.actions_taken_this_turn > 20:
             self.score -= 10
@@ -46,17 +49,11 @@ class SAP(object):
                 tm_idx = int(action/7)
                 shp_idx = action % 7
                 tm_slot = self.player.team[tm_idx]
-                if shp_idx > len(self.player.shop):
-                    print(shp_idx)
                 shp_slot = self.player.shop[shp_idx]
 
-                self.score += 1
-
-                # buy pet (always puts in last slot), buy combine
                 if shp_slot.slot_type == "pet":
                     if tm_slot.empty:
                         self.player.buy_pet(shp_slot)
-                        self.player.team.move(len(self.player.team)-1, tm_idx)
                     else:
                         self.player.buy_combine(shp_slot, tm_slot)
                 else:
@@ -68,8 +65,6 @@ class SAP(object):
                 tm1_idx = int(action/5)
                 tm2_idx = action % 5
 
-                self.score -= 1
-
                 if not self.player.team[tm1_idx].empty and self.player.team[tm1_idx].pet.name == self.player.team[tm2_idx].pet.name:
                     self.player.combine(tm2_idx, tm1_idx)
                 else:
@@ -79,25 +74,18 @@ class SAP(object):
                 action -= 55
                 tm_slot = self.player.team[action]
 
-                self.score -= 1
-
                 self.player.sell(tm_slot)
             elif action < 67:
                 # freezeshop
                 action -= 60
                 shp_slot = self.player.shop[action]
 
-                self.score -= 1
-
                 self.player.freeze(shp_slot)
             elif action < 68:
                 # rollshop
                 self.player.roll()
-
-                self.score += 1
             else:
                 # endturn
-                self.actions_taken_this_turn = 0
                 self.player.end_turn()
 
                 while len(self.past_teams) <= self.turns:
@@ -106,7 +94,8 @@ class SAP(object):
                 if len(self.past_teams[self.turns]) > 500:
                     self.past_teams[self.turns] = self.past_teams[self.turns][150:]
 
-                battle = Battle(self.player.team, self.generate_enemy())
+                enemy = self.generate_enemy()
+                battle = Battle(self.player.team, Team(enemy))
                 winner = battle.battle()
 
                 if winner == 0:
@@ -125,23 +114,175 @@ class SAP(object):
                     self.draws += 1
                     self.score += 20
 
-                self.past_teams[self.turns].append(self.player.team)
+                self.past_teams[self.turns].append(str(list(self.player.team)))
+                self.gen_teams.append(str(self.turns) + " " + str(enemy))
+                
+                self.actions_taken_this_turn = 0
                 self.turns += 1
 
         except Exception:
             self.logs.append(traceback.format_exc())
-            print(traceback.format_exc())
+            
+            self.score -= 5
 
-            self.score -= 15
+    def clamp(self, val):
+        low = 1
+        high = min(6, int(self.turns/2) + 1)
+        if val < low:
+            return low
+        if val > high:
+            return high
+
+        return val
+
+    def random_pet(self, addl, addh, comp):
+        avail_statuses = ["status-honey-bee", "status-bone-attack", "status-garlic-armor",
+                          "status-melon-armor", "status-splash-attack", "status-extra-life", "status-steak-attack"]
+        tier = min(6, int(self.turns/2) + 1)
+        if self.turns <= 3:
+            pets = sapai.shop.pet_tier_lookup[tier]
+            id = pets[randrange(0, len(pets))]
+            spet = sapai.Pet(id)
+            spet._attack += randint(addl, addh)
+            spet._health += randint(addl, addh)
+            spet.experience = randrange(0, self.turns) if tier == 1 else 0
+            spet.level = randint(0, 1) if self.turns > 1 else 0
+            spet.status = "status-honey-bee" if randint(0, 6) == 0 else "none"
+
+            return spet
+        else:
+            if comp == 1:  # low tier, high stats
+                picktier = self.clamp(randint(tier - 4, tier - 4 + 2))
+                pets = sapai.shop.pet_tier_lookup[picktier]
+                id = pets[randrange(0, len(pets))]
+
+                if self.turns <= 6:
+                    addl = int(1.5*(tier - picktier))
+                    addh = addl + 5
+                elif self.turns <= 9:
+                    addl = int(2*(tier - picktier + 2)) + 7
+                    addh = addl + 10
+                else: 
+                    addl = int(3*self.turns)
+                    addh = addh + 15
+                spet = sapai.Pet(id)
+                spet._attack = min(50, spet._attack + randint(addl, addh))
+                spet._health = min(50, spet._health + randint(addl, addh))
+                lvl = randrange(0, 5)
+                if lvl == 5:
+                    exp = 0
+                    lvl = 3
+                elif lvl >= 2:
+                    exp = lvl - 2
+                    lvl = 2
+                else:
+                    exp = lvl
+                    lvl = 1
+                spet.experience = exp
+                spet.level = lvl
+                mx = tier if tier != 6 else len(avail_statuses) - 1
+                spet.status = avail_statuses[
+                    randint(0, mx)] if randint(min(10, self.turns), 10) >= 8 else "none"
+            elif comp == 2:  # high tier, low stats
+                picktier = self.clamp(randint(tier - 1, tier + 1))
+                pets = sapai.shop.pet_tier_lookup[picktier]
+                id = pets[randrange(0, len(pets))]
+
+                if self.turns <= 6:
+                    addl = int(1.1*(tier - picktier))
+                    addh = addl + 3
+                elif self.turns <= 10:
+                    addl = int(1.7*(tier - picktier)) + 3
+                    addh = addl + 4
+                else: 
+                    addl = int(2*(self.turns))
+                    addh = addh + 10
+                spet = sapai.Pet(id)
+                spet._attack = min(50, spet._attack + randint(addl, addh))
+                spet._health = min(50, spet._health + randint(addl, addh))
+                lvl = randrange(0, 5)
+                if lvl == 5:
+                    exp = 0
+                    lvl = 3
+                elif lvl >= 2:
+                    exp = lvl - 2
+                    lvl = 2
+                else:
+                    exp = lvl
+                    lvl = 1
+                spet.experience = exp
+                spet.level = lvl
+                mx = tier if tier != 6 else len(avail_statuses) - 1
+                spet.status = avail_statuses[
+                    randint(0, mx)] if randint(min(10, self.turns), 10) >= 8 else "none"
+            else:  # mid
+                picktier = self.clamp(randint(tier - 2, tier - 2 + 1))
+                pets = sapai.shop.pet_tier_lookup[picktier]
+                id = pets[randrange(0, len(pets))]
+
+                if self.turns <= 6:
+                    addl = int(1.3*self.turns)
+                    addh = addl + 5
+                elif self.turns <= 9:
+                    addl = int(1.8*self.turns)
+                    addh = addl + 6
+                else: 
+                    addl = int(2.4*self.turns)
+                    addh = addh + 13
+                spet = sapai.Pet(id)
+                spet._attack = min(50, spet._attack + randint(addl, addh))
+                spet._health = min(50, spet._health + randint(addl, addh))
+                lvl = randrange(0, 5)
+                if lvl == 5:
+                    exp = 0
+                    lvl = 3
+                elif lvl >= 2:
+                    exp = lvl - 2
+                    lvl = 2
+                else:
+                    exp = lvl
+                    lvl = 1
+                spet.experience = exp
+                spet.level = lvl
+                mx = tier if tier != 6 else len(avail_statuses) - 1
+                spet.status = avail_statuses[
+                    randint(0, mx)] if randint(min(10, self.turns), 10) >= 8 else "none"
+
+            return spet
 
     def generate_enemy(self):
         team = []
-        if self.turns <= 2:
-            team.append()
+        if self.turns == 1:
+            npets = randint(1, 3)
+            if npets == 3:
+                add = (0, 1)
+            elif npets == 2:
+                add = (1, 2)
+            else:
+                add = (2, 3)
+        elif self.turns == 2:
+            npets = randint(2, 5)
+            if npets == 5:
+                add = (0, 2)
+            elif npets == 4:
+                add = (1, 3)
+            else:
+                add = (2, 3)
+        elif self.turns == 3:
+            npets = randint(4, 5)
+            if npets == 5:
+                add = (0, 2)
+            else:
+                add = (2, 4)
+        else:
+            npets = 5
+            add = (0, 0)
 
+        comp = randint(1, 3)
+        for i in range(npets):
+            team.append(self.random_pet(add[0], add[1], comp))
 
-
-        return Team(team)
+        return team
 
     def get_scaled_state(self):
         """

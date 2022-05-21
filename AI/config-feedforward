@@ -10,13 +10,13 @@ reset_on_extinction   = 1
 
 [DefaultGenome]
 num_inputs              = 57
-num_hidden              = 300
+num_hidden              = 80
 num_outputs             = 69
-initial_connection      = fs_neat_hidden
+initial_connection      = last_output
 feed_forward            = True
 compatibility_disjoint_coefficient    = 1.0
 compatibility_weight_coefficient      = 0.6
-conn_add_prob           = 0.3
+conn_add_prob           = 0.5
 conn_delete_prob        = 0.2
 node_add_prob           = 0
 node_delete_prob        = 0.2
@@ -56,7 +56,7 @@ compatibility_threshold = 3.0
 
 [DefaultStagnation]
 species_fitness_func = max
-max_stagnation  = 15
+max_stagnation  = 30
 
 [DefaultReproduction]
 elitism            = 2

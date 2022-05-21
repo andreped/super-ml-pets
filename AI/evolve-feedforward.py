@@ -29,6 +29,8 @@ class Data():
     total_losses = 0
     total_draws = 0
 
+    extinctions = 0
+
     logs = []
 
 
@@ -47,9 +49,14 @@ class TeamReplacer(neat.reporting.BaseReporter):
 
         save_logs()
         data.logs = []
+        data.preset_teams = []
 
         print("stats: ", data.total_wins, "/",
               data.total_draws, "/", data.total_losses)
+
+    def complete_extinction(self):
+        data.extinctions += 1
+
 
 
 def eval_genome(genome, config):
@@ -94,13 +101,20 @@ def save_logs():
         a = csv.writer(f)
         a.writerows(data.past_teams)
 
-    with open('past_teams_bin', 'wb') as f:
-        pickle.dump(data.past_teams, f)
-
     with open('logs', 'w', newline='') as f:
         a = csv.writer(f)
         for l in data.logs:
             a.writerow([str(l)])
+
+    with open('gen_teams', 'w', newline='') as f:
+        a = csv.writer(f)
+        for l in data.preset_teams:
+            a.writerow([str(l)])
+
+    with open('metadata', 'w', newline='') as f:
+        a = csv.writer(f)
+        a.writerow([str(data.total_wins), str(data.total_draws), str(data.total_losses)])
+        a.writerow([str(data.extinctions)])
 
 
 def run():
@@ -109,8 +123,8 @@ def run():
         data.total_wins = 96920
         data.total_draws = 127698
         data.total_losses = 90426
-        with open('past_teams_bin', 'rb') as f:
-            data.past_teams = pickle.load(f)
+
+        data.extinctions = 0
 
         print("loaded")
 
@@ -129,7 +143,7 @@ def run():
     population.add_reporter(stats)
     population.add_reporter(neat.StdOutReporter(True))
     population.add_reporter(neat.Checkpointer(
-        10, filename_prefix='ckpt/ckpt-'))
+        20, filename_prefix='ckpt/ckpt-'))
     population.add_reporter(TeamReplacer())
 
     with open('gen-enemy', 'r') as f:
@@ -171,11 +185,11 @@ def run():
 
     # so basically just alt-f4 to stop the program :)
     # pe = neat.ParallelEvaluator(mp.cpu_count()-4, eval_genome)
-    pe = neat.ThreadedEvaluator(1, eval_genome)
-    # winner = population.run(eval_genomes, num_generations)
+    # pe = neat.ThreadedEvaluator(1, eval_genome)
 
     try:
-        winner = population.run(pe.evaluate, num_generations)
+        # winner = population.run(pe.evaluate, num_generations)
+        winner = population.run(eval_genomes, num_generations)
     except KeyboardInterrupt:
         print('Interrupted')
         save_logs()
