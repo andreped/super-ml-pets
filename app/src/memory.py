@@ -43,8 +43,8 @@ print("WINS :", hex(wins_addr), " value:", wins)
 print()
 print()
 
-minion_dict = {0: "ant", 3: "beaver", 4: "bee", 5: "bison", 7: "blowfish", 8: "buffalo", 10: "camel", 12: "caterpillar", 13: "chick", 14: "chicken", 15: "cow", 16: "crab", 17: "cricket", 20: "deer", 21: "dodo", 22: "dog", 23: "dolphin", 26: "duck", 27: "eagle", 28: "elephant",
-               29: "flamingo", 32: "fish", 33: "giraffe", 34: "goat", 37: "hedgehog", 39: "horse", 40: "kangaroo", 44: "llama", 45: "mammoth", 47: "mosquito", 50: "octopus", 51: "otter", 52: "ox", 54: "peacock", 55: "rhino", 57: "rat", 59: "pig", 60: "rabbit", 62: "ram", 63: "rooster", 65: "scorpion", 66: "seal", 67: "shrimp", 68: "sheep", 70: "skunk", 72: "snail", 74: "spider", 75: "squirrel", 76: "swan", 77: "tiger", 78: "tyrannosaurus", 80: "turtle", 82: "worm", 86: "zombie cricket", 87: "bat", 88: "beetle", 89: "bluebird", 91: "hatching chick", 92: "ladybug", 93: "lobster", 94: "microbe", 95: "owl", 96: "poodle", 97: "puppy", 99: "tabby cat", 100: "tropical fish", 103: "boar", 104: "dromedary"}
+minion_dict = {0: "ant", 2: "badger", 3: "beaver", 4: "bee", 5: "bison", 7: "blowfish", 8: "buffalo", 10: "camel", 11: "cat", 12: "caterpillar", 13: "chick", 14: "chicken", 15: "cow", 16: "crab", 17: "cricket", 19: "crocodile", 20: "deer", 21: "dodo", 22: "dog", 23: "dolphin", 25: "dragon", 26: "duck", 27: "eagle", 28: "elephant",
+               29: "flamingo", 30: "fly", 32: "fish", 33: "giraffe", 34: "goat", 36: "gorilla", 37: "hedgehog", 38: "hippo", 39: "horse", 40: "kangaroo", 41: "leopard", 44: "llama", 45: "mammoth", 46: "monkey", 47: "mosquito", 50: "octopus", 51: "otter", 52: "ox", 53: "parrot", 54: "peacock", 55: "rhino", 56: "penguin", 57: "rat", 59: "pig", 60: "rabbit", 62: "ram", 63: "rooster", 65: "scorpion", 66: "seal", 67: "shrimp", 68: "sheep", 69: "shark", 70: "skunk", 71: "sloth", 72: "snail", 73: "snake", 74: "spider", 75: "squirrel", 76: "swan", 77: "tiger", 78: "tyrannosaurus", 79: "turkey", 80: "turtle", 81: "whale", 82: "worm", 85: "bus", 86: "zombie cricket", 87: "bat", 88: "beetle", 89: "bluebird", 91: "hatching chick", 92: "ladybug", 93: "lobster", 94: "microbe", 95: "owl", 96: "poodle", 97: "puppy", 98: "sauropod", 99: "tabby cat", 100: "tropical fish", 103: "boar", 104: "dromedary"}
 print(len(minion_dict), "minions identified")
 minion_shop_list_addr = read_offsets(process, obj_addr, [0x78, 0x10])
 print("SHOP MINIONS :", hex(minion_shop_list_addr))
@@ -82,7 +82,7 @@ print()
 
 
 # food shop listed backwards
-food_dict = {0: "apple", 9: "meat bone", 16: "canned food", 22: "chili", 23: "chocolate", 38: "garlic", 40: "honey",
+food_dict = {0: "apple", 9: "meat bone", 16: "canned food", 22: "chili", 23: "chocolate", 38: "garlic", 40: "honey", 49: "milk", 
              50: "cupcake", 51: "mushroom", 58: "pear", 63: "pizza", 73: "salad bowl", 79: "steak", 82: "sushi", 92: "sleeping pill", 96: "melon"}
 print(len(food_dict), " foods identified")
 food_shop_list_addr = read_offsets(process, obj_addr, [0x88, 0x10])
@@ -110,7 +110,7 @@ for i in range(len(food_arr_offsets)):
 print()
 print()
 
-perk_dict = {0: "none", 1: "status-extra-life", 5: "status-splash-attack", 6: "status-bone-attack",
+perk_dict = {0: "none", 1: "status-extra-life", 2: "status-poision-attack", 5: "status-splash-attack", 6: "status-bone-attack",
              8: "status-honey-bee", 9: "status-garlic-armor", 10: "status-weak", 12: "status-steak-attack", 13: "status-melon-armor"}
 print(len(perk_dict), "perks identified")
 minion_team_list_addr = read_offsets(process, obj_addr, [0x60, 0x18, 0x10])
