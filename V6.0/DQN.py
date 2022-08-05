@@ -24,11 +24,6 @@ class Data():
 
     logs = []
 
-# An episode a full game
-start_episode = 0
-train_episodes = 100000
-test_episodes = 100
-
 def agent(state_shape, action_shape):
     """ The agent maps X-states to Y-actions
     e.g. The neural network output is [.1, .7, .1, .3]
@@ -45,7 +40,7 @@ def agent(state_shape, action_shape):
     return model
 
 def get_qs(model, state, step):
-    return model.predict(state.reshape([1, state.shape[0]]))[0]
+    return model.predict(state.reshape([1, state.shape[0]]), verbose=0)[0]
 
 def train(env, replay_memory, model, target_model, done):
     learning_rate = 0.7 # Learning rate
@@ -58,9 +53,9 @@ def train(env, replay_memory, model, target_model, done):
     batch_size = 64 * 2
     mini_batch = random.sample(replay_memory, batch_size)
     current_states = np.array([transition[0] for transition in mini_batch])
-    current_qs_list = model.predict(current_states)
+    current_qs_list = model.predict(current_states, verbose=0)
     new_current_states = np.array([transition[3] for transition in mini_batch])
-    future_qs_list = target_model.predict(new_current_states)
+    future_qs_list = target_model.predict(new_current_states, verbose=0)
 
     X = []
     Y = []
@@ -93,7 +88,7 @@ def save_logs(data):
 
     data.logs = []
 
-def main():
+def main(start_episode, verbose_step):
     epsilon = 1 # Epsilon-greedy algorithm in initialized at 1 meaning every step is random at the start
     max_epsilon = 1 # You can't explore more than 100% of the time
     min_epsilon = 0.01 # At a minimum, we'll always explore 1% of the time
@@ -103,15 +98,15 @@ def main():
 
     # 1. Initialize the Target and Main models
     # Main Model (updated every 4 steps)
-    if True:
+    if not finetune:
         model = agent((50, ), 69)
         start_episode = 1
     else:
-        model = keras.models.load_model('ckpt/ckpt-600000')
-        data.total_wins = 2559962
-        data.total_draws = 3490824
-        data.total_losses = 2574569
-        start_episode = 600001
+        model = keras.models.load_model('ckpt/ckpt-' + str(start_episode))
+        data.total_wins = 0
+        data.total_draws = 0
+        data.total_losses = 0
+        #start_episode = 12000
 
         with open('past_teams_bin', 'rb') as f:
             data.past_teams = pickle.load(f)
@@ -153,7 +148,7 @@ def main():
                     # model dims are (batch, env.observation_space.n)
                     encoded = observation
                     encoded_reshaped = encoded.reshape([1, encoded.shape[0]])
-                    action = model.predict(encoded_reshaped).flatten()
+                    action = model.predict(encoded_reshaped, verbose=0).flatten()
 
                 env.step(action)
 
@@ -173,11 +168,12 @@ def main():
                 total_training_rewards += reward
 
                 if done:
-                    print('After n steps = {} : Total training rewards: {} '.format(episode, total_training_rewards))
+                    if episode % verbose_step == 0:
+                        print('After n steps = {} : Total training rewards: {} '.format(episode, total_training_rewards))
                     total_training_rewards += 1
 
                     if steps_to_update_target_model >= 100:
-                        print('Copying main network weights to the target network weights')
+                        # print('Copying main network weights to the target network weights')
                         target_model.set_weights(model.get_weights())
                         steps_to_update_target_model = 0
                     break
@@ -186,7 +182,8 @@ def main():
             data.total_losses += env.losses
             data.total_draws += env.draws
             
-            print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
+            if episode % verbose_step == 0:
+                print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
 
             epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay * episode)
 
@@ -209,4 +206,11 @@ def main():
     model.save('ckpt/ckpt-'+str(episode))
 
 if __name__ == '__main__':
-    main()
+    # An episode a full game
+    start_episode = 0
+    train_episodes = 1000000
+    test_episodes = 100
+    finetune = False  # whether to finetune or not
+    verbose_step = 10
+
+    main(start_episode=start_episode, verbose_step=verbose_step)
