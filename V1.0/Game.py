@@ -124,7 +124,7 @@ class GameState:
         ss_crop = screen[box[0][1]:box[0][1]+box[1][1],
                          box[0][0]:box[0][0]+box[1][0]]
         value = pytesseract.image_to_string(
-            ss_crop, config='-l sap --psm 8 --oem 3')
+            ss_crop, config='-l eng --psm 8 --oem 3')
         try:
             result = int(value)
         except:
