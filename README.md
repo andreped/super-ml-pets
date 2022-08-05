@@ -1,7 +1,11 @@
-# Super-Auto-Pets
-AI for Super Auto Pets
+<p align="center">
+  <img src="https://www.gamelivestory.com/images/article/super-auto-pets-how-to-level-up-quickly-main.webp" width="50%" alt='super-auto-pets'>
+</p>
 
-Currently: Uses Deep Q-Learning to train AI.
+# Super-Auto-Pets
+Developing AIs for Super Auto Pets
+
+**Current status**: Using Deep Q-Learning to train AI. Simulated training works well, real world training quite bad...
 
 V1.0: Trains AI directly with the game (plays against real people)
 
