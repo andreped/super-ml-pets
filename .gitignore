@@ -13,3 +13,4 @@ AI/logs
 AI/metadata
 AI/past_teams
 *__pycache__/
+*ckpt/
