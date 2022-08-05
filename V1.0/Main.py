@@ -3,22 +3,23 @@ from Game import GameState, PX_RESHAPE
 from AI import DQNAgent
 
 EPISODE_NUM = 1000
-START_NUM = 450
+START_NUM = 10
 
 if __name__ == "__main__":
     game = GameState()
     agent = DQNAgent(PX_RESHAPE[0]*PX_RESHAPE[1], len(game.actions))
-    agent.load(START_NUM)
+    if START_NUM > 0:
+        agent.load(START_NUM)
     wins = 0
 
     print("starting")
 
-    sleep(2)
+    sleep(1)
 
     for e in range(START_NUM+1, EPISODE_NUM):
         game.start_game()
 
-        sleep(1)
+        sleep(0.5)
 
         end = False
         game.update()
@@ -87,6 +88,6 @@ if __name__ == "__main__":
         if e % 10 == 0:
             agent.save(e)
 
-        sleep(4)
+        sleep(2)
 
     agent.save()

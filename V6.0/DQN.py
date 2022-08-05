@@ -103,8 +103,9 @@ def main():
 
     # 1. Initialize the Target and Main models
     # Main Model (updated every 4 steps)
-    if False:
+    if True:
         model = agent((50, ), 69)
+        start_episode = 1
     else:
         model = keras.models.load_model('ckpt/ckpt-600000')
         data.total_wins = 2559962

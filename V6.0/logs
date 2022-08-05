@@ -1,0 +1,65 @@
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 58, in step
+    self.player.buy_combine(shp_slot, tm_slot)
+  File ""c:\users\47955\workspace\sapai\sapai\player.py"", line 16, in store_action
+    targets = func(*args,**kwargs)
+  File ""c:\users\47955\workspace\sapai\sapai\player.py"", line 442, in buy_combine
+    raise Exception(""Attempted combine for pets {} and {}""
+Exception: Attempted combine for pets pet-mosquito and pet-pig
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 73, in step
+    self.player.team.move(tm1_idx, tm2_idx)
+  File ""c:\users\47955\workspace\sapai\sapai\teams.py"", line 43, in move
+    raise Exception(""Attempted move to a populated position"")
+Exception: Attempted move to a populated position
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 73, in step
+    self.player.team.move(tm1_idx, tm2_idx)
+  File ""c:\users\47955\workspace\sapai\sapai\teams.py"", line 43, in move
+    raise Exception(""Attempted move to a populated position"")
+Exception: Attempted move to a populated position
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 56, in step
+    self.player.team.move(len(self.player.team)-1, tm_idx)
+  File ""c:\users\47955\workspace\sapai\sapai\teams.py"", line 43, in move
+    raise Exception(""Attempted move to a populated position"")
+Exception: Attempted move to a populated position
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\Super-Auto-Pets\v6.0\sap.py"", line 85, in step
+    shp_slot = self.player.shop[action]
+  File ""c:\users\47955\workspace\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
