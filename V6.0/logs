@@ -1,6 +1,6 @@
 "Traceback (most recent call last):
-  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
-    shp_slot = self.player.shop[shp_idx]
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 85, in step
+    shp_slot = self.player.shop[action]
   File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
     return self.shop_slots[idx]
 IndexError: list index out of range
@@ -17,11 +17,53 @@ IndexError: list index out of range
 Exception: Object of type <class 'numpy.int64'> not recognized
 "
 "Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
   File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 73, in step
     self.player.team.move(tm1_idx, tm2_idx)
   File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\teams.py"", line 43, in move
     raise Exception(""Attempted move to a populated position"")
 Exception: Attempted move to a populated position
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
+"
+"Traceback (most recent call last):
+  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
+    shp_slot = self.player.shop[shp_idx]
+  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
+    return self.shop_slots[idx]
+IndexError: list index out of range
 "
 "Traceback (most recent call last):
   File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 85, in step
@@ -31,13 +73,6 @@ Exception: Attempted move to a populated position
 IndexError: list index out of range
 "
 "Traceback (most recent call last):
-  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 73, in step
-    self.player.team.move(tm1_idx, tm2_idx)
-  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\teams.py"", line 43, in move
-    raise Exception(""Attempted move to a populated position"")
-Exception: Attempted move to a populated position
-"
-"Traceback (most recent call last):
   File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 71, in step
     self.player.combine(tm2_idx, tm1_idx)
   File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\player.py"", line 16, in store_action
@@ -54,34 +89,4 @@ Exception: Object of type <class 'numpy.int64'> not recognized
   File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
     return self.shop_slots[idx]
 IndexError: list index out of range
-"
-"Traceback (most recent call last):
-  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
-    shp_slot = self.player.shop[shp_idx]
-  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
-    return self.shop_slots[idx]
-IndexError: list index out of range
-"
-"Traceback (most recent call last):
-  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 48, in step
-    shp_slot = self.player.shop[shp_idx]
-  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\shop.py"", line 378, in __getitem__
-    return self.shop_slots[idx]
-IndexError: list index out of range
-"
-"Traceback (most recent call last):
-  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 60, in step
-    self.player.buy_food(shp_slot, tm_slot)
-  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\player.py"", line 16, in store_action
-    targets = func(*args,**kwargs)
-  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\player.py"", line 200, in buy_food
-    raise Exception(""Attempted to buy Pet of cost {} with only {} gold""
-Exception: Attempted to buy Pet of cost 3 with only 1 gold
-"
-"Traceback (most recent call last):
-  File ""C:\Users\47955\workspace\super-ml-pets\V6.0\sap.py"", line 73, in step
-    self.player.team.move(tm1_idx, tm2_idx)
-  File ""c:\users\47955\workspace\super-ml-pets\venv\src\sapai\sapai\teams.py"", line 43, in move
-    raise Exception(""Attempted move to a populated position"")
-Exception: Attempted move to a populated position
 "

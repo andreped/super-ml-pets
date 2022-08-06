@@ -13,7 +13,6 @@ import numpy as np
 from tensorflow import keras
 from tqdm import tqdm
 
-import sap
 from utils import Data, get_qs, save_logs
 from models import agent
 
