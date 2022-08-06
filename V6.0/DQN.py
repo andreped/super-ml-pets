@@ -1,5 +1,5 @@
 """
-Main application to train SAIP
+Main application to train RL model in simulated environment
 """
 
 import sys, os
@@ -14,34 +14,8 @@ from tensorflow import keras
 from tqdm import tqdm
 
 import sap
-
-class Data():
-    # Save the teams from every level, refresh every generation to fight against
-    past_teams = [[]]
-
-    total_wins = 0
-    total_losses = 0
-    total_draws = 0
-
-    logs = []
-
-def agent(state_shape, action_shape):
-    """ The agent maps X-states to Y-actions
-    e.g. The neural network output is [.1, .7, .1, .3]
-    The highest value 0.7 is the Q-Value.
-    The index of the highest action (0.7) is action #1.
-    """
-    learning_rate = 0.001
-    init = tf.keras.initializers.HeUniform()
-    model = keras.Sequential()
-    model.add(keras.layers.Dense(24, input_shape=state_shape, activation='relu', kernel_initializer=init))
-    model.add(keras.layers.Dense(12, activation='relu', kernel_initializer=init))
-    model.add(keras.layers.Dense(action_shape, activation='linear', kernel_initializer=init))
-    model.compile(loss=tf.keras.losses.Huber(), optimizer=tf.keras.optimizers.Adam(lr=learning_rate))  # , metrics=['accuracy'])
-    return model
-
-def get_qs(model, state, step):
-    return model.predict(state.reshape([1, state.shape[0]]), verbose=0)[0]
+from utils import Data, get_qs, save_logs
+from models import agent
 
 def train(env, replay_memory, model, target_model, done):
     learning_rate = 0.7 # Learning rate
@@ -73,22 +47,6 @@ def train(env, replay_memory, model, target_model, done):
         Y.append(current_qs)
 
     model.fit(np.array(X), np.array(Y), batch_size=batch_size, verbose=0, shuffle=True)
-
-
-def save_logs(data):
-    with open('past_teams', 'w', newline='') as f:
-        a = csv.writer(f)
-        a.writerows(data.past_teams)
-
-    with open('past_teams_bin', 'wb') as f:
-        pickle.dump(data.past_teams, f)
-
-    with open('logs', 'w', newline='') as f:
-        a = csv.writer(f)
-        for l in data.logs:
-            a.writerow([str(l)])
-
-    data.logs = []
 
 def main(start_episode, verbose_step):
     epsilon = 1 # Epsilon-greedy algorithm in initialized at 1 meaning every step is random at the start
@@ -122,12 +80,10 @@ def main(start_episode, verbose_step):
 
     replay_memory = deque(maxlen=50_000)
 
-    target_update_counter = 0
-
     # X = states, y = actions
     X = []
     y = []
-
+    target_update_counter = 0
     steps_to_update_target_model = 0
 
     try:
