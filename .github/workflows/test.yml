@@ -1,0 +1,29 @@
+name: test
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_requests:
+    branches:
+      - "*"
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: |
+          pytest -v tests/
+
