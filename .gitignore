@@ -5,7 +5,6 @@ sapai-main
 CrewLink
 node_modules
 out/
-ckpt
 cheatengine
 staging/
 AI/gen_teams
@@ -14,3 +13,4 @@ AI/metadata
 AI/past_teams
 *__pycache__/
 *ckpt/
+*venv/
