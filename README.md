@@ -3,10 +3,11 @@
 </p>
 
 # Super-Auto-Pets
-Developing AIs for Super Auto Pets
 
 [![License](https://img.shields.io/badge/License-GPLv3-lightgray.svg)](https://opensource.org/licenses/GPLv3)
 ![CI](https://github.com/andreped/super-ml-pets/workflows/test/badge.svg)
+
+Developing AIs for Super Auto Pets
 
 **Current status**: Using Deep Q-Learning to train AI. Simulated training works well, real world training quite bad...
 
