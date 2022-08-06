@@ -32,6 +32,13 @@ pip install -r requirements.txt
 
 4. Need to install Tesseract separately (depends on operating system). See [here](https://github.com/UB-Mannheim/tesseract/wiki).
 
+### Usage
+For training in simulated environment, run:
+```bash
+cd V6.0/
+python DQN.py
+```
+
 ### Troubleshoot
 If you are working on Windows, you need to use slightly different commands for setting up the environment. If you do not have virtualenv in the path, you need to do:
 ```
