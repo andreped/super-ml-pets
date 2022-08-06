@@ -12,12 +12,8 @@ import tensorflow as tf
 import numpy as np
 from tensorflow import keras
 from tqdm import tqdm
-
-from models import agent
-
 import random
 import traceback
-
 import numpy as np
 
 import sapai
