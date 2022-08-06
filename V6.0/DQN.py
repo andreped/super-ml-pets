@@ -11,6 +11,7 @@ import pickle, csv
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
+from tqdm import tqdm
 
 import sap
 
@@ -70,6 +71,7 @@ def train(env, replay_memory, model, target_model, done):
 
         X.append(observation)
         Y.append(current_qs)
+
     model.fit(np.array(X), np.array(Y), batch_size=batch_size, verbose=0, shuffle=True)
 
 
@@ -129,7 +131,7 @@ def main(start_episode, verbose_step):
     steps_to_update_target_model = 0
 
     try:
-        for episode in range(start_episode, start_episode+train_episodes):
+        for episode in tqdm(range(start_episode, start_episode + train_episodes), "Iter:"):
             total_training_rewards = 0
             env = sap.SAP(data)
             observation = env.get_scaled_state()
