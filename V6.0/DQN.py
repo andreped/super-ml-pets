@@ -37,7 +37,7 @@ def agent(state_shape, action_shape):
     model.add(keras.layers.Dense(24, input_shape=state_shape, activation='relu', kernel_initializer=init))
     model.add(keras.layers.Dense(12, activation='relu', kernel_initializer=init))
     model.add(keras.layers.Dense(action_shape, activation='linear', kernel_initializer=init))
-    model.compile(loss=tf.keras.losses.Huber(), optimizer=tf.keras.optimizers.Adam(lr=learning_rate), metrics=['accuracy'])
+    model.compile(loss=tf.keras.losses.Huber(), optimizer=tf.keras.optimizers.Adam(lr=learning_rate))  # , metrics=['accuracy'])
     return model
 
 def get_qs(model, state, step):
@@ -143,7 +143,7 @@ def main(start_episode, verbose_step):
                 # 2. Explore using the Epsilon Greedy Exploration Strategy
                 if random_number <= epsilon:
                     # Explore
-                    action = [0]*69
+                    action = [0]*69  # @TODO: Is this OK to do in Python 3.8?
                     action[np.random.randint(0, 69)] = 1
                 else:
                     # Exploit best known action
@@ -209,10 +209,10 @@ def main(start_episode, verbose_step):
 
 if __name__ == '__main__':
     # An episode a full game
-    start_episode = 0
+    start_episode = 41800
     train_episodes = 1000000
     test_episodes = 100
-    finetune = False  # whether to finetune or not
+    finetune = True  # whether to finetune or not
     verbose_step = 10
 
     main(start_episode=start_episode, verbose_step=verbose_step)
