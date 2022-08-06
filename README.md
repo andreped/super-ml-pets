@@ -32,6 +32,17 @@ pip install -r requirements.txt
 
 4. Need to install Tesseract separately (depends on operating system). See [here](https://github.com/UB-Mannheim/tesseract/wiki).
 
+### Troubleshoot
+If you are working on Windows, you need to use slightly different commands for setting up the environment. If you do not have virtualenv in the path, you need to do:
+```
+python -m virtualenv -ppython3 venv --clear
+```
+
+To activate virtual env on windows do:
+```
+./venv/Scripts/activate
+```
+
 ### To Do:
 
 1. Use V6.0 to train AI against itself using Q-Learning
