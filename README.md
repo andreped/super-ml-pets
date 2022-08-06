@@ -7,13 +7,9 @@
 [![License](https://img.shields.io/badge/License-GPLv3-lightgray.svg)](https://opensource.org/licenses/GPLv3)
 ![CI](https://github.com/andreped/super-ml-pets/workflows/test/badge.svg)
 
-Developing AIs for Super Auto Pets
+Using Reinforcement Learning (RL) to train AIs for Super Auto Pets. Can train AIs in simulated environment or directly in the real game (the latter is quite bad atm, but works).
 
-**Current status**: Using Deep Q-Learning to train AI. Simulated training works well, real world training quite bad...
-
-V1.0: Trains AI directly with the game (plays against real people)
-
-V6.0: Smarter training scheme, training against itself.
+Tested and supports Python 3.6-3.10 and works cross-platform (Ubuntu, Windows, macOS).
 
 ### Setup
 
@@ -46,14 +42,6 @@ To activate virtual env on windows do:
 ```
 ./venv/Scripts/activate
 ```
-
-### To Do:
-
-1. Use V6.0 to train AI against itself using Q-Learning
-2. Use V1.0 to test trained AI in real game
-3. Git gud
-4. ...
-5. $$
 
 ### Acknowledgements
 
