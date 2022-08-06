@@ -5,6 +5,9 @@
 # Super-Auto-Pets
 Developing AIs for Super Auto Pets
 
+[![License](https://img.shields.io/badge/License-GPLv3-lightgray.svg)](https://opensource.org/licenses/GPLv3)
+![CI](https://github.com/andreped/super-ml-pets/workflows/test/badge.svg)
+
 **Current status**: Using Deep Q-Learning to train AI. Simulated training works well, real world training quite bad...
 
 V1.0: Trains AI directly with the game (plays against real people)
