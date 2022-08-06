@@ -11,10 +11,31 @@ V1.0: Trains AI directly with the game (plays against real people)
 
 V6.0: Smarter training scheme, training against itself.
 
+### Setup
+
+1. Clone the repo:
+```
+git clone https://github.com/andreped/super-ml-pets.git
+```
+
+2. Create virtual environment:
+```
+cd super-ml-pets/
+virtualenv -ppython3 venv --clear
+source venv/bin/activate
+```
+
+3. Install requirements:
+```
+pip install -r requirements.txt
+```
+
+4. Need to install Tesseract separately (depends on operating system). See [here](https://github.com/UB-Mannheim/tesseract/wiki).
+
 ### To Do:
 
-1. (V6.0): Train an accurate model in the simulation-based enviroment (training against itself)
-2. (V1.0): Need to be able to get information from screen, to use that with what is used in V6.0
+1. Use V6.0 to train AI against itself using Q-Learning
+2. Use V1.0 to test trained AI in real game
 3. Git gud
 4. ...
 5. $$
