@@ -89,7 +89,7 @@ class GameState:
             if not self.in_battle:
                 self.action_cancel()
             sct_img = GameState._sct.grab(PX_WINDOW)
-            (Image.fromarray(np.uint8(sct_img))).save('help.png')
+            (Image.fromarray(np.uint8(sct_img))).save('tmp_assets/help.png')
             screen = np.array(Image.frombytes(
                 "RGB", sct_img.size, sct_img.bgra, "raw", "BGRX"))
 
@@ -114,8 +114,7 @@ class GameState:
 
     def process_screen(self, screen: np.array) -> np.array:
         screen_cp = screen.copy()
-        screen_resize = cv2.resize(
-            screen_cp, PX_RESHAPE, interpolation=cv2.INTER_AREA)
+        screen_resize = cv2.resize(screen_cp, PX_RESHAPE, interpolation=cv2.INTER_AREA)
         screen_gray = cv2.cvtColor(screen_resize, cv2.COLOR_RGB2GRAY)
         return np.reshape(screen_gray, [1, PX_RESHAPE[0]*PX_RESHAPE[1]])
 
@@ -123,8 +122,7 @@ class GameState:
         # box defined as ((top left x, top left y), (width, height))
         ss_crop = screen[box[0][1]:box[0][1]+box[1][1],
                          box[0][0]:box[0][0]+box[1][0]]
-        value = pytesseract.image_to_string(
-            ss_crop, config='-l eng --psm 8 --oem 3')
+        value = pytesseract.image_to_string(ss_crop, config='-l eng --psm 8 --oem 3')
         try:
             result = int(value)
         except:
