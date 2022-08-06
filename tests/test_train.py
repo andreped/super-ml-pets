@@ -325,7 +325,7 @@ def main():
     try:
         for episode in tqdm(range(start_episode, start_episode + train_episodes), "Iter:"):
             total_training_rewards = 0
-            env = sap.SAP(data)
+            env = SAP(data)
             observation = env.get_scaled_state()
             done = False
             while not done:
