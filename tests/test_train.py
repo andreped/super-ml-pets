@@ -277,7 +277,14 @@ def train(env, replay_memory, model, target_model, done):
 
     model.fit(np.array(X), np.array(Y), batch_size=batch_size, verbose=0, shuffle=True)
 
-def main(start_episode, verbose_step):
+def main():
+    # An episode a full game
+    start_episode = 0
+    train_episodes = 20
+    test_episodes = 100
+    finetune = False  # whether to finetune or not
+    verbose_step = 2
+
     epsilon = 1 # Epsilon-greedy algorithm in initialized at 1 meaning every step is random at the start
     max_epsilon = 1 # You can't explore more than 100% of the time
     min_epsilon = 0.01 # At a minimum, we'll always explore 1% of the time
@@ -393,12 +400,5 @@ def main(start_episode, verbose_step):
     model.save('ckpt/ckpt-'+str(episode))
 
 def test_train():
-    # An episode a full game
-    start_episode = 0
-    train_episodes = 20
-    test_episodes = 100
-    finetune = False  # whether to finetune or not
-    verbose_step = 2
-
-    main(start_episode=start_episode, verbose_step=verbose_step)
+    main()
 
