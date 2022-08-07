@@ -1,6 +1,7 @@
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
+from sb3_contrib.common.logger import configure
 from sapai_gym import SuperAutoPetsEnv
 from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, biggest_numbers_horizontal_opp_generator
 from tqdm import tqdm
@@ -11,14 +12,18 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def train_with_masks(nb_games: int):
+def train_with_masks(nb_timesteps: int, nb_games: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
+
+    # setup logger
+    logger = configure("./history/sb3_log/")
 
     # train
     try:
         model = MaskablePPO("MlpPolicy", env, verbose=1)
-        model.learn(total_timesteps=100000)
+        model.set_logger(logger)
+        model.learn(total_timesteps=nb_timesteps)
         evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
         obs = env.reset()
     except AssertionError as e:
@@ -45,4 +50,4 @@ def train_with_masks(nb_games: int):
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_games=100)
+    train_with_masks(nb_timesteps=1e6, nb_games=1e2)
