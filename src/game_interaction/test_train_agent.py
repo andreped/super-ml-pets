@@ -12,7 +12,7 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def train_with_masks(nb_timesteps: int, nb_games: int):
+def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
 
@@ -26,8 +26,13 @@ def train_with_masks(nb_timesteps: int, nb_games: int):
         model.learn(total_timesteps=nb_timesteps)
         evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
         obs = env.reset()
-    except AssertionError as e:
-        print(e)
+    except AssertionError as e1:
+        print(e1)
+    except TypeError as e2:
+        print(e2)
+        print("Model stopped training...")
+    except ValueError as e3:
+        print(e3)
 
     # save best model
     model.save("./models/model_sap_gym_sb3")
@@ -53,4 +58,4 @@ def train_with_masks(nb_timesteps: int, nb_games: int):
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_timesteps=1000000, nb_games=10000)
+    train_with_masks(nb_timesteps=1000000, nb_games=10000, finetune=False)
