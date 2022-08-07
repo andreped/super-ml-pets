@@ -21,7 +21,11 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
 
     # train
     try:
-        model = MaskablePPO("MlpPolicy", env, verbose=1)
+        if finetune:
+            model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
+            model.set_env(env)
+        else:
+            model = MaskablePPO("MlpPolicy", env, verbose=1)
         model.set_logger(logger)
         model.learn(total_timesteps=nb_timesteps)
         evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
@@ -58,4 +62,4 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_timesteps=1000000, nb_games=10000, finetune=False)
+    train_with_masks(nb_timesteps=1000000, nb_games=10000, finetune=True)
