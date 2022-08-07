@@ -1,7 +1,7 @@
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
-from sb3_contrib.common.logger import configure
+from stable_baselines3.common.logger import configure
 from sapai_gym import SuperAutoPetsEnv
 from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, biggest_numbers_horizontal_opp_generator
 from tqdm import tqdm
@@ -28,6 +28,14 @@ def train_with_masks(nb_timesteps: int, nb_games: int):
         obs = env.reset()
     except AssertionError as e:
         print(e)
+
+    # save best model
+    model.save("./models/model_sap_gym_sb3")
+
+    del model
+
+    # load model
+    trained_model = MaskablePPO.load("./models/model_sap_gym_sb3")
     
     # predict
     obs = env.reset()
@@ -35,19 +43,14 @@ def train_with_masks(nb_timesteps: int, nb_games: int):
     for i in tqdm(range(nb_games), "Games:"):
         # Predict outcome with model
         action_masks = get_action_masks(env)
-        action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
+        action, _states = trained_model.predict(obs, action_masks=action_masks, deterministic=True)
 
         obs, reward, done, info = env.step(action)
         if done:
             obs = env.reset()
-        print("---")
-        print(obs)
-        print(reward)
-        print(info)
-        print()
         rewards.append(reward)
     print(sum(rewards), len(rewards), np.mean(rewards))
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_timesteps=1e6, nb_games=1e2)
+    train_with_masks(nb_timesteps=1000000, nb_games=10000)
