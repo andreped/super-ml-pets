@@ -20,23 +20,29 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
     logger = configure("./history/sb3_log/")
 
     # train
-    try:
-        if finetune:
-            model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
-            model.set_env(env)
-        else:
-            model = MaskablePPO("MlpPolicy", env, verbose=1)
-        model.set_logger(logger)
-        model.learn(total_timesteps=nb_timesteps)
-        evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
-        obs = env.reset()
-    except AssertionError as e1:
-        print(e1)
-    except TypeError as e2:
-        print(e2)
-        print("Model stopped training...")
-    except ValueError as e3:
-        print(e3)
+    print("\nTraining...")
+    training_flag = True
+    while training_flag:
+        try:
+            if finetune:
+                model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
+                model.set_env(env)
+            else:
+                model = MaskablePPO("MlpPolicy", env, verbose=1)
+            model.set_logger(logger)
+            model.learn(total_timesteps=nb_timesteps)
+            evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
+            obs = env.reset()
+
+            # if we reach 1M iterations, then training can stop, else, restart!
+            training_flag = False
+        except AssertionError as e1:
+            print(e1)
+        except TypeError as e2:
+            print(e2)
+            print("Model stopped training...")
+        except ValueError as e3:
+            print(e3)
 
     # save best model
     model.save("./models/model_sap_gym_sb3")
@@ -45,6 +51,8 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
 
     # load model
     trained_model = MaskablePPO.load("./models/model_sap_gym_sb3")
+
+    print("\nPredicting...")
     
     # predict
     obs = env.reset()
