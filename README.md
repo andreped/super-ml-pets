@@ -52,5 +52,10 @@ To activate virtual env on windows do:
 
 ## Acknowledgements
 
-This implementation is based on the work by [HJK-Z](https://github.com/HJK-Z/Super-Auto-Pets), with aim to improve the design with smarter reinforcement learning schemes.
-The game logic is built around [sapai](https://github.com/manny405/sapai).
+This implementation is based on multiple different projects. The core implementation is dervied from [HJK-Z](https://github.com/HJK-Z/Super-Auto-Pets), where the game logic is built around [sapai](https://github.com/manny405/sapai).
+
+For RL training [sapai-gym](https://github.com/alexdriedger/sapai-gym) is used, and for image recognition work by [GoldExplosion](https://github.com/GoldExplosion/SuperAutoPets-RL-Agent) was useful.
+
+## License
+
+As [HJK-Z](https://github.com/HJK-Z/Super-Auto-Pets) has a GPLv3 license, so does this repository, due to the agreements in the GPLv3 license.
