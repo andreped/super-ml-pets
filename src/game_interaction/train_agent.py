@@ -1,6 +1,7 @@
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
+from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3.common.logger import configure
 from sapai_gym import SuperAutoPetsEnv
 from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, biggest_numbers_horizontal_opp_generator
@@ -12,23 +13,29 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
+def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
+    #gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
 
     # setup logger
     logger = configure("./history/sb3_log/")
 
-    # train
+    # setup model checkpoint callback, to save model after a specific #iters
+    checkpoint_callback = CheckpointCallback(save_freq=1000, 
+        save_path='./model/', name_prefix='model_sap_gym_sb3_070822_checkpoint')
+
+    if finetune:
+        model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
+        model.set_env(env)
+    else:
+        model = MaskablePPO("MlpPolicy", env, verbose=1)
+
+# train
     print("\nTraining...")
     training_flag = True
     while training_flag:
         try:
-            if finetune:
-                model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
-                model.set_env(env)
-            else:
-                model = MaskablePPO("MlpPolicy", env, verbose=1)
             model.set_logger(logger)
             model.learn(total_timesteps=nb_timesteps)
             evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
@@ -44,13 +51,17 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
         except ValueError as e3:
             print(e3)
 
+        # load previous checkpoint
+        model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
+        model.set_env(env)
+
     # save best model
-    model.save("./models/model_sap_gym_sb3")
+    model.save("./models/model_sap_gym_sb3_070822_checkpoint")
 
     del model
 
     # load model
-    trained_model = MaskablePPO.load("./models/model_sap_gym_sb3")
+    trained_model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
 
     print("\nPredicting...")
     
@@ -70,4 +81,5 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool):
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_timesteps=1000000, nb_games=10000, finetune=True)
+    train_with_masks(nb_timesteps=10000000, nb_games=10000, 
+        finetune=True)#, gamma=0.99)
