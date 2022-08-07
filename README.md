@@ -41,6 +41,11 @@ python test_train_agent.py
 
 ## Training history
 
+Create plot of training history using:
+```
+python src/game_interaction/plot_history.py
+```
+
 <p align="left">
   <img src="assets/training_history_example.png" width="50%" alt='super-auto-pets'>
 </p>
