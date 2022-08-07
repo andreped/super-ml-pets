@@ -1,1 +1,74 @@
 Logging to ./history/sb3_log/
+---------------------------------
+| rollout/           |          |
+|    ep_len_mean     | 30.1     |
+|    ep_rew_mean     | 0.0368   |
+| time/              |          |
+|    fps             | 144      |
+|    iterations      | 1        |
+|    time_elapsed    | 14       |
+|    total_timesteps | 2048     |
+---------------------------------
+-----------------------------------------
+| rollout/                |             |
+|    ep_len_mean          | 31.2        |
+|    ep_rew_mean          | 0.02        |
+| time/                   |             |
+|    fps                  | 136         |
+|    iterations           | 2           |
+|    time_elapsed         | 29          |
+|    total_timesteps      | 4096        |
+| train/                  |             |
+|    approx_kl            | 0.008921757 |
+|    clip_fraction        | 0.054       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -1.83       |
+|    explained_variance   | -1.01       |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0389     |
+|    n_updates            | 10          |
+|    policy_gradient_loss | -0.0179     |
+|    value_loss           | 0.0118      |
+-----------------------------------------
+-----------------------------------------
+| rollout/                |             |
+|    ep_len_mean          | 31.9        |
+|    ep_rew_mean          | 0.092       |
+| time/                   |             |
+|    fps                  | 134         |
+|    iterations           | 3           |
+|    time_elapsed         | 45          |
+|    total_timesteps      | 6144        |
+| train/                  |             |
+|    approx_kl            | 0.009056112 |
+|    clip_fraction        | 0.0721      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -1.87       |
+|    explained_variance   | -0.359      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0623     |
+|    n_updates            | 20          |
+|    policy_gradient_loss | -0.0279     |
+|    value_loss           | 0.0068      |
+-----------------------------------------
+-----------------------------------------
+| rollout/                |             |
+|    ep_len_mean          | 32.1        |
+|    ep_rew_mean          | 0.168       |
+| time/                   |             |
+|    fps                  | 132         |
+|    iterations           | 4           |
+|    time_elapsed         | 61          |
+|    total_timesteps      | 8192        |
+| train/                  |             |
+|    approx_kl            | 0.008409055 |
+|    clip_fraction        | 0.0624      |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -1.82       |
+|    explained_variance   | -0.025      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.0227     |
+|    n_updates            | 30          |
+|    policy_gradient_loss | -0.0262     |
+|    value_loss           | 0.039       |
+-----------------------------------------
