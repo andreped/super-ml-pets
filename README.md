@@ -35,11 +35,18 @@ pip install -r requirements.txt
 ## Usage
 For training in simulated environment, run:
 ```bash
-cd src/
-python DQN.py
+cd src/game_interaction/
+python test_train_agent.py
 ```
 
+## Training history
+
+<p align="left">
+  <img src="assets/training_history_example.png" width="50%" alt='super-auto-pets'>
+</p>
+
 ## Troubleshoot
+
 If you are working on Windows, you need to use slightly different commands for setting up the environment. If you do not have virtualenv in the path, you need to do:
 ```
 python -m virtualenv -ppython3 venv --clear
