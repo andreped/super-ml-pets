@@ -35,7 +35,7 @@ pip install -r requirements.txt
 ## Usage
 For training in simulated environment, run:
 ```bash
-cd V6.0/
+cd src/
 python DQN.py
 ```
 
