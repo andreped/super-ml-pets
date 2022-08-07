@@ -11,7 +11,7 @@ Using Reinforcement Learning (RL) to train AIs for Super Auto Pets. Can train AI
 
 Tested and supports Python 3.6-3.10 and works cross-platform (Ubuntu, Windows, macOS).
 
-### Setup
+## Setup
 
 1. Clone the repo:
 ```
@@ -32,14 +32,14 @@ pip install -r requirements.txt
 
 4. Need to install Tesseract separately (depends on operating system). See [here](https://github.com/UB-Mannheim/tesseract/wiki).
 
-### Usage
+## Usage
 For training in simulated environment, run:
 ```bash
 cd V6.0/
 python DQN.py
 ```
 
-### Troubleshoot
+## Troubleshoot
 If you are working on Windows, you need to use slightly different commands for setting up the environment. If you do not have virtualenv in the path, you need to do:
 ```
 python -m virtualenv -ppython3 venv --clear
@@ -50,7 +50,7 @@ To activate virtual env on windows do:
 ./venv/Scripts/activate
 ```
 
-### Acknowledgements
+## Acknowledgements
 
 This implementation is based on the work by [HJK-Z](https://github.com/HJK-Z/Super-Auto-Pets), with aim to improve the design with smarter reinforcement learning schemes.
 The game logic is built around [sapai](https://github.com/manny405/sapai).
