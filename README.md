@@ -2,7 +2,7 @@
   <img src="https://www.gamelivestory.com/images/article/super-auto-pets-how-to-level-up-quickly-main.webp" width="50%" alt='super-auto-pets'>
 </p>
 
-# Super-Auto-Pets
+# super-ml-pets
 
 [![License](https://img.shields.io/badge/License-GPLv3-lightgray.svg)](https://opensource.org/licenses/GPLv3)
 ![CI](https://github.com/andreped/super-ml-pets/workflows/test/badge.svg)
