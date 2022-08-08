@@ -23,7 +23,7 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
 
     # setup model checkpoint callback, to save model after a specific #iters
     checkpoint_callback = CheckpointCallback(save_freq=1000, 
-        save_path='./model/', name_prefix='model_sap_gym_sb3_070822_checkpoint')
+        save_path='./models/', name_prefix='model_sap_gym_sb3_070822_checkpoint')
 
     if finetune:
         model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
