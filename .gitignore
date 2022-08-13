@@ -3,3 +3,6 @@
 *venv/
 *temp_assets/
 *.zip
+*models/
+*model_sap_gym*
+*history/
