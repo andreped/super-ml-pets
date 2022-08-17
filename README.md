@@ -33,12 +33,12 @@ pip install -r requirements.txt
 4. Need to install Tesseract separately (depends on operating system). See [here](https://github.com/UB-Mannheim/tesseract/wiki).
 
 ## Usage
-For training in simulated environment, run:
+For training in simulated environment, using default arguments, run:
 ```bash
 python main.py
 ```
 
-The script supports arguments. Too see what is possible run:
+The script supports arguments. To see what is possible, run:
 ```bash
 python main.py --help
 ```
