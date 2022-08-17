@@ -18,7 +18,7 @@ Tested and supports Python 3.6-3.10 and works cross-platform (Ubuntu, Windows, m
 git clone https://github.com/andreped/super-ml-pets.git
 ```
 
-2. Create virtual environment:
+2. Setup virtual environment:
 ```
 cd super-ml-pets/
 virtualenv -ppython3 venv --clear
