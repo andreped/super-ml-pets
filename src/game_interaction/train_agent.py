@@ -7,9 +7,10 @@ from sapai_gym import SuperAutoPetsEnv
 from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, biggest_numbers_horizontal_opp_generator
 from tqdm import tqdm
 import numpy as np
+import os
 
 def opponent_generator(num_turns):
-    # Returns teams to fight against in the gym 
+    # Returns teams to fight against in the gym
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
@@ -21,15 +22,19 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
     # setup logger
     logger = configure("./history/sb3_log/")
 
+    # create models directory if it does not exist
+    if not os.path.exists('./models/'):
+        os.makedirs('./models/')
+
     # setup model checkpoint callback, to save model after a specific #iters
-    checkpoint_callback = CheckpointCallback(save_freq=1000, 
-        save_path='./models/', name_prefix='model_sap_gym_sb3_070822_checkpoint')
+    checkpoint_callback = CheckpointCallback(save_freq=1000,
+        save_path='./models/', name_prefix='model_sap_gym_sb3_170822_checkpoint')
 
     if finetune:
-        model = MaskablePPO.load("./models/model_sap_gym_sb3_070822")
+        model = MaskablePPO.load("./models/model_sap_gym_sb3_170822")
         model.set_env(env)
     else:
-        model = MaskablePPO("MlpPolicy", env, verbose=1)
+        model = MaskablePPO("MlpPolicy", env, verbose=0)
 
 # train
     print("\nTraining...")
@@ -38,14 +43,14 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
         try:
             model.set_logger(logger)
             model.learn(total_timesteps=nb_timesteps, callback=checkpoint_callback)
-            evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=1, warn=False)
+            evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=0, warn=False)
             obs = env.reset()
 
             # if we reach 1M iterations, then training can stop, else, restart!
             #training_flag = False
             print("one full iter is done, continue training")
         except AssertionError as e1:
-            print("AssertionError:", e)
+            print("AssertionError:", e1)
         except TypeError as e2:
             print("TypeError:", e2)
             print("Model stopped training...")
@@ -57,15 +62,15 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
         #model.set_env(env)
 
     # save best model
-    model.save("./models/model_sap_gym_sb3_070822_checkpoint")
+    model.save("./models/model_sap_gym_sb3_170822_checkpoint")
 
     del model
 
     # load model
-    trained_model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
+    trained_model = MaskablePPO.load("./models/model_sap_gym_sb3_170822_checkpoint")
 
     print("\nPredicting...")
-    
+
     # predict
     obs = env.reset()
     rewards = []
@@ -82,5 +87,5 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_timesteps=10000, nb_games=10000, 
-        finetune=True)#, gamma=0.99)
+    train_with_masks(nb_timesteps=1000000, nb_games=10000,
+        finetune=False)#, gamma=0.99)
