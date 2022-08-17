@@ -597,3 +597,24 @@ Logging to ./history/sb3_log/
 |    policy_gradient_loss | -0.0545     |
 |    value_loss           | 0.0961      |
 -----------------------------------------
+-----------------------------------------
+| rollout/                |             |
+|    ep_len_mean          | 41.7        |
+|    ep_rew_mean          | 0.893       |
+| time/                   |             |
+|    fps                  | 109         |
+|    iterations           | 30          |
+|    time_elapsed         | 563         |
+|    total_timesteps      | 61440       |
+| train/                  |             |
+|    approx_kl            | 0.021992978 |
+|    clip_fraction        | 0.207       |
+|    clip_range           | 0.2         |
+|    entropy_loss         | -1.48       |
+|    explained_variance   | -0.123      |
+|    learning_rate        | 0.0003      |
+|    loss                 | -0.00325    |
+|    n_updates            | 290         |
+|    policy_gradient_loss | -0.0529     |
+|    value_loss           | 0.142       |
+-----------------------------------------

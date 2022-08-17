@@ -35,8 +35,12 @@ pip install -r requirements.txt
 ## Usage
 For training in simulated environment, run:
 ```bash
-cd src/game_interaction/
-python train_agent.py
+python main.py
+```
+
+The script supports arguments. Too see what is possible run:
+```bash
+python main.py --help
 ```
 
 ## Training history

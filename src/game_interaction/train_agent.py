@@ -14,7 +14,8 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
+def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
+    model_name: str): #,
     #gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
@@ -28,10 +29,10 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
 
     # setup model checkpoint callback, to save model after a specific #iters
     checkpoint_callback = CheckpointCallback(save_freq=1000,
-        save_path='./models/', name_prefix='model_sap_gym_sb3_170822_checkpoint')
+        save_path='./models/', name_prefix=model_name)
 
-    if finetune:
-        model = MaskablePPO.load("./models/model_sap_gym_sb3_170822")
+    if (finetune is not None):
+        model = MaskablePPO.load(finetune)
         model.set_env(env)
     else:
         model = MaskablePPO("MlpPolicy", env, verbose=0)
@@ -62,12 +63,12 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
         #model.set_env(env)
 
     # save best model
-    model.save("./models/model_sap_gym_sb3_170822_checkpoint")
+    model.save("./models/" + model_name)
 
     del model
 
     # load model
-    trained_model = MaskablePPO.load("./models/model_sap_gym_sb3_170822_checkpoint")
+    trained_model = MaskablePPO.load("./models/" + model_name)
 
     print("\nPredicting...")
 
@@ -88,4 +89,4 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: bool): #,
 
 if __name__ == "__main__":
     train_with_masks(nb_timesteps=1000000, nb_games=10000,
-        finetune=False)#, gamma=0.99)
+        finetune=None)#, gamma=0.99)
