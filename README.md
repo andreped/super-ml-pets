@@ -43,6 +43,11 @@ The script supports arguments. To see what is possible, run:
 python main.py --help
 ```
 
+To use trained model in battle, run (with example arguments):
+```
+python main.py --task deploy --model_name model_sap_gym_sb3_180822_checkpoint_finetuned --nb_steps 10000000 --finetune ./models/model_sap_gym_sb3_180822_checkpoint_2175_steps.zip
+```
+
 ## Training history
 
 Create plot of training history using:
