@@ -56,7 +56,8 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
 
             # if we reach 1M iterations, then training can stop, else, restart!
             #training_flag = False
-            print("one full iter is done, continue training")
+            print("one full iter is done")
+            retry_counter += 1
         except AssertionError as e1:
             print("AssertionError:", e1)
             retry_counter += 1
