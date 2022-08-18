@@ -10,9 +10,10 @@ from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, big
 from sapai_gym.ai import baselines
 from sapai import *
 from sapai.shop import *
-from image_detection import *
-from actions import *
+from .image_detection import *
+from .actions import *
 import keyboard
+import matplotlib.pyplot as plt
 
 def pause():
     while True:
@@ -20,6 +21,10 @@ def pause():
             # If you put 'space' key
             # the program will resume.
             break
+
+def time_pause():
+    plt.pause(1.0)
+
 
 def get_action_name(k: int) -> str:
     name_val = list(SuperAutoPetsEnv.ACTION_BASE_NUM.items())
@@ -39,7 +44,7 @@ def remove_nothing(pet_list):
     return pets
 
 def opponent_generator(num_turns):
-    # Returns teams to fight against in the gym 
+    # Returns teams to fight against in the gym
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
@@ -52,22 +57,25 @@ def create_new_PPO():
 
     model.save("ppo_sapai_070822")
 
-def run():
+def run(model_path):
     interface = SuperAutoPetsMouse()
     action_dict = interface.actionDict()
 
-    create_new_PPO()
-    model = MaskablePPO.load("ppo_sapai_070822")
+    # create_new_PPO()
+
+    #model = MaskablePPO.load("ppo_sapai_070822")
     #model = MaskablePPO.load("ppo_sapai_3")
+    model = MaskablePPO.load(model_path)
 
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     obs = env.reset()
 
     num_turns = 20
     while num_turns:
-        pause()
-        pets, _ = find_the_animals(directory = '.\\SAP_res\\')
+        time_pause()
+        pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res\\"))
         pets = remove_nothing(pets)
+        print(pets)
         env.player.shop = Shop(pets)
         if env.player.lives <= 3:
             env.player.lives += 3
@@ -76,7 +84,7 @@ def run():
         action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
         s = env._avail_actions()
         # print(s[action][1:])
-        pause()
+        time_pause()
         print("Action")
         print(action)
         print(get_action_name(action))
@@ -100,7 +108,7 @@ def run():
         obs, reward, done, info = env.step(action)
         if get_action_name(action) == 'end_turn':
             num_turns -= 1
-            pause()
+            time_pause()
         # if done:
         #     obs = env.reset()
         #     break

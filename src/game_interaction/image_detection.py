@@ -23,7 +23,7 @@ def get_animal_from_screen():
     return images, images0
 
 def matching(image, needle_img):
-    result = cv.matchTemplate(image,needle_img, cv.TM_CCOEFF_NORMED)
+    result = cv.matchTemplate(image, needle_img, cv.TM_CCOEFF_NORMED)
     _, max_val, _, _ = cv.minMaxLoc(result)
     # print(max_val)
     if max_val > 0.7:
@@ -40,7 +40,7 @@ def get_image_directory(directory):
             if os.path.isfile(os.path.join(directory,file)):
                 yield os.path.join(directory,file)
 
-def find_the_animals(directory = '.\\SAP_res\\'):
+def find_the_animals(directory: str):
     list_of_animals = []
     images, references = get_animal_from_screen()
     #go through all the animals images in the directory
@@ -56,7 +56,7 @@ def find_the_animals(directory = '.\\SAP_res\\'):
     list_of_animals1 = []
     for i in list_of_animals:
         temp = i.split('\\')
-        list_of_animals1.append(temp[2])
+        list_of_animals1.append(temp[-2])
     list_of_animals1 = tuple(list_of_animals1)
     print(list_of_animals1)
     references = tuple(references)
