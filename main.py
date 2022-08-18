@@ -1,6 +1,6 @@
 from src.game_interaction.train_agent import train_with_masks
 from src.game_interaction.agent import run, pause
-from src.game_interaction.image_detection import find_paw
+from src.game_interaction.image_detection import find_paw, find_arena
 from argparse import ArgumentParser
 import sys
 

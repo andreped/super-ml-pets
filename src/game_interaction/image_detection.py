@@ -7,9 +7,14 @@ import numpy as np
 from PIL import ImageGrab, Image, ImageChops
 import os
 from skimage.metrics import structural_similarity as ssim
+import matplotlib.pyplot as plt
 
 # global for all functions
 paw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paw_icon.png")
+arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arena_mode_icon.png")
+
+paw_img = cv.cvtColor(cv.imread(paw_path, cv.IMREAD_UNCHANGED)[..., :3], cv.COLOR_BGR2RGB)
+arena_img = cv.cvtColor(cv.imread(arena_path, cv.IMREAD_UNCHANGED)[..., :3], cv.COLOR_BGR2RGB)
 
 def get_animal_from_screen():
     img = ImageGrab.grab(bbox=(450, 620, 1500, 750))
@@ -68,16 +73,29 @@ def find_the_animals(directory: str):
         return list_of_animals1
     return list_of_animals1, references
 
-def check_paw():
-    img = ImageGrab.grab(bbox=(1737.5, 15, 1812.5 + 4, 85 + 8))
+def get_img_from_coords(coords):
+    img = ImageGrab.grab(bbox=coords)
     return np.array(img)
 
-def find_paw():
-    im = cv.cvtColor(cv.imread(paw_path, cv.IMREAD_UNCHANGED)[..., :3], cv.COLOR_BGR2RGB)
-    print(im.shape)
+def find_arena():
+    full_img = get_img_from_coords((275 + 35, 200 - 20, 1200 - 36, 650 + 21))
+    value = ssim(arena_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
 
-    full_img = check_paw()
-    value = ssim(im, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+    #print(value)
+    #fig, ax = plt.subplots(1, 2)
+    #ax[0].imshow(full_img)
+    #ax[1].imshow(arena_img)
+    #plt.show()
+
+    if value > 0.4:
+        return True
+    else:
+        return False
+
+def find_paw():
+
+    full_img = get_img_from_coords((1737.5, 15, 1812.5 + 4, 85 + 8))
+    value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
 
     if value > 0.4:
         return True

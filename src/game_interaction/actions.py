@@ -43,7 +43,7 @@ class SuperAutoPetsMouse():
         self._click(str(n1)+'_team_slot')
         gui.mouseDown(button="left")
         gui.moveTo(self.position[str(n2)+'_team_slot'][0],
-        self.position[str(n2)+'_team_slot'][1], duration=1)
+        self.position[str(n2)+'_team_slot'][1], duration=0.2)
         time.sleep(3)
         gui.mouseUp(button="left")
 

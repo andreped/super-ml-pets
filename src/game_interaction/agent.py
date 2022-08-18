@@ -123,6 +123,11 @@ def run(model_path):
                 if find_paw():
                     print("battle is done!")
                     battle_finished = True
+                else:
+                    # check if game is over
+                    if find_arena():
+                        print("Game is over! Start new game 8)")
+                        gui.click(600, 400)
 
             gui.click(1780, 200)
 
