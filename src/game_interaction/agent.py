@@ -22,8 +22,8 @@ def pause():
             # the program will resume.
             break
 
-def time_pause():
-    plt.pause(1.0)
+def time_pause(time: int):
+    plt.pause(time)
 
 
 def get_action_name(k: int) -> str:
@@ -72,7 +72,7 @@ def run(model_path):
 
     num_turns = 20
     while num_turns:
-        time_pause()
+        time_pause(0.5)
         pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res\\"))
         pets = remove_nothing(pets)
         print(pets)
@@ -84,7 +84,7 @@ def run(model_path):
         action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
         s = env._avail_actions()
         # print(s[action][1:])
-        time_pause()
+        time_pause(0.5)
         print("Action")
         print(action)
         print(get_action_name(action))
@@ -108,7 +108,7 @@ def run(model_path):
         obs, reward, done, info = env.step(action)
         if get_action_name(action) == 'end_turn':
             num_turns -= 1
-            time_pause()
+            time_pause(1.5)
         # if done:
         #     obs = env.reset()
         #     break
