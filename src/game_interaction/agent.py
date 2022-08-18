@@ -14,6 +14,7 @@ from .image_detection import *
 from .actions import *
 import keyboard
 import matplotlib.pyplot as plt
+import pyautogui as gui
 
 def pause():
     while True:
@@ -99,7 +100,7 @@ def run(model_path):
                         num_pets += 1
                     if shop_slot.slot_type == "food":
                         num_food += 1
-                action_dict[get_action_name(action)](s[action][1:], num_pets - num_food%2)
+                action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
             else:
                 if get_action_name(action) == 'roll':
                     action_dict[get_action_name(action)]()
@@ -108,7 +109,24 @@ def run(model_path):
         obs, reward, done, info = env.step(action)
         if get_action_name(action) == 'end_turn':
             num_turns -= 1
-            time_pause(1.5)
+            # time_pause(1.5)
+
+            # when end turn is pressed, I want it to spam clicking until it sees end turn button again (game is over).
+            time_pause(3.0)
+            battle_finished = False
+            while not battle_finished:
+                # click event
+                print("click event occured")
+                gui.click(1780, 200)
+
+                # check if battle is done
+                if find_paw():
+                    print("battle is done!")
+                    battle_finished = True
+
+            gui.click(1780, 200)
+
+
         # if done:
         #     obs = env.reset()
         #     break

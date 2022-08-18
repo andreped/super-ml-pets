@@ -47,8 +47,6 @@ class SuperAutoPetsMouse():
         time.sleep(3)
         gui.mouseUp(button="left")
 
-
-
     def buy(self, nth_slot):
         '''
         method to buy pets from shop
@@ -87,7 +85,6 @@ class SuperAutoPetsMouse():
     #     method for buying team food
     #     '''
 
-
     def sell_buy(self,nth_slot, nth_team_slot):
         '''
         method to buy and place the pet in a specified team slot
@@ -110,7 +107,6 @@ class SuperAutoPetsMouse():
             self.team_position[nth_team_slot] = 1
         else:
             raise Exception("Invalid sell: No pet present in the slot to sell...")
-
 
     def combineInTeam(self, n):
         '''

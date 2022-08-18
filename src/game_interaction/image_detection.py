@@ -6,6 +6,10 @@ import cv2 as cv
 import numpy as np
 from PIL import ImageGrab, Image, ImageChops
 import os
+from skimage.metrics import structural_similarity as ssim
+
+# global for all functions
+paw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paw_icon.png")
 
 def get_animal_from_screen():
     img = ImageGrab.grab(bbox=(450, 620, 1500, 750))
@@ -63,3 +67,19 @@ def find_the_animals(directory: str):
     if len(list_of_animals1) == 0:
         return list_of_animals1
     return list_of_animals1, references
+
+def check_paw():
+    img = ImageGrab.grab(bbox=(1737.5, 15, 1812.5 + 4, 85 + 8))
+    return np.array(img)
+
+def find_paw():
+    im = cv.cvtColor(cv.imread(paw_path, cv.IMREAD_UNCHANGED)[..., :3], cv.COLOR_BGR2RGB)
+    print(im.shape)
+
+    full_img = check_paw()
+    value = ssim(im, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+
+    if value > 0.4:
+        return True
+    else:
+        return False
