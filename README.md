@@ -94,7 +94,7 @@ python src/game_interaction/plot_history.py
 
 </details>
 
-<details open>
+<details>
 <summary>
 
 ### Troubleshoot </summary>
