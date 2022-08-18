@@ -5,6 +5,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 ![CI](https://github.com/andreped/super-ml-pets/workflows/test/badge.svg)
+ ![CodeQL](https://github.com/andreped/super-ml-pets/workflows/CodeQL/badge.svg)
  
 Train AIs for Super Auto Pets through a simulated environment and test the trained model against real opponents in the actual game! AI is trained using reinforcement learning and a machine vision system is used to capture the screen to give information to the AI.
 
