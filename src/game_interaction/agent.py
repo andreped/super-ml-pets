@@ -71,8 +71,7 @@ def run(model_path):
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     obs = env.reset()
 
-    num_turns = 20
-    while num_turns:
+    while True:
         time_pause(0.5)
         pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res\\"))
         pets = remove_nothing(pets)
@@ -108,7 +107,6 @@ def run(model_path):
                     action_dict[get_action_name(action)](s[action][1:])
         obs, reward, done, info = env.step(action)
         if get_action_name(action) == 'end_turn':
-            num_turns -= 1
             # time_pause(1.5)
 
             # when end turn is pressed, I want it to spam clicking until it sees end turn button again (game is over).
