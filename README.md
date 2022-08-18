@@ -51,7 +51,7 @@ python src/game_interaction/plot_history.py
 ```
 
 <p align="left">
-  <img src="assets/training_history_example.png" width="50%" alt='super-auto-pets'>
+  <img src="assets/training_history_example.png" width="80%" alt='super-auto-pets'>
 </p>
 
 ## Troubleshoot
