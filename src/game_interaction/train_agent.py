@@ -68,6 +68,9 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
         except ValueError as e3:
             print("ValueError:", e3)
             retry_counter += 1
+        except Exception as e4:
+            print("Exception:", e4)
+            retry_counter += 1
 
         # load previous checkpoint
         #model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
