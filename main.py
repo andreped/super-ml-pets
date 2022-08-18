@@ -1,6 +1,3 @@
-from src.game_interaction.train_agent import train_with_masks
-from src.game_interaction.agent import run, pause
-from src.game_interaction.image_detection import find_paw, find_arena
 from argparse import ArgumentParser
 import sys
 
@@ -22,6 +19,7 @@ if __name__ == "__main__":
     print(ret)
 
     if ret.task == "train":
+        from src.game_interaction.train_agent import train_with_masks
         train_with_masks(
             nb_timesteps=ret.nb_steps,
             nb_games=ret.nb_games,
@@ -30,6 +28,7 @@ if __name__ == "__main__":
             nb_retries=ret.nb_retries,
             )
     elif ret.task == "deploy":
+        from src.game_interaction.agent import run, pause
         print("\nPausing...")
         pause()
         print("\nRunning...")
