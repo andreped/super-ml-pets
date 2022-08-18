@@ -16,6 +16,8 @@ if __name__ == "__main__":
                         help="whether to finetune using pretrained model. Provide path to model if yes.")
     parser.add_argument('--model_name', metavar='--m', type=str, nargs='?', default=None,
                         help="which name to use for the model.")
+    parser.add_argument('--nb_retries', metavar='--nr', type=int, nargs='?', default=1,
+                        help="number of times training is restarted (continued) if it crashes. Set to -1 to train forever.")
     ret = parser.parse_args(sys.argv[1:])
     print(ret)
 
@@ -25,6 +27,7 @@ if __name__ == "__main__":
             nb_games=ret.nb_games,
             finetune=ret.finetune,
             model_name=ret.model_name,
+            nb_retries=ret.nb_retries,
             )
     elif ret.task == "deploy":
         print("\nPausing...")

@@ -15,7 +15,7 @@ def opponent_generator(num_turns):
     return opponents
 
 def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
-    model_name: str): #,
+    model_name: str, nb_retries: int): #,
     #gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
@@ -39,11 +39,16 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
         print("\ntraining from scratch...")
         model = MaskablePPO("MlpPolicy", env, verbose=0)
 
-# train
+    # train
     print("\nTraining...")
     training_flag = True
+    retry_counter = 0
     while training_flag:
         try:
+            # stop training if number of retries reaches user-defined value
+            if retry_counter == nb_retries:
+                break
+            # setup trainer and start learning
             model.set_logger(logger)
             model.learn(total_timesteps=nb_timesteps, callback=checkpoint_callback)
             evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=0, warn=False)
@@ -54,11 +59,14 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
             print("one full iter is done, continue training")
         except AssertionError as e1:
             print("AssertionError:", e1)
+            retry_counter += 1
         except TypeError as e2:
             print("TypeError:", e2)
             print("Model stopped training...")
+            retry_counter += 1
         except ValueError as e3:
             print("ValueError:", e3)
+            retry_counter += 1
 
         # load previous checkpoint
         #model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
