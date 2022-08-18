@@ -15,7 +15,7 @@ def opponent_generator(num_turns):
     return opponents
 
 def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
-    model_name: str, nb_retries: int): #,
+    model_name: str, nb_retries: int):
     #gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)

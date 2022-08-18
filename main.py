@@ -11,7 +11,7 @@ if __name__ == "__main__":
                         help="number of games to run when evaluating model after training.")
     parser.add_argument('--finetune', metavar='--fn', type=str, nargs='?', default=None,
                         help="whether to finetune using pretrained model. Provide path to model if yes.")
-    parser.add_argument('--model_name', metavar='--m', type=str, nargs='?', default=None,
+    parser.add_argument('--model_name', metavar='--m', type=str, nargs='?', default="rl_model",
                         help="which name to use for the model.")
     parser.add_argument('--nb_retries', metavar='--nr', type=int, nargs='?', default=1,
                         help="number of times training is restarted (continued) if it crashes. Set to -1 to train forever.")
