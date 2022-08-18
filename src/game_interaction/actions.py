@@ -44,7 +44,7 @@ class SuperAutoPetsMouse():
         gui.mouseDown(button="left")
         gui.moveTo(self.position[str(n2)+'_team_slot'][0],
         self.position[str(n2)+'_team_slot'][1], duration=0.2)
-        time.sleep(3)
+        time.sleep(2)
         gui.mouseUp(button="left")
 
     def buy(self, nth_slot):
