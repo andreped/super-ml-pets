@@ -32,9 +32,11 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
         save_path='./models/', name_prefix=model_name)
 
     if (finetune is not None):
+        print("\nfinetuning...")
         model = MaskablePPO.load(finetune)
         model.set_env(env)
     else:
+        print("\ntraining from scratch...")
         model = MaskablePPO("MlpPolicy", env, verbose=0)
 
 # train
