@@ -3,3 +3,5 @@ sb3-contrib
 keyboard
 pyautogui
 tqdm
+opencv-python
+scikit-image

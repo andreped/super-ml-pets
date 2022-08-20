@@ -60,7 +60,7 @@ def run(model_path):
 
     while True:
         time_pause(0.5)
-        pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/"))
+        pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res\\"))
         pets = remove_nothing(pets)
         print(pets)
         env.player.shop = Shop(pets)
@@ -111,6 +111,7 @@ def run(model_path):
                 else:
                     # check if game is over
                     if find_arena():
+                        time_pause(0.2)
                         print("Game is over! Start new game 8)")
                         gui.click(600, 400)
 
