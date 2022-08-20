@@ -86,7 +86,7 @@ It might take a few seconds, but you should now be able to see the AI start play
 
 It is possible to plot the training history by running (might require some path adjustments... To be fixed in the future):
 ```
-python src/plot_history.py
+python src/plot_history.py --log /path/to/history/progress.csv
 ```
 
 <p align="left">
