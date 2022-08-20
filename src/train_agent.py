@@ -14,8 +14,7 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
-    model_name: str, nb_retries: int):
+def train_with_masks(ret):
     #gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
@@ -29,7 +28,7 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
 
     # setup model checkpoint callback, to save model after a specific #iters
     checkpoint_callback = CheckpointCallback(save_freq=1000,
-        save_path='./models/', name_prefix=model_name)
+        save_path='./models/', name_prefix=ret.model_name)
 
     if (finetune is not None):
         print("\nfinetuning...")
@@ -46,11 +45,11 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
     while training_flag:
         try:
             # stop training if number of retries reaches user-defined value
-            if retry_counter == nb_retries:
+            if retry_counter == ret.nb_retries:
                 break
             # setup trainer and start learning
             model.set_logger(logger)
-            model.learn(total_timesteps=nb_timesteps, callback=checkpoint_callback)
+            model.learn(total_timesteps=ret.nb_timesteps, callback=checkpoint_callback)
             evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=0, warn=False)
             obs = env.reset()
 
@@ -77,19 +76,19 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
         #model.set_env(env)
 
     # save best model
-    model.save("./models/" + model_name)
+    model.save("./models/" + ret.model_name)
 
     del model
 
     # load model
-    trained_model = MaskablePPO.load("./models/" + model_name)
+    trained_model = MaskablePPO.load("./models/" + ret.model_name)
 
     print("\nPredicting...")
 
     # predict
     obs = env.reset()
     rewards = []
-    for i in tqdm(range(nb_games), "Games:"):
+    for i in tqdm(range(ret.nb_games), "Games:"):
         # Predict outcome with model
         action_masks = get_action_masks(env)
         action, _states = trained_model.predict(obs, action_masks=action_masks, deterministic=True)
@@ -100,6 +99,3 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
         rewards.append(reward)
     print(sum(rewards), len(rewards), np.mean(rewards))
     env.close()
-
-if __name__ == "__main__":
-    train_with_masks(nb_timesteps=1000000, nb_games=10000, finetune=None)

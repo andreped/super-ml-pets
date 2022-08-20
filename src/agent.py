@@ -50,22 +50,18 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def run(model_path):
+def run(ret):
     interface = SuperAutoPetsMouse()
     action_dict = interface.actionDict()
 
-    # check if current python version differ from the one the model is trained with
-    newer_python_version = sys.version_info.major == 3 and sys.version_info.minor >= 8
+    # custom object relevant for supporting using model trained using a different python version than the one used now
+    custom_objects = {
+        "learning_rate": 0.0,
+        "lr_schedule": lambda _: 0.0,
+        "clip_range": lambda _: 0.0,
+    }
 
-    custom_objects = {}
-    if newer_python_version:
-        custom_objects = {
-            "learning_rate": 0.0,
-            "lr_schedule": lambda _: 0.0,
-            "clip_range": lambda _: 0.0,
-        }
-
-    model = MaskablePPO.load(model_path, custom_objects=custom_objects)
+    model = MaskablePPO.load(ret.infer_model, custom_objects=custom_objects)
 
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     obs = env.reset()
@@ -131,7 +127,3 @@ def run(model_path):
 
     print(s[action][0])
     env.close()
-
-if __name__ == "__main__":
-    pause()
-    run()

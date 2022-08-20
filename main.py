@@ -18,18 +18,14 @@ if __name__ == "__main__":
                         help="number of times training is restarted (continued) if it crashes. Set to -1 to train forever.")
     parser.add_argument('--infer_model', metavar='-im', type=str, nargs='?', default=None,
                         help="which model to use for deployment (give full path, without extension '.zip'.")
+    parser.add_argument('--infer_pversion', metavar='-py', type=str, nargs='?', default="3.7",
+                        help="define which python version the current deployment model is trained with.")
     ret = parser.parse_args(sys.argv[1:])
     print(ret)
 
     if ret.task == "train":
         from src.train_agent import train_with_masks
-        train_with_masks(
-            nb_timesteps=ret.nb_steps,
-            nb_games=ret.nb_games,
-            finetune=ret.finetune,
-            model_name=ret.model_name,
-            nb_retries=ret.nb_retries,
-            )
+        train_with_masks(ret)
     elif ret.task == "deploy":
         if ret.infer_model is None:
             raise ValueError("Please, provide the path to the model to use for deployment, by setting 'infer_model'.")
@@ -40,6 +36,6 @@ if __name__ == "__main__":
         print("\nPausing...")
         pause()
         print("\nRunning...")
-        run(ret.infer_model)
+        run(ret)
     else:
         raise ValueError("Unknown task specified. Available tasks include {'train', 'deploy'}, but used:", ret.task)
