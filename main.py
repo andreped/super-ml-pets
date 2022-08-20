@@ -15,11 +15,13 @@ if __name__ == "__main__":
                         help="which name to use for the model.")
     parser.add_argument('--nb_retries', metavar='--nr', type=int, nargs='?', default=1,
                         help="number of times training is restarted (continued) if it crashes. Set to -1 to train forever.")
+    parser.add_argument('--infer_model', metavar='-im', type=str, nargs='?', default=None,
+                        help="which model to use for deployment (give full path, without extension '.zip'.")
     ret = parser.parse_args(sys.argv[1:])
     print(ret)
 
     if ret.task == "train":
-        from src.game_interaction.train_agent import train_with_masks
+        from src.train_agent import train_with_masks
         train_with_masks(
             nb_timesteps=ret.nb_steps,
             nb_games=ret.nb_games,
@@ -28,11 +30,15 @@ if __name__ == "__main__":
             nb_retries=ret.nb_retries,
             )
     elif ret.task == "deploy":
-        from src.game_interaction.agent import run, pause
+        if ret.infer_model is None:
+            raise ValueError("Please, provide the path to the model to use for deployment, by setting 'infer_model'.")
+        elif not os.path.exists(ret.infer_model + ".zip"):
+            raise ValueError("The model chosen for deployment does not exist. Chosen model:", ret.infer_model)
+
+        from src.agent import run, pause
         print("\nPausing...")
         pause()
         print("\nRunning...")
-        path = "./models/model_sap_gym_sb3_180822_checkpoint_2175_steps"
-        run(path)
+        run(ret.infer_model)
     else:
         raise ValueError("Unknown task specified. Available tasks include {'train', 'deploy'}, but used:", ret.task)
