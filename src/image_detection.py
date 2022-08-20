@@ -52,7 +52,7 @@ def get_image_directory(directory):
         for filename in os.listdir(os.path.join(directory, folder)):
             file = os.path.join(folder, filename)
             if os.path.isfile(os.path.join(directory, file)):
-                yield os.path.join(directory, file)
+                yield os.path.join(directory, file).replace("\\", "/")
 
 def find_the_animals(directory: str):
     list_of_animals = []
@@ -69,7 +69,7 @@ def find_the_animals(directory: str):
         return 0
     list_of_animals1 = []
     for i in list_of_animals:
-        temp = i.split('\\')  # @TODO: This is windows-only, need to have OS-invariant solution using "/"
+        temp = i.split('/')
         list_of_animals1.append(temp[-2])
     list_of_animals1 = tuple(list_of_animals1)
     print(list_of_animals1)
