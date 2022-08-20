@@ -102,5 +102,4 @@ def train_with_masks(nb_timesteps: int, nb_games: int, finetune: str,
     env.close()
 
 if __name__ == "__main__":
-    train_with_masks(nb_timesteps=1000000, nb_games=10000,
-        finetune=None)#, gamma=0.99)
+    train_with_masks(nb_timesteps=1000000, nb_games=10000, finetune=None)

@@ -116,10 +116,6 @@ def run(model_path):
 
             gui.click(1780, 200)
 
-
-        # if done:
-        #     obs = env.reset()
-        #     break
     print(s[action][0])
     env.close()
 
