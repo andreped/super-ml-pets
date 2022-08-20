@@ -32,6 +32,22 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+<details>
+<summary>
+
+### Additional setup for Ubuntu only </summary>
+```
+sudo apt install python3-tk
+sudo su
+source venv/bin/activate
+xhost +
+export DISPLAY=:0.0
+```
+
+Note that the command `sudo su` enables sudo rights. This seems to be required by `keyboard` as mentioned in issue https://github.com/andreped/super-ml-pets/issues/23. The xhost + DISPLAY stuff is needed as the screen might not be found, hence, initializing one solves this issue.
+
+</details>
+
 ## Usage
 This framework currently supports training and deploying RL models for SAP.
 
