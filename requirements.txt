@@ -1,4 +1,3 @@
-https://github.com/andreped/sapai-gym/releases/download/v0.1.0/sapai_gym-0.1.0-py3-none-any.whl
 git+https://github.com/andreped/sapai-gym.git@catch-errors
 sb3-contrib
 keyboard
