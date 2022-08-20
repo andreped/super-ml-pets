@@ -8,14 +8,17 @@ from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, big
 from tqdm import tqdm
 import numpy as np
 import os
+import sys
+
 
 def opponent_generator(num_turns):
     # Returns teams to fight against in the gym
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
+
 def train_with_masks(ret):
-    #gamma: int):
+    # gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
 
@@ -27,12 +30,21 @@ def train_with_masks(ret):
         os.makedirs('./models/')
 
     # setup model checkpoint callback, to save model after a specific #iters
-    checkpoint_callback = CheckpointCallback(save_freq=1000,
-        save_path='./models/', name_prefix=ret.model_name)
+    checkpoint_callback = CheckpointCallback(save_freq=1000, save_path='./models/', name_prefix=ret.model_name)
 
-    if (finetune is not None):
+    if ret.finetune is not None:
+        # check if current python version differ from the one the model is trained with
+        vals = ret.infer_pversion.split(".")
+        newer_python_version = sys.version_info.major != vals[0] or sys.version_info.minor != vals[1]
+        custom_objects = {}
+        if newer_python_version:
+            custom_objects = {
+                "learning_rate": 0.0003,  # default value for MaskablePPO
+                "clip_range": lambda _: 0.2,  # default value for MaskablePPO
+            }
+
         print("\nfinetuning...")
-        model = MaskablePPO.load(finetune)
+        model = MaskablePPO.load(ret.finetune, custom_objects=custom_objects)
         model.set_env(env)
     else:
         print("\ntraining from scratch...")
@@ -49,12 +61,12 @@ def train_with_masks(ret):
                 break
             # setup trainer and start learning
             model.set_logger(logger)
-            model.learn(total_timesteps=ret.nb_timesteps, callback=checkpoint_callback)
+            model.learn(total_timesteps=ret.nb_steps, callback=checkpoint_callback)
             evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=0, warn=False)
             obs = env.reset()
 
             # if we reach 1M iterations, then training can stop, else, restart!
-            #training_flag = False
+            # training_flag = False
             print("one full iter is done")
             retry_counter += 1
         except AssertionError as e1:
@@ -72,8 +84,8 @@ def train_with_masks(ret):
             retry_counter += 1
 
         # load previous checkpoint
-        #model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
-        #model.set_env(env)
+        # model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
+        # model.set_env(env)
 
     # save best model
     model.save("./models/" + ret.model_name)
