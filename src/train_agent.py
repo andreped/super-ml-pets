@@ -21,6 +21,7 @@ def train_with_masks(ret):
     # gamma: int):
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
+    # eval_env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)  # need separate eval env for EvalCallback (this is the wrong env - not working)
 
     # setup logger
     logger = configure("./history/sb3_log/")
@@ -30,8 +31,11 @@ def train_with_masks(ret):
         os.makedirs('./models/')
 
     # setup model checkpoint callback, to save model after a specific #iters
-    checkpoint_callback = CheckpointCallback(save_freq=1000, save_path='./models/', name_prefix=ret.model_name)
-    # eval_callback = EvalCallback()
+    checkpoint_callback = CheckpointCallback(save_freq=10000, save_path='./models/', name_prefix=ret.model_name)
+
+    # save best model, using deterministic eval
+    # eval_callback = EvalCallback(eval_env, best_model_save_path='./models/', log_path='./logs/', eval_freq=1000,
+    #                              deterministic=True, render=False)
 
     if ret.finetune is not None:
         # check if current python version differ from the one the model is trained with
@@ -63,7 +67,7 @@ def train_with_masks(ret):
             # setup trainer and start learning
             model.set_logger(logger)
             model.learn(total_timesteps=ret.nb_steps, callback=checkpoint_callback)
-            evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=0, warn=False)
+            evaluate_policy(model, env, n_eval_episodes=100, reward_threshold=0, warn=False)  # increased episodes 20 -> 100, is that necessary?
             obs = env.reset()
 
             # if we reach 1M iterations, then training can stop, else, restart!
