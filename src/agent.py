@@ -49,23 +49,10 @@ def opponent_generator(num_turns):
     opponents = biggest_numbers_horizontal_opp_generator(25)
     return opponents
 
-def create_new_PPO():
-    env = InvalidActionEnvDiscrete(dim=80, n_invalid_actions=60)
-    model = MaskablePPO("MlpPolicy", env, gamma=0.4, seed=32, verbose=1)
-    model.learn(5000)
-
-    evaluate_policy(model, env, n_eval_episodes=20, reward_threshold=90, warn=False)
-
-    model.save("ppo_sapai_070822")
-
 def run(model_path):
     interface = SuperAutoPetsMouse()
     action_dict = interface.actionDict()
 
-    # create_new_PPO()
-
-    #model = MaskablePPO.load("ppo_sapai_070822")
-    #model = MaskablePPO.load("ppo_sapai_3")
     model = MaskablePPO.load(model_path)
 
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
@@ -73,7 +60,7 @@ def run(model_path):
 
     while True:
         time_pause(0.5)
-        pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res\\"))
+        pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/"))
         pets = remove_nothing(pets)
         print(pets)
         env.player.shop = Shop(pets)
