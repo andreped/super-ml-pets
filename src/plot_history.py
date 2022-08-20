@@ -3,13 +3,16 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 from matplotlib import rc
+from argparse import ArgumentParser
 
 if __name__ == "__main__":
-	history_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "history/sb3_log_180822/")
+	parser = ArgumentParser()
+	parser.add_argument('--log', metavar='--l', type=str, nargs='?',
+						help="which model history to plot (e.g., '/path/to/history/sb3_log_180822/progress.csv'.")
+	ret = parser.parse_args(sys.argv[1:])
+	print(ret)
 
 	data = pd.read_csv(os.path.join(history_path, "progress.csv"))
-	print(data.head())
-	print(list(data.keys()))
 
 	# set plot config
 	rc('font', **{'family': 'serif', 'serif': ['Computer Modern']}) # , 'size': 16})
