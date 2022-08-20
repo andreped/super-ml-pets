@@ -68,9 +68,9 @@ python main.py --help
 
 3. Enter the arena by clicking "Arena mode".
 
-4. Then, simply start the AI by running this command from the terminal:
+4. Then, simply start the AI by running this command from the terminal (with example path to pretrained model):
 ```
-python main.py --task deploy --model_name model_sap_gym_sb3_180822_checkpoint_finetuned
+python main.py --task deploy --infer_model ./models/model_sap_gym_sb3_180822_checkpoint_finetuned
 ```
 
 5. Go back into the game and press the "Space" keyboard button.
