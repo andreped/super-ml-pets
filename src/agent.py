@@ -15,6 +15,7 @@ from .actions import *
 import keyboard
 import matplotlib.pyplot as plt
 import pyautogui as gui
+import sys
 
 def pause():
     while True:
@@ -53,7 +54,18 @@ def run(model_path):
     interface = SuperAutoPetsMouse()
     action_dict = interface.actionDict()
 
-    model = MaskablePPO.load(model_path)
+    # check if current python version differ from the one the model is trained with
+    newer_python_version = sys.version_info.major == 3 and sys.version_info.minor >= 8
+
+    custom_objects = {}
+    if newer_python_version:
+        custom_objects = {
+            "learning_rate": 0.0,
+            "lr_schedule": lambda _: 0.0,
+            "clip_range": lambda _: 0.0,
+        }
+
+    model = MaskablePPO.load(model_path, custom_objects=custom_objects)
 
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     obs = env.reset()
