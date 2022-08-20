@@ -1,7 +1,7 @@
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
-from stable_baselines3.common.callbacks import CheckpointCallback
+from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
 from stable_baselines3.common.logger import configure
 from sapai_gym import SuperAutoPetsEnv
 from sapai_gym.opponent_gen.opponent_generators import random_opp_generator, biggest_numbers_horizontal_opp_generator
@@ -31,6 +31,7 @@ def train_with_masks(ret):
 
     # setup model checkpoint callback, to save model after a specific #iters
     checkpoint_callback = CheckpointCallback(save_freq=1000, save_path='./models/', name_prefix=ret.model_name)
+    # eval_callback = EvalCallback()
 
     if ret.finetune is not None:
         # check if current python version differ from the one the model is trained with
