@@ -32,6 +32,22 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+<details>
+<summary>
+
+### Additional setup for Ubuntu only </summary>
+```
+sudo apt install python3-tk
+sudo su
+source venv/bin/activate
+xhost +
+export DISPLAY=:0.0
+```
+
+Note that the command `sudo su` enables sudo rights. This seems to be required by `keyboard` as mentioned in issue https://github.com/andreped/super-ml-pets/issues/23. The xhost + DISPLAY stuff is needed as the screen might not be found, hence, initializing one solves this issue.
+
+</details>
+
 ## Usage
 This framework currently supports training and deploying RL models for SAP.
 
@@ -64,18 +80,20 @@ python main.py --help
 
 1. To use a trained model in battle, start the game Super Auto Pets.
 
-2. Ensure that the game is in full screen mode, disable all unneccessary prompts, and set speed to 200%.
+2. Ensure that the game is in full screen mode, disable all unneccessary prompts, enable auto name picker, and set speed to 200% (you might also have to enable auto battle which can only be done in the first battle - if this is the first time you are playing this game).
 
 3. Enter the arena by clicking "Arena mode".
 
-4. Then, simply start the AI by running this command from the terminal (with example path to pretrained model):
+4. Go outside the game and download a pretrained model from [here](https://github.com/andreped/super-ml-pets/releases/tag/v0.0.2), or use any pretrained model you might have.
+
+5. Then, simply start the AI by running this command from the terminal (with example path to pretrained model, **without extension .zip**):
 ```
-python main.py --task deploy --infer_model ./models/model_sap_gym_sb3_180822_checkpoint_finetuned
+python main.py --task deploy --infer_model /path/to/pretrained/model/model_sap_gym_sb3_180822_checkpoint_finetuned
 ```
 
-5. Go back into the game and press the "Space" keyboard button.
+6. Go back into the game and press the "Space" keyboard button (when you are in the Arena (in team preparation, before battle).
 
-It might take a few seconds, but you should now be able to see the AI start playing. Please, let it play in peace, or else it might get angry and you have accidentally creating [Skynet](https://en.wikipedia.org/wiki/Skynet_(Terminator)).
+It might take a few seconds, but you should now be able to see the AI start playing. Please, let it play in peace, or else it might get angry and you have accidentally creating [Skynet](https://en.wikipedia.org/wiki/Skynet_(Terminator)). If you accidentally exit the game, or dont have the game in fullscreen, the machine vision system will fail, and you will have to start a completely new game to use the AI (properly).
 
 </details>
 
