@@ -34,9 +34,10 @@ if __name__ == "__main__":
             raise ValueError("The model chosen for deployment does not exist. Chosen model:", ret.infer_model)
 
         from src.deploy_agent import run, pause
-        print("\nPausing...")
+        print("Pausing...")
         pause()
-        print("\nRunning...")
+
+        print("Running...")
         run(ret)
     else:
         raise ValueError("Unknown task specified. Available tasks include {'train', 'deploy'}, but used:", ret.task)

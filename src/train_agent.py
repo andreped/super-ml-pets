@@ -66,7 +66,7 @@ def train_with_masks(ret):
         model = MaskablePPO("MlpPolicy", env, verbose=0)
 
     # train
-    print("\nTraining...")
+    print("Training...")
     training_flag = True
     retry_counter = 0
     while training_flag:
