@@ -88,10 +88,6 @@ def train_with_masks(ret):
             print("Exception:", e4)
             retry_counter += 1
 
-        # load previous checkpoint
-        # model = MaskablePPO.load("./models/model_sap_gym_sb3_070822_checkpoint")
-        # model.set_env(env)
-
     # save best model
     model.save("./models/" + ret.model_name)
 
