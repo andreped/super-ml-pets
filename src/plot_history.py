@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from matplotlib import rc
 from argparse import ArgumentParser
+import sys
 
 if __name__ == "__main__":
 	parser = ArgumentParser()
@@ -12,7 +13,7 @@ if __name__ == "__main__":
 	ret = parser.parse_args(sys.argv[1:])
 	print(ret)
 
-	data = pd.read_csv(os.path.join(history_path, "progress.csv"))
+	data = pd.read_csv(ret.log)
 
 	# set plot config
 	rc('font', **{'family': 'serif', 'serif': ['Computer Modern']}) # , 'size': 16})
