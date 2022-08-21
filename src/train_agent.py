@@ -100,8 +100,7 @@ def train_with_masks(ret):
 
     # save best model
     model.save("./models/" + ret.model_name)
-
-    del model
+    del model  # delete the old model for sanity checking, because we are going to load model from disk next
 
     # load model
     trained_model = MaskablePPO.load("./models/" + ret.model_name)
