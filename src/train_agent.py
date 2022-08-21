@@ -63,6 +63,7 @@ def train_with_masks(ret):
                 "learning_rate": ret.learning_rate,
                 "batch_size": ret.batch_size,
                 "clip_range": lambda _: 0.2,
+                "gamma": ret.gamma,
             }
 
         print("Finetuning...")
