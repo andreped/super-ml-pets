@@ -19,7 +19,7 @@ jobs:
           python-version: 3.8
 
       - name: Install dependencies
-        run: pip install flake8 pytest
+        run: pip install flake8 pytest-cov
 
       - name: Run tests and collect coverage
         run: pytest --cov tests
