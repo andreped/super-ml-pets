@@ -34,7 +34,7 @@ def train_with_masks(ret):
     # EvalCallback (this is the wrong env - not working)
 
     # create folder to save log
-    history_path = os.path.join("./history/", ret.model_name, "/")
+    history_path = "./history/history_" + ret.model_name + "/"
     if not os.path.exists(history_path):
         os.makedirs(history_path, exist_ok=True)
 
