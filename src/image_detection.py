@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 from .utils import get_curr_screen_geometry
 
 # global for all functions
-paw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paw_icon.png")
-arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arena_mode_icon.png")
+paw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../assets/paw_icon.png")
+arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../assets/arena_mode_icon.png")
 
 paw_img = cv2.cvtColor(cv2.imread(paw_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
 arena_img = cv2.cvtColor(cv2.imread(arena_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
