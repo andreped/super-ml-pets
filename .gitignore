@@ -8,3 +8,4 @@
 *model_sap_gym*
 *history/
 .idea/
+.coverage
