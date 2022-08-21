@@ -32,7 +32,7 @@ if __name__ == "__main__":
         elif not os.path.exists(ret.infer_model + ".zip"):
             raise ValueError("The model chosen for deployment does not exist. Chosen model:", ret.infer_model)
 
-        from src.agent import run, pause
+        from src.deploy_agent import run, pause
         print("\nPausing...")
         pause()
         print("\nRunning...")
