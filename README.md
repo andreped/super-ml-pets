@@ -128,7 +128,10 @@ To activate virtual env on windows do:
 ./venv/Scripts/activate
 ```
 
-If you are using newer versions of Python (e.g., 3.10.x), you might have issues with installing and/or using `numpy` with the other dependencies. If that happens, try to downgrade to an older Python version to see if that helps. I am actively using Python 3.7-3.8 and have had no issues with these.
+If you are using newer versions of Python (e.g., 3.10.x), you might have issues with installing and/or using `numpy` with the other dependencies. If that happens, try downgrading numpy by:
+```
+pip install numpy==1.23.2 --force-reinstall
+```
 
 </details>
 
