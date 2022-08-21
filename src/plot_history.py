@@ -1,3 +1,7 @@
+"""
+Script for generating training history plot
+"""
+
 from stable_baselines3.common.logger import Figure
 import matplotlib.pyplot as plt
 import pandas as pd

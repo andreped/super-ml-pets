@@ -1,10 +1,14 @@
 """
-Script containing utility tools
+Convenience methods
 """
+
 import tkinter as tk
 import numpy as np
 
 def get_position():
+    """
+    returns locations of relevant objects in the game
+    """
     template_resolution = [1920, 1080]  # height, width
 
     # hard-coded positions assuming a screen resolution of 1920 x 1080
@@ -50,10 +54,9 @@ def get_position():
 
 def get_curr_screen_geometry():
     """
-    Workaround to get the size of the current screen in a multi-screen setup.
-    Note that this method captures the current scaled resolution and not necessary the true resolution.
+    Workaround to get the size of the current screen in a multi-screen setup
+    Note that this method captures the current scaled resolution and not necessary the true resolution
     """
-
     root = tk.Tk()
     root.update_idletasks()
     root.attributes('-fullscreen', True)

@@ -1,6 +1,7 @@
 """
-Script for performing detection of animals and items in the shop
+Methods for performing detection of animals and items in the shop during deployment
 """
+
 import pyautogui as gui
 import cv2 as cv
 import numpy as np
@@ -21,6 +22,9 @@ arena_img = cv.cvtColor(cv.imread(arena_path, cv.IMREAD_UNCHANGED)[..., :3], cv.
 curr_geomentry = get_curr_screen_geometry()
 
 def get_animal_from_screen():
+    """
+    captures images of the current animals on screen (to be classified at a later stage)
+    """
     img_n_width = 130
     img = ImageGrab.grab(bbox=(450, 620, 1500, 750))  # bbox: left, top, right, bottom
     img_00 = img.crop((10, 0, 140, img_n_width))
@@ -37,6 +41,9 @@ def get_animal_from_screen():
     return images, images0
 
 def matching(image, needle_img):
+    """
+    performs template matching to classify which animal/food/item it contains
+    """
     result = cv.matchTemplate(image, needle_img, cv.TM_CCOEFF_NORMED)
     _, max_val, _, _ = cv.minMaxLoc(result)
     # print(max_val)
@@ -44,9 +51,10 @@ def matching(image, needle_img):
         return 1
     return 0
 
-# returns the filename one by one
 def get_image_directory(directory):
-    # print(directory)
+    """
+    returns filenames one-by-one from SAP_res folder of animals and items
+    """
     dir = os.listdir(directory)
     for folder in dir:
         for filename in os.listdir(os.path.join(directory, folder)):
@@ -55,6 +63,9 @@ def get_image_directory(directory):
                 yield os.path.join(directory, file).replace("\\", "/")
 
 def find_the_animals(directory: str):
+    """
+    overall method for detecting which animals are on screen
+    """
     list_of_animals = []
     images, references = get_animal_from_screen()
     # go through all the animals images in the directory
@@ -79,10 +90,15 @@ def find_the_animals(directory: str):
     return list_of_animals1, references
 
 def get_img_from_coords(coords):
-    img = ImageGrab.grab(bbox=coords)
-    return np.array(img)
+    """
+    method to get cropped image from coordinates
+    """
+    return np.array(ImageGrab.grab(bbox=coords))
 
 def find_arena():
+    """
+    method to detect whether the game is in pre-arena state (game menu)
+    """
     full_img = get_img_from_coords((310, 180, 1164, 671))
     value = ssim(arena_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
     if value > 0.4:
@@ -91,6 +107,9 @@ def find_arena():
         return False
 
 def find_paw():
+    """
+    method to detect if the game is in pre-battle state (detects if paw icon is in top-right corner)
+    """
     full_img = get_img_from_coords((1737.5, 15, 1812.5 + 4, 85 + 8))
     value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
     if value > 0.4:

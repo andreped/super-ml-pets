@@ -1,6 +1,7 @@
 """
 Methods for agent interaction using sapai-gym and stable basline 3
 """
+
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.envs import InvalidActionEnvDiscrete
 from sapai_gym import SuperAutoPetsEnv
@@ -12,33 +13,41 @@ from sapai import *
 from sapai.shop import *
 from .image_detection import *
 from .actions import *
-import keyboard
+import keyboard  # @TODO: Should swap 'keyboard' package with something that does not require sudo on Ubuntu
 import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
 
 def pause():
+    '''
+    method which pauses until 'space' keyboard key is pressed
+    '''
     while True:
         if keyboard.read_key() == 'space':
-            # If you put 'space' key
-            # the program will resume.
             break
 
 def time_pause(time: int):
+    '''
+    method which pauses a specified time (in ms)
+    '''
     plt.pause(time)
 
-
 def get_action_name(k: int) -> str:
+    '''
+    translated action name from integer
+    '''
     name_val = list(SuperAutoPetsEnv.ACTION_BASE_NUM.items())
-
     assert k >= 0
     for (start_name, _), (end_name, end_val) in zip(name_val[:-1], name_val[1:]):
         if k < end_val:
             return start_name
-    else:
+    else:  # @TODO: this can't possibly be the corrct placement, or?
         return end_name
 
 def remove_nothing(pet_list):
+    '''
+    removes all occurrences of 'nothing' in pet list
+    '''
     pets = []
     for i in pet_list:
         if i != 'nothing':
@@ -46,11 +55,15 @@ def remove_nothing(pet_list):
     return pets
 
 def opponent_generator(num_turns):
-    # Returns teams to fight against in the gym
-    opponents = biggest_numbers_horizontal_opp_generator(25)
-    return opponents
+    '''
+    returns teams to fight against in the gym
+    '''
+    return biggest_numbers_horizontal_opp_generator(25)
 
 def run(ret):
+    '''
+    method to use pretrained RL model with the real game (deployment)
+    '''
     interface = SuperAutoPetsMouse()
     action_dict = interface.actionDict()
 

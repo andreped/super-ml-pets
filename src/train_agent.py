@@ -1,3 +1,7 @@
+"""
+Methods for performing training of RL models, also support finetuning
+"""
+
 from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
@@ -11,14 +15,18 @@ import os
 import sys
 
 
+# @TODO: Should remove num_turns argument or set default value to 25
+#  Also, there is an identical method somewhere else. Should remove the copy and move it to a utils.py or similar
 def opponent_generator(num_turns):
-    # Returns teams to fight against in the gym
-    opponents = biggest_numbers_horizontal_opp_generator(25)
-    return opponents
-
+    """
+    returns teams to fight against in the gym
+    """
+    return biggest_numbers_horizontal_opp_generator(25)
 
 def train_with_masks(ret):
-    # gamma: int):
+    """
+    method for performing agent training
+    """
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     # eval_env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)  # need separate eval env for EvalCallback (this is the wrong env - not working)

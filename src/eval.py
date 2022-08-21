@@ -2,6 +2,7 @@
 Script for evaluating trained RL model. Run battles of new models against
 older models, record battle results, and calculate metrics.
 """
+
 from tensorflow.keras.models import load_model
 from utils import Data
 import sap
@@ -83,5 +84,3 @@ if __name__ == "__main__":
 	best_model_path = "./ckpt/ckpt-63100"
 	target_model_path = "./ckpt/ckpt-47000"
 	apply(best_model_path, target_model_path, test_episodes=100)
-
-

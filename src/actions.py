@@ -111,8 +111,7 @@ class SuperAutoPetsMouse():
 
     def combineInTeam(self, n):
         """
-        method to combine 2 pets that is in the team
-        combine n1 to n2
+        method to combine 2 pets (n1 and n2) in the team
         """
         n1 = n[0]
         n2 = n[1]
