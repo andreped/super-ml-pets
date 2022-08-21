@@ -6,7 +6,8 @@ import pyautogui as gui
 from .utils import *
 import time
 
-class SuperAutoPetsMouse():
+
+class SuperAutoPetsMouse:
     """
     A Class that implements the interface between reinforcement agent and game
     convention:
@@ -33,7 +34,7 @@ class SuperAutoPetsMouse():
         """
         gui.click(self.position[first_click])
 
-    def _movePet(self, n1, n2):
+    def move_pet(self, n1, n2):
         """
         a helper method to move the pets in the team
         n1 to n2
@@ -109,7 +110,7 @@ class SuperAutoPetsMouse():
         else:
             raise Exception("Invalid sell: No pet present in the slot to sell...")
 
-    def combineInTeam(self, n):
+    def combine_in_team(self, n):
         """
         method to combine 2 pets (n1 and n2) in the team
         """
@@ -124,7 +125,7 @@ class SuperAutoPetsMouse():
         else:
             raise Exception("Invalid Combine: index out of range")
 
-    def buyCombine(self, n):
+    def buy_combine(self, n):
         """
         method to buy and combine 2 pets
         """
@@ -132,7 +133,7 @@ class SuperAutoPetsMouse():
         nth_team_slot = n[1]
         print(self.team_position[nth_team_slot], nth_team_slot)
         if self.team_position[nth_team_slot] == 1:
-            raise Exception("Invalid buyCombine: pet in team slot not present...")
+            raise Exception("Invalid buy_combine: pet in team slot not present...")
         self._shop2team(nth_slot, nth_team_slot)
 
     def reorder(self, order):
@@ -140,17 +141,18 @@ class SuperAutoPetsMouse():
         method to reorder the team
         """
         order = order[0]
-        copyOrder = list(order)
+        copy_order = list(order)
         for i, j in enumerate(order):
             if i != j:
-                self._movePet(i, j)
-                del copyOrder[i]
-                copyOrder.insert(j, j)
-                finalOrder = self.reorder((tuple(copyOrder),))  # recursively solves
-                return finalOrder
-        return copyOrder  # when all the elements are already sorted
+                self.move_pet(i, j)
+                del copy_order[i]
+                copy_order.insert(j, j)
+                final_order = self.reorder((tuple(copy_order), ))  # recursively solves
+                return final_order
+        return copy_order  # when all the elements are already sorted
 
-    def freezeUnfreeze(self, nth_slot):
+    # @TODO: Note that this method is never used, as sapai-gym don't currently support freezing/unfreezing
+    def freeze_unfreeze(self, nth_slot):
         """
         a method to freeze or unfreeze pets
         """
@@ -169,18 +171,18 @@ class SuperAutoPetsMouse():
         """
         self._click('roll')
 
-    def actionDict(self):
-        '''
+    def get_action_dict(self):
+        """
         returns a dictionary of all the methods
-        '''
-        action = {}
-        action['roll'] = self.roll
-        action['end_turn'] = self.end_turn
-        action['reorder'] = self.reorder
-        action['buy_pet'] = self.buy
-        action['buy_food'] = self.buy_food
-        action['buy_food_team'] = self.buy_food
-        action['sell'] = self.sell
-        action['buy_combine'] = self.buyCombine
-        action['combine'] = self.combineInTeam
-        return action
+        """
+        return {
+            'roll': self.roll,
+            'end_turn': self.end_turn,
+            'reorder': self.reorder,
+            'buy_pet': self.buy,
+            'buy_food': self.buy_food,
+            'buy_food_team': self.buy_food,
+            'sell': self.sell,
+            'buy_combine': self.buy_combine,
+            'combine': self.combine_in_team
+            }

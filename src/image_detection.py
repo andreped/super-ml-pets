@@ -3,7 +3,7 @@ Methods for performing detection of animals and items in the shop during deploym
 """
 
 import pyautogui as gui
-import cv2 as cv
+import cv2
 import numpy as np
 from PIL import ImageGrab, Image, ImageChops
 import os
@@ -15,11 +15,11 @@ from .utils import get_curr_screen_geometry
 paw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "paw_icon.png")
 arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arena_mode_icon.png")
 
-paw_img = cv.cvtColor(cv.imread(paw_path, cv.IMREAD_UNCHANGED)[..., :3], cv.COLOR_BGR2RGB)
-arena_img = cv.cvtColor(cv.imread(arena_path, cv.IMREAD_UNCHANGED)[..., :3], cv.COLOR_BGR2RGB)
+paw_img = cv2.cvtColor(cv2.imread(paw_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
+arena_img = cv2.cvtColor(cv2.imread(arena_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
 
 # get screen resolution, store as global variable in this scope
-curr_geomentry = get_curr_screen_geometry()
+curr_geometry = get_curr_screen_geometry()
 
 
 def get_animal_from_screen():
@@ -38,7 +38,7 @@ def get_animal_from_screen():
     images0 = [img_00, img_01, img_02, img_03, img_04, img_05, img_06]
     images = []
     for i in images0:
-        images.append(cv.cvtColor(np.array(i), cv.COLOR_RGB2BGR))
+        images.append(cv2.cvtColor(np.array(i), cv2.COLOR_RGB2BGR))
     return images, images0
 
 
@@ -46,8 +46,8 @@ def matching(image, needle_img):
     """
     performs template matching to classify which animal/food/item it contains
     """
-    result = cv.matchTemplate(image, needle_img, cv.TM_CCOEFF_NORMED)
-    _, max_val, _, _ = cv.minMaxLoc(result)
+    result = cv2.matchTemplate(image, needle_img, cv2.TM_CCOEFF_NORMED)
+    _, max_val, _, _ = cv2.minMaxLoc(result)
     # print(max_val)
     if max_val > 0.7:
         return 1
@@ -75,7 +75,7 @@ def find_the_animals(directory: str):
     # go through all the animals images in the directory
     for i in images:
         for j in get_image_directory(directory):
-            im = cv.imread(j, cv.IMREAD_UNCHANGED)
+            im = cv2.imread(j, cv2.IMREAD_UNCHANGED)
             # matching returns which animals
             if matching(i, im):
                 list_of_animals.append(j)

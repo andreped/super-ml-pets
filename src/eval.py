@@ -19,6 +19,8 @@ class Evaluate:
         self.best_model_path = best_model_path
         self.target_model_path = target_model_path
         self.test_episodes = test_episodes
+        self.best_model = None
+        self.target_model = None
 
     def load_models(self):
         self.best_model = load_model(self.best_model_path, compile=False)
@@ -63,7 +65,6 @@ def apply(best_model_path: str, target_model_path: str, test_episodes: int):
             env.step(action)
 
             action = np.argmax(action)
-
             new_observation = env.get_scaled_state()
             reward = env.score
             done = env.isGameOver()
@@ -88,6 +89,6 @@ def apply(best_model_path: str, target_model_path: str, test_episodes: int):
 
 
 if __name__ == "__main__":
-    best_model_path = "./ckpt/ckpt-63100"
-    target_model_path = "./ckpt/ckpt-47000"
-    apply(best_model_path, target_model_path, test_episodes=100)
+    model_path = "./ckpt/ckpt-63100"
+    target_path = "./ckpt/ckpt-47000"
+    apply(model_path, target_path, test_episodes=100)

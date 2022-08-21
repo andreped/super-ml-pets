@@ -30,7 +30,8 @@ def train_with_masks(ret):
     """
     # initialize environment
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
-    # eval_env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)  # need separate eval env for EvalCallback (this is the wrong env - not working)
+    # eval_env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)  # need separate eval env for
+    # EvalCallback (this is the wrong env - not working)
 
     # setup logger
     logger = configure("./history/sb3_log/")
