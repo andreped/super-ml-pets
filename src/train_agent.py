@@ -33,8 +33,8 @@ def train_with_masks(ret):
     # eval_env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)  # need separate eval env for
     # EvalCallback (this is the wrong env - not working)
 
-    # setup logger
-    logger = configure("./history/sb3_log/")
+    # setup logger - log should be linked to model
+    logger = configure(os.path.join("./history/history_/", ret.model_name, "/"))
 
     # create models directory if it does not exist
     if not os.path.exists('./models/'):
@@ -78,7 +78,7 @@ def train_with_masks(ret):
             # setup trainer and start learning
             model.set_logger(logger)
             model.learn(total_timesteps=ret.nb_steps, callback=checkpoint_callback)
-            evaluate_policy(model, env, n_eval_episodes=100, reward_threshold=0, warn=False)  # increased episodes 20 -> 100, is that necessary?
+            evaluate_policy(model, env, n_eval_episodes=100, reward_threshold=0, warn=False)
             obs = env.reset()
 
             # if we reach 1M iterations, then training can stop, else, restart!
