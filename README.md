@@ -141,6 +141,9 @@ pip install numpy==1.23.2 --force-reinstall
 
 Note that Python 3.11 is not supported as dependencies such as `scipy` fail to install. This will probably
 change in the future, but for now only python versions 3.7-3.10 are supported.
+ 
+On both Ubuntu and macOS, it might require sudo permissions to run deployment. This has to do with keyboard events not being able to be recognized without
+sudo rights. On windows, administrative rights is **not needed**. For more information, see [here](https://pynput.readthedocs.io/en/latest/limitations.html).
 
 </details>
 
