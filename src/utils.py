@@ -44,12 +44,12 @@ def get_position():
 
     # scale these positions to match current screen resolution
     ''' # disable scaling for now
-    curr_geomentry = get_curr_screen_geometry()
+    curr_geometry = get_curr_screen_geometry()
     for key in position.keys():
         curr_position = position[key]
         # # note that there is an intended height/width switch!
-        position[key] = (int(np.round(curr_position[0] * float(curr_geomentry[1]) / template_resolution[0])),
-                         int(np.round(curr_position[1] * float(curr_geomentry[0]) / template_resolution[1])))
+        position[key] = (int(np.round(curr_position[0] * float(curr_geometry[1]) / template_resolution[0])),
+                         int(np.round(curr_position[1] * float(curr_geometry[0]) / template_resolution[1])))
     '''
     return position
 
