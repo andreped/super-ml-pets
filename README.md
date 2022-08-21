@@ -7,6 +7,7 @@
 ![CI](https://github.com/andreped/super-ml-pets/workflows/CI/badge.svg)
 ![CodeQL](https://github.com/andreped/super-ml-pets/workflows/CodeQL/badge.svg)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
+![coverage](https://codecov.io/gh/andreped/super-ml-pets/branch/main/graph/badge.svg?token=f5c23396-b58b-4d88-ab82-e708030d3643)
  
 Train AIs for Super Auto Pets through a simulated environment and test the trained model against real opponents in the actual game! AI is trained using reinforcement learning and a machine vision system is used to capture the screen to give information to the AI.
 
