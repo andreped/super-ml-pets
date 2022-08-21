@@ -33,8 +33,13 @@ def train_with_masks(ret):
     # eval_env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)  # need separate eval env for
     # EvalCallback (this is the wrong env - not working)
 
+    # create folder to save log
+    history_path = os.path.join("./history/history_/", ret.model_name, "/")
+    if not os.path.exists(history_path):
+        os.makedirs(history_path)
+
     # setup logger - log should be linked to model
-    logger = configure(os.path.join("./history/history_/", ret.model_name, "/"))
+    logger = configure(history_path)
 
     # create models directory if it does not exist
     if not os.path.exists('./models/'):
