@@ -133,6 +133,9 @@ If you are using newer versions of Python (e.g., 3.10.x), you might have issues 
 pip install numpy==1.23.2 --force-reinstall
 ```
 
+Note that Python 3.11 is not supported as dependencies such as `scipy` fail to install. This will probably
+change in the future, but for now only python versions 3.7-3.10 are supported.
+
 </details>
 
 ## Acknowledgements
