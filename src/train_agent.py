@@ -34,12 +34,12 @@ def train_with_masks(ret):
     # EvalCallback (this is the wrong env - not working)
 
     # create folder to save log
-    history_path = os.path.join("./history/history_/", ret.model_name, "/")
+    history_path = "./history/"
     if not os.path.exists(history_path):
         os.makedirs(history_path)
 
     # setup logger - log should be linked to model
-    logger = configure(history_path)
+    logger = configure(os.path.join(history_path, ret.model_name, "/"))
 
     # create models directory if it does not exist
     if not os.path.exists('./models/'):
