@@ -25,6 +25,8 @@ if __name__ == "__main__":
                         help="set which batch size to use for training.")
     parser.add_argument('--learning_rate', metavar='--lr', type=float, nargs='?', default=0.0003,
                         help="set which learning rate to use for training.")
+    parser.add_argument('--save_freq', metavar='--sf', type=int, nargs='?', default=10000,
+                        help="set frequency of how often models are saved using checkpoint callback.")
     ret = parser.parse_args(sys.argv[1:])
     print(ret)
 

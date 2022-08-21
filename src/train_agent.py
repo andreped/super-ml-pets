@@ -41,7 +41,7 @@ def train_with_masks(ret):
         os.makedirs('./models/')
 
     # setup model checkpoint callback, to save model after a specific #iters
-    checkpoint_callback = CheckpointCallback(save_freq=10000, save_path='./models/', name_prefix=ret.model_name)
+    checkpoint_callback = CheckpointCallback(save_freq=ret.save_freq, save_path='./models/', name_prefix=ret.model_name)
 
     # save best model, using deterministic eval
     # eval_callback = EvalCallback(eval_env, best_model_save_path='./models/', log_path='./logs/', eval_freq=1000,
