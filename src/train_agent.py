@@ -16,12 +16,13 @@ import sys
 
 
 # @TODO: Should remove num_turns argument or set default value to 25
-#  Also, there is an identical method somewhere else. Should remove the copy and move it to a utils.py or similar
+#   Also, there is an identical method somewhere else. Should remove the copy and move it to a utils.py or similar
 def opponent_generator(num_turns):
     """
     returns teams to fight against in the gym
     """
     return biggest_numbers_horizontal_opp_generator(25)
+
 
 def train_with_masks(ret):
     """
@@ -56,11 +57,11 @@ def train_with_masks(ret):
                 "clip_range": lambda _: 0.2,  # default value for MaskablePPO
             }
 
-        print("\nfinetuning...")
+        print("Finetuning...")
         model = MaskablePPO.load(ret.finetune, custom_objects=custom_objects)
         model.set_env(env)
     else:
-        print("\ntraining from scratch...")
+        print("Training from scratch...")
         model = MaskablePPO("MlpPolicy", env, verbose=0)
 
     # train
@@ -104,7 +105,7 @@ def train_with_masks(ret):
     # load model
     trained_model = MaskablePPO.load("./models/" + ret.model_name)
 
-    print("\nPredicting...")
+    print("Predicting...")
 
     # predict
     obs = env.reset()

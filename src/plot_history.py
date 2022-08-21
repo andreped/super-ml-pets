@@ -10,6 +10,7 @@ from matplotlib import rc
 from argparse import ArgumentParser
 import sys
 
+
 if __name__ == "__main__":
 	parser = ArgumentParser()
 	parser.add_argument('--log', metavar='--l', type=str, nargs='?',

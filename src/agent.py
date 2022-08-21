@@ -18,24 +18,27 @@ import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
 
+
 def pause():
-    '''
+    """
     method which pauses until 'space' keyboard key is pressed
-    '''
+    """
     while True:
         if keyboard.read_key() == 'space':
             break
 
+
 def time_pause(time: int):
-    '''
+    """
     method which pauses a specified time (in ms)
-    '''
+    """
     plt.pause(time)
 
+
 def get_action_name(k: int) -> str:
-    '''
+    """
     translated action name from integer
-    '''
+    """
     name_val = list(SuperAutoPetsEnv.ACTION_BASE_NUM.items())
     assert k >= 0
     for (start_name, _), (end_name, end_val) in zip(name_val[:-1], name_val[1:]):
@@ -44,26 +47,29 @@ def get_action_name(k: int) -> str:
     else:  # @TODO: this can't possibly be the corrct placement, or?
         return end_name
 
+
 def remove_nothing(pet_list):
-    '''
+    """
     removes all occurrences of 'nothing' in pet list
-    '''
+    """
     pets = []
     for i in pet_list:
         if i != 'nothing':
             pets.append(i)
     return pets
 
+
 def opponent_generator(num_turns):
-    '''
+    """
     returns teams to fight against in the gym
-    '''
+    """
     return biggest_numbers_horizontal_opp_generator(25)
 
+
 def run(ret):
-    '''
+    """
     method to use pretrained RL model with the real game (deployment)
-    '''
+    """
     interface = SuperAutoPetsMouse()
     action_dict = interface.actionDict()
 
@@ -81,7 +87,8 @@ def run(ret):
 
     while True:
         time_pause(0.5)
-        pets, _ = find_the_animals(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/").replace("\\", "/"))
+        pets, _ = find_the_animals(
+            directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/").replace("\\", "/"))
         pets = remove_nothing(pets)
         env.player.shop = Shop(pets)
         if env.player.lives <= 3:

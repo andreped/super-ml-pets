@@ -21,6 +21,7 @@ arena_img = cv.cvtColor(cv.imread(arena_path, cv.IMREAD_UNCHANGED)[..., :3], cv.
 # get screen resolution, store as global variable in this scope
 curr_geomentry = get_curr_screen_geometry()
 
+
 def get_animal_from_screen():
     """
     captures images of the current animals on screen (to be classified at a later stage)
@@ -40,6 +41,7 @@ def get_animal_from_screen():
         images.append(cv.cvtColor(np.array(i), cv.COLOR_RGB2BGR))
     return images, images0
 
+
 def matching(image, needle_img):
     """
     performs template matching to classify which animal/food/item it contains
@@ -51,6 +53,7 @@ def matching(image, needle_img):
         return 1
     return 0
 
+
 def get_image_directory(directory):
     """
     returns filenames one-by-one from SAP_res folder of animals and items
@@ -61,6 +64,7 @@ def get_image_directory(directory):
             file = os.path.join(folder, filename)
             if os.path.isfile(os.path.join(directory, file)):
                 yield os.path.join(directory, file).replace("\\", "/")
+
 
 def find_the_animals(directory: str):
     """
@@ -89,11 +93,13 @@ def find_the_animals(directory: str):
         return list_of_animals1
     return list_of_animals1, references
 
+
 def get_img_from_coords(coords):
     """
     method to get cropped image from coordinates
     """
     return np.array(ImageGrab.grab(bbox=coords))
+
 
 def find_arena():
     """
@@ -105,6 +111,7 @@ def find_arena():
         return True
     else:
         return False
+
 
 def find_paw():
     """

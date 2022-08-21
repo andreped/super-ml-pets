@@ -5,6 +5,7 @@ Convenience methods
 import tkinter as tk
 import numpy as np
 
+
 def get_position():
     """
     returns locations of relevant objects in the game
@@ -51,6 +52,7 @@ def get_position():
                          int(np.round(curr_position[1] * float(curr_geomentry[0]) / template_resolution[1])))
     '''
     return position
+
 
 def get_curr_screen_geometry():
     """
