@@ -89,7 +89,7 @@ python main.py --help
 
 5. Then, simply start the AI by running this command from the terminal (with example path to pretrained model, **without extension .zip**):
 ```
-python main.py --task deploy --infer_model /path/to/pretrained/model/model_sap_gym_sb3_180822_checkpoint_finetuned
+python main.py --task deploy --infer_model /path/to/pretrained/model_sap_gym_sb3_180822_checkpoint_finetuned
 ```
 
 6. Go back into the game and press the "Space" keyboard button (when you are in the Arena (in team preparation, before battle).
