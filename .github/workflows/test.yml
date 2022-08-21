@@ -9,7 +9,31 @@ on:
       - "*"
 
 jobs:
+  codecov:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          pip install flake8 pytest-cov
+          pip install -r requirements.txt
+
+      - name: Run tests and collect coverage
+        run: pytest --cov .
+
+      - name: Lint with flake8
+        run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+
   test:
+    needs: codecov
     runs-on: ${{ matrix.os}}
     strategy:
       max-parallel: 12
