@@ -6,3 +6,4 @@ tqdm
 opencv-python
 scikit-image
 numpy<=1.23.2
+pynput

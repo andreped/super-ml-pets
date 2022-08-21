@@ -13,10 +13,25 @@ from sapai import *
 from sapai.shop import *
 from .image_detection import *
 from .actions import *
+import pynput
 import keyboard  # @TODO: Should swap 'keyboard' package with something that does not require sudo on Ubuntu
 import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
+
+# global variable
+stop_program = False
+
+
+def kill_process(key):
+    """
+    method to stop agent from running if 'escape' key is pressed
+    """
+    global stop_program
+    if key == pynput.keyboard.Key.esc:
+        print("\nEscape pressed, stopping agent...")
+        stop_program = True
+        return False
 
 
 def pause():
@@ -71,7 +86,7 @@ def run(ret):
     method to use pretrained RL model with the real game (deployment)
     """
     interface = SuperAutoPetsMouse()
-    action_dict = interface.actionDict()
+    action_dict = interface.get_action_dict()
 
     # custom object relevant for supporting using model trained using a different python version than the one used now
     custom_objects = {
@@ -85,64 +100,67 @@ def run(ret):
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     obs = env.reset()
 
-    while True:
-        time_pause(0.5)
-        pets, _ = find_the_animals(
-            directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/").replace("\\", "/"))
-        pets = remove_nothing(pets)
-        env.player.shop = Shop(pets)
-        if env.player.lives <= 3:
-            env.player.lives += 3
-        action_masks = get_action_masks(env)
-        obs = env._encode_state()
-        action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
-        s = env._avail_actions()
-        # print(s[action][1:])
-        time_pause(0.5)
-        print("Action")
-        print(action)
-        print(get_action_name(action))
-        print(s[action][0])
-        print(s[action][1:])
-        if env._is_valid_action(action):
-            if get_action_name(action) == 'buy_food':
-                num_pets = 0
-                num_food = 0
-                for shop_slot in env.player.shop:
-                    if shop_slot.slot_type == "pet":
-                        num_pets += 1
-                    if shop_slot.slot_type == "food":
-                        num_food += 1
-                action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
-            else:
-                if get_action_name(action) == 'roll':
-                    action_dict[get_action_name(action)]()
+    with pynput.keyboard.Listener(on_press=kill_process) as listener:
+        while not stop_program:
+            time_pause(0.5)
+            pets, _ = find_the_animals(
+                directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/").replace("\\", "/"))
+            pets = remove_nothing(pets)
+            env.player.shop = Shop(pets)
+            if env.player.lives <= 3:
+                env.player.lives += 3
+            action_masks = get_action_masks(env)
+            obs = env._encode_state()
+            action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
+            s = env._avail_actions()
+            # print(s[action][1:])
+            time_pause(0.5)
+            print("Action")
+            print(action)
+            print(get_action_name(action))
+            print(s[action][0])
+            print(s[action][1:])
+            if env._is_valid_action(action):
+                if get_action_name(action) == 'buy_food':
+                    num_pets = 0
+                    num_food = 0
+                    for shop_slot in env.player.shop:
+                        if shop_slot.slot_type == "pet":
+                            num_pets += 1
+                        if shop_slot.slot_type == "food":
+                            num_food += 1
+                    action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
                 else:
-                    action_dict[get_action_name(action)](s[action][1:])
-        obs, reward, done, info = env.step(action)
-        if get_action_name(action) == 'end_turn':
-            # time_pause(1.5)
+                    if get_action_name(action) == 'roll':
+                        action_dict[get_action_name(action)]()
+                    else:
+                        action_dict[get_action_name(action)](s[action][1:])
+            obs, reward, done, info = env.step(action)
+            if get_action_name(action) == 'end_turn':
+                # time_pause(1.5)
 
-            # when end turn is pressed, I want it to spam clicking until it sees end turn button again (game is over).
-            time_pause(3.0)
-            battle_finished = False
-            while not battle_finished:
-                # click event
-                print("click event occured")
+                # when end turn is pressed, I want it to spam clicking until it sees end turn button again (game is over).
+                time_pause(3.0)
+                battle_finished = False
+                while not battle_finished:
+                    # click event
+                    print("click event occured")
+                    gui.click(1780, 200)
+
+                    # check if battle is done
+                    if find_paw():
+                        print("battle is done!")
+                        battle_finished = True
+                    else:
+                        # check if game is over
+                        if find_arena():
+                            time_pause(0.2)
+                            print("Game is over! Start new game 8)")
+                            gui.click(600, 400)
+
                 gui.click(1780, 200)
 
-                # check if battle is done
-                if find_paw():
-                    print("battle is done!")
-                    battle_finished = True
-                else:
-                    # check if game is over
-                    if find_arena():
-                        time_pause(0.2)
-                        print("Game is over! Start new game 8)")
-                        gui.click(600, 400)
-
-            gui.click(1780, 200)
+        listener.join()
 
     print(s[action][0])
     env.close()
