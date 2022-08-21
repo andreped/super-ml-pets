@@ -33,7 +33,6 @@ jobs:
         uses: codecov/codecov-action@v1
 
   test:
-    needs: codecov
     runs-on: ${{ matrix.os}}
     strategy:
       max-parallel: 12
