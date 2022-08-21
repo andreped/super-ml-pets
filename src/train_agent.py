@@ -54,8 +54,9 @@ def train_with_masks(ret):
         custom_objects = {}
         if newer_python_version:
             custom_objects = {
-                "learning_rate": 0.0003,  # default value for MaskablePPO
-                "clip_range": lambda _: 0.2,  # default value for MaskablePPO
+                "learning_rate": ret.learning_rate,
+                "batch_size": ret.batch_size,
+                "clip_range": lambda _: 0.2,
             }
 
         print("Finetuning...")
@@ -63,7 +64,7 @@ def train_with_masks(ret):
         model.set_env(env)
     else:
         print("Training from scratch...")
-        model = MaskablePPO("MlpPolicy", env, verbose=0)
+        model = MaskablePPO("MlpPolicy", env, verbose=0, batch_size=ret.batch_size, learning_rate=ret.learning_rate)
 
     # train
     print("Training...")
