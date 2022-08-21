@@ -27,6 +27,8 @@ if __name__ == "__main__":
                         help="set which learning rate to use for training.")
     parser.add_argument('--save_freq', metavar='--sf', type=int, nargs='?', default=10000,
                         help="set frequency of how often models are saved using checkpoint callback.")
+    parser.add_argument('--gamma', metavar='--gm', type=float, nargs='?', default=0.99,
+                        help="set which gamma to use for MaskablePPO training.")
     ret = parser.parse_args(sys.argv[1:])
     print(ret)
 

@@ -70,7 +70,8 @@ def train_with_masks(ret):
         model.set_env(env)
     else:
         print("Training from scratch...")
-        model = MaskablePPO("MlpPolicy", env, verbose=0, batch_size=ret.batch_size, learning_rate=ret.learning_rate)
+        model = MaskablePPO("MlpPolicy", env, verbose=0, batch_size=ret.batch_size, learning_rate=ret.learning_rate,
+                            gamma=ret.gamma)
 
     # train
     print("Training...")
