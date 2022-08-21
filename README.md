@@ -25,7 +25,7 @@ git clone https://github.com/andreped/super-ml-pets.git
 ```
 cd super-ml-pets/
 virtualenv -ppython3 venv --clear
-source venv/bin/activate
+./venv/Scripts/activate
 ```
 
 3. Install requirements:
@@ -119,14 +119,19 @@ python src/plot_history.py --log /path/to/history/progress.csv
 
 ### Troubleshoot </summary>
 
-If you are working on Windows, you need to use slightly different commands for setting up the environment. If you do not have virtualenv in the path, you need to do:
+If you do not have virtualenv in the path, you can run it by (assuming you have it installed):
 ```
 python -m virtualenv -ppython3 venv --clear
 ```
 
-To activate virtual env on windows do:
+To install virtulenv, run:
 ```
-./venv/Scripts/activate
+pip install virtualenv
+```
+
+To activate virtual environment on Ubuntu or macOS, run:
+```
+source venv/bin/activate
 ```
 
 If you are using newer versions of Python (e.g., 3.10.x), you might have issues with installing and/or using `numpy` with the other dependencies. If that happens, try downgrading numpy by:
