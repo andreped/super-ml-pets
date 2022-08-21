@@ -98,7 +98,7 @@ It might take a few seconds, but you should now be able to see the AI start play
 
 </details>
 
-<details open>
+<details>
 <summary>
 
 ### Training history </summary>
