@@ -21,7 +21,7 @@ if __name__ == "__main__":
                         help="which model to use for deployment (give full path, without extension '.zip'.")
     parser.add_argument('--infer_pversion', metavar='-py', type=str, nargs='?', default="3.7",
                         help="define which python version the current deployment model is trained with.")
-    parser.add_argument('--batch_size', metavar='--bs', type=int, nargs='?', default=32,
+    parser.add_argument('--batch_size', metavar='--bs', type=int, nargs='?', default=512,
                         help="set which batch size to use for training.")
     parser.add_argument('--learning_rate', metavar='--lr', type=float, nargs='?', default=0.0003,
                         help="set which learning rate to use for training.")
