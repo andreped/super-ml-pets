@@ -16,7 +16,7 @@ class Evaluate:
     @TODO: Not finished yet!
     """
 
-    def __init__(best_model_path: str, target_model_path: str, test_episodes: int):
+    def __init__(self, best_model_path: str, target_model_path: str, test_episodes: int):
         self.best_model_path = best_model_path
         self.target_model_path = target_model_path
         self.test_episodes = test_episodes
