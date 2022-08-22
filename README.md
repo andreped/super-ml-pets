@@ -13,7 +13,7 @@ Train AIs for Super Auto Pets through a simulated environment and test the train
 
 </div>
 
-_NOTE: Framework supports Python 3.7-3.10 and works cross-platform (Ubuntu, Windows, macOS)._
+_NOTE: Framework supports Python 3.7-3.10 and works cross-platform (Ubuntu, Windows, macOS). Can also be used with the [web app](https://teamwood.itch.io/super-auto-pets)._
 
 ## Getting started
 
