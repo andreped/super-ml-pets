@@ -66,3 +66,20 @@ def get_curr_screen_geometry():
     geometry = root.winfo_geometry()
     root.destroy()
     return np.array(geometry.split("+")[0].split("x")).astype(int)
+
+
+def move_drag_tween(n):
+    if n == 0:
+        return 0.0
+    else:
+        return 1 + 0.05 * np.log10(n)
+
+
+def custom_easeOutQuad(n):
+    """A quadratic tween function that begins fast and then decelerates.
+    Args:
+      n (float): The time progress, starting at 0.0 and ending at 1.0.
+    Returns:
+      (float) The line progress, starting at 0.0 and ending at 1.0. Suitable for passing to getPointOnLine().
+    """
+    return -n * (n-2)
