@@ -13,7 +13,7 @@ Train AIs for Super Auto Pets through a simulated environment and test the train
 
 </div>
 
-_NOTE: Framework supports Python 3.7-3.10 and works cross-platform (Ubuntu, Windows, macOS)._
+_NOTE: Framework supports Python 3.7-3.10 and works cross-platform (Ubuntu, Windows, macOS). Can also be used with the [web app](https://teamwood.itch.io/super-auto-pets)._
 
 ## Getting started
 
@@ -95,7 +95,7 @@ python main.py --task deploy --infer_model /path/to/trained/model_sap_gym_sb3_18
 
 6. Go back into the game and press the "Space" keyboard button (when you are in the Arena (in team preparation, before battle).
 
-It might take a few seconds, but you should now be able to see the AI start playing. Please, let it play in peace, or else it might get angry and you have accidentally creating [Skynet](https://en.wikipedia.org/wiki/Skynet_(Terminator)). If you accidentally exit the game, or dont have the game in fullscreen, the machine vision system will fail, and you will have to start a completely new game to use the AI (properly).
+It might take a few seconds, but you should now be able to see the AI start playing. Please, let it play in peace, or else it might get angry and you may have accidentally created [Skynet](https://en.wikipedia.org/wiki/Skynet_(Terminator)). If you accidentally exit the game, or dont have the game in fullscreen, the machine vision system will fail, and you will have to start a completely new game to use the AI (properly).
 
 </details>
 
@@ -104,7 +104,7 @@ It might take a few seconds, but you should now be able to see the AI start play
 
 ### Training history </summary>
 
-It is possible to plot the training history by running (might require some path adjustments... To be fixed in the future):
+To plot training history, run:
 ```
 python src/plot_history.py --log /path/to/history/progress.csv
 ```
@@ -144,7 +144,11 @@ Note that Python 3.11 is not supported as dependencies such as `scipy` fail to i
 change in the future, but for now only python versions 3.7-3.10 are supported.
  
 On both Ubuntu and macOS, it might require sudo permissions to run deployment. This has to do with keyboard events not being able to be recognized without
-sudo rights. On windows, administrative rights is **not needed**. For more information, see [here](https://pynput.readthedocs.io/en/latest/limitations.html).
+sudo rights. On Windows, administrative rights is **not needed**. For more information, see [here](https://pynput.readthedocs.io/en/latest/limitations.html).
+ 
+On macOS, when you are downloading the models (.zip files) from Releases, they might be unzipped automatically. This is **bad**. To fix this, disable the "Open safe opening of files" in the Safari Preferences.
+ 
+If deployment fails to start (do any movements with the mouse or act), it may be because your screen resolution differ from the expected resolution. The current machine vision system expects the screen resolution to be 1920x1080. Please, adjust the resolution to this. This will be fixed in the future.
 
 </details>
 
