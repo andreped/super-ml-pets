@@ -1,4 +1,4 @@
-git+https://github.com/andreped/sapai-gym.git@dev
+git+https://github.com/andreped/sapai-gym.git@catch-errors
 sb3-contrib
 keyboard
 pyautogui
