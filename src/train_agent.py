@@ -80,6 +80,9 @@ def train_with_masks(ret):
     retry_counter = 0
     while training_flag:
         try:
+            # reset environment before starting to train (useful when retrying)
+            obs = env.reset()
+
             # stop training if number of retries reaches user-defined value
             if retry_counter == ret.nb_retries:
                 break
