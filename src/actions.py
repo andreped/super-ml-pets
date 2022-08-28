@@ -46,7 +46,7 @@ class SuperAutoPetsMouse:
         #gui.mouseDown(button="left")
         gui.dragTo(self.position[str(n2) + '_team_slot'][0],
                    self.position[str(n2) + '_team_slot'][1],
-                   duration=2.0,  # how long drag event should take
+                   duration=3.0,  # how long drag event should take
                    tween=gui.easeOutQuad,  # move_drag_tween
                    button='left')
         #gui.moveTo(self.position[str(n2) + '_team_slot'][0],
