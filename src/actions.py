@@ -77,7 +77,7 @@ class SuperAutoPetsMouse:
         """
         method to buy food
         """
-        target = 3
+        target = 3  # @TODO: Is this correct? Aren't we buying food to the same animal at all times here?
         if len(nth_slot) != 1:
             target = nth_slot[1]
         nth_slot = nth_slot[0]
@@ -87,10 +87,17 @@ class SuperAutoPetsMouse:
         else:
             raise Exception("Invalid buy_food: nth slot incorrect, nth_slot = ", nth_slot)
 
-    # def buy_team_food(self, nth_slot, num_pets):
-    #     """
-    #     method for buying team food
-    #     """
+    def buy_team_food(self, nth_slot, num_pets):
+        """
+        method for buying team food
+        """
+        target = 3  # when buying for team, it doesnt matter which team member we aim at
+        nth_slot = nth_slot[0]
+        nth_slot = nth_slot - num_pets + 5
+        if nth_slot == 5 or nth_slot == 6:
+            self._shop2team(nth_slot, target)
+        else:
+            raise Exception("Invalid buy_food: nth slot incorrect, nth_slot = ", nth_slot)
 
     def sell_buy(self, nth_slot, nth_team_slot):
         """
@@ -204,7 +211,7 @@ class SuperAutoPetsMouse:
             'reorder': self.reorder,
             'buy_pet': self.buy,
             'buy_food': self.buy_food,
-            'buy_food_team': self.buy_food,
+            'buy_food_team': self.buy_team_food,
             'sell': self.sell,
             'buy_combine': self.buy_combine,
             'combine': self.combine_in_team

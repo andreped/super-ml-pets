@@ -131,7 +131,7 @@ def run(ret):
                         if shop_slot.slot_type == "food":
                             num_food += 1
                     action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
-                elif get_action_name(action) == 'buy_food_team':  # same behaviour as for buy_food for single animal
+                elif get_action_name(action) == 'buy_team_food':  # same behaviour as for buy_food for single animal
                     num_pets = 0
                     num_food = 0
                     for shop_slot in env.player.shop:
@@ -145,6 +145,7 @@ def run(ret):
                         action_dict[get_action_name(action)]()
                     else:
                         action_dict[get_action_name(action)](s[action][1:])
+
             obs, reward, done, info = env.step(action)
             if get_action_name(action) == 'end_turn':
                 # time_pause(1.5)
