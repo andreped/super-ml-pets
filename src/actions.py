@@ -43,11 +43,16 @@ class SuperAutoPetsMouse:
             return
 
         self._click(str(n1) + '_team_slot')
-        gui.mouseDown(button="left")
-        gui.moveTo(self.position[str(n2) + '_team_slot'][0],
-                   self.position[str(n2) + '_team_slot'][1], duration=0.2)
-        time.sleep(2)
-        gui.mouseUp(button="left")
+        #gui.mouseDown(button="left")
+        gui.dragTo(self.position[str(n2) + '_team_slot'][0],
+                   self.position[str(n2) + '_team_slot'][1],
+                   duration=2.0,  # how long drag event should take
+                   tween=gui.easeOutQuad,  # move_drag_tween
+                   button='left')
+        #gui.moveTo(self.position[str(n2) + '_team_slot'][0],
+        #           self.position[str(n2) + '_team_slot'][1], duration=0.2)
+        #time.sleep(2.5)
+        #gui.mouseUp(button="left")
 
     def buy(self, nth_slot):
         """
@@ -131,7 +136,7 @@ class SuperAutoPetsMouse:
         """
         nth_slot = n[0]
         nth_team_slot = n[1]
-        print(self.team_position[nth_team_slot], nth_team_slot)
+        print("\n134 actions.py - self.team_position[nth_team_slot], nth_team_slot:", self.team_position[nth_team_slot], nth_team_slot)
         if self.team_position[nth_team_slot] == 1:
             raise Exception("Invalid buy_combine: pet in team slot not present...")
         self._shop2team(nth_slot, nth_team_slot)
@@ -140,16 +145,34 @@ class SuperAutoPetsMouse:
         """
         method to reorder the team
         """
+        print("\nREORDERING!")
+        print("current order:", order)
         order = order[0]
-        copy_order = list(order)
+        order = list(order)
+        # copy_order = list(order)
+
+        orig_order = list(range(len(order)))  # (0, 1, 2, 3, 4) - for len = 5
+        curr_order = orig_order.copy()
+
+        # tried to fix reordering - left to right
         for i, j in enumerate(order):
-            if i != j:
-                self.move_pet(i, j)
-                del copy_order[i]
-                copy_order.insert(j, j)
-                final_order = self.reorder((tuple(copy_order), ))  # recursively solves
-                return final_order
-        return copy_order  # when all the elements are already sorted
+            if curr_order == order:
+                break
+            loc = curr_order.index(j)  # get location of value of interest
+            curr_order.pop(loc)
+            curr_order.insert(i, j)
+
+            self.move_pet(loc, i)  # move value to position i
+        return order
+
+        #for i, j in enumerate(order):
+        #    if i != j:
+        #        self.move_pet(i, j)
+        #        del copy_order[i]
+        #        copy_order.insert(j, j)
+        #        final_order = self.reorder((tuple(copy_order), ))  # recursively solves
+        #        return final_order
+        #return copy_order  # when all the elements are already sorted
 
     # @TODO: Note that this method is never used, as sapai-gym don't currently support freezing/unfreezing
     def freeze_unfreeze(self, nth_slot):

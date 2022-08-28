@@ -114,14 +114,24 @@ def run(ret):
             action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
             s = env._avail_actions()
             # print(s[action][1:])
-            time_pause(0.5)
+            time_pause(1.0)  # 0.5
             print("Action")
             print(action)
             print(get_action_name(action))
             print(s[action][0])
             print(s[action][1:])
             if env._is_valid_action(action):
+                print("\nACTION IS VALID!\n")
                 if get_action_name(action) == 'buy_food':
+                    num_pets = 0
+                    num_food = 0
+                    for shop_slot in env.player.shop:
+                        if shop_slot.slot_type == "pet":
+                            num_pets += 1
+                        if shop_slot.slot_type == "food":
+                            num_food += 1
+                    action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
+                elif get_action_name(action) == 'buy_food_team':  # same behaviour as for buy_food for single animal
                     num_pets = 0
                     num_food = 0
                     for shop_slot in env.player.shop:
