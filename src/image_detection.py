@@ -87,7 +87,7 @@ def find_the_animals(directory: str):
         temp = i.split('/')
         list_of_animals1.append(temp[-2])
     list_of_animals1 = tuple(list_of_animals1)
-    print(list_of_animals1)
+    # print(list_of_animals1)
     references = tuple(references)
     if len(list_of_animals1) == 0:
         return list_of_animals1
