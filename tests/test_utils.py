@@ -12,10 +12,8 @@ def test_logger():
 
 
 def test_easeOutQuad():
-    x = np.linspace(0, 1, 1000)
-    custom_easeOutQuad(x)
+    [custom_easeOutQuad(x) for x in np.linspace(0, 1, 1000)]
 
 
 def test_move_drag_tween():
-    x = np.linspace(0, 1, 1000)
-    move_drag_tween(x)
+    [move_drag_tween(x) for x in np.linspace(0, 1, 1000)]
