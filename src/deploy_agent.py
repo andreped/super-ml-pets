@@ -18,6 +18,7 @@ import keyboard  # @TODO: Should swap 'keyboard' package with something that doe
 import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
+import logging as log
 
 # global variable
 stop_program = False
@@ -95,48 +96,48 @@ def run(ret):
         "clip_range": lambda _: 0.0,
     }
 
-    interface.logger.info("INITIALIZATION [self.run]: Loading Model")
+    log.info("INITIALIZATION [self.run]: Loading Model")
     model = MaskablePPO.load(ret.infer_model, custom_objects=custom_objects)
 
-    interface.logger.info("INITIALIZATION [self.run]: Create SuperAutoPetsEnv Object")
+    log.info("INITIALIZATION [self.run]: Create SuperAutoPetsEnv Object")
     env = SuperAutoPetsEnv(opponent_generator, valid_actions_only=True)
     obs = env.reset()
 
     with pynput.keyboard.Listener(on_press=kill_process) as listener:
         while not stop_program:
             time_pause(0.5)
-            interface.logger.info("CV SYSTEM [self.run]: Detect the Pets and Food" +
+            log.info("CV SYSTEM [self.run]: Detect the Pets and Food" +
                                   " in the Shop Slots")
-            interface.logger.info("CV SYSTEM [self.run]: Calls " +
+            log.info("CV SYSTEM [self.run]: Calls " +
                                   "[image_detection.find_the_animals]")
             pets, _ = find_the_animals(
                 directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/").replace("\\", "/"))
             pets = remove_nothing(pets)
-            interface.logger.info("CV SYSTEM [self.run]: The detected Pets and Food in the Shop is : {}".format(pets))
-            interface.logger.info("GAME ENGINE [self.run]: Set Environment Shop = " +
+            log.info("CV SYSTEM [self.run]: The detected Pets and Food in the Shop is : {}".format(pets))
+            log.info("GAME ENGINE [self.run]: Set Environment Shop = " +
                                   "detected Pets and Food")
             env.player.shop = Shop(pets)
             if env.player.lives <= 3:
-                interface.logger.info("GAME ENGINE [self.run]: Increment number of " +
+                log.info("GAME ENGINE [self.run]: Increment number of " +
                                       "remaining lives by 3")
                 env.player.lives += 3
             action_masks = get_action_masks(env)
             obs = env._encode_state()
-            interface.logger.info("GAME ENGINE [self.run]: Get the best action" +
+            log.info("GAME ENGINE [self.run]: Get the best action" +
                                   " to make for the given state from the loaded model")
             action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
             s = env._avail_actions()
 
             time_pause(1.0)  # 0.5
-            interface.logger.info("GAME ENGINE [self.run]:" +
+            log.info("GAME ENGINE [self.run]:" +
                                   " Current Team and Shop \n{}".format(s[action][0]))
-            interface.logger.info("GAME ENGINE [self.run]:" +
+            log.info("GAME ENGINE [self.run]:" +
                                   " Best Action = {} {}".format(action, get_action_name(action)))
-            interface.logger.info("GAME ENGINE [self.run]: Instruction given " +
+            log.info("GAME ENGINE [self.run]: Instruction given " +
                                   "by the model = {}".format(s[action][1:]))
-            # interface.logger.info("GAME ENGINE [self.en")
+            # log.info("GAME ENGINE [self.en")
             if env._is_valid_action(action):
-                interface.logger.info("GAME ENGINE [self.run]: Action is valid")
+                log.info("GAME ENGINE [self.run]: Action is valid")
                 if get_action_name(action) == 'buy_food':
                     num_pets = 0
                     num_food = 0
@@ -145,8 +146,8 @@ def run(ret):
                             num_pets += 1
                         if shop_slot.slot_type == "food":
                             num_food += 1
-                    interface.logger.info("GAME ENGINE [self.run]:" + " Calls {}".format(get_action_name(action)) +
-                                          " with parameters {}, {}".format(s[action][1:], num_pets - num_food % 2))
+                    log.info("GAME ENGINE [self.run]:" + " Calls {}".format(get_action_name(action)) +
+                             " with parameters {}, {}".format(s[action][1:], num_pets - num_food % 2))
                     action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
                 elif get_action_name(action) == 'buy_team_food':  # same behaviour as for buy_food for single animal
                     num_pets = 0
@@ -156,20 +157,20 @@ def run(ret):
                             num_pets += 1
                         if shop_slot.slot_type == "food":
                             num_food += 1
-                    interface.logger.info("GAME ENGINE [self.run]:" + " Calls {}".format(get_action_name(action)) +
-                                          " with parameters {}, {}".format(s[action][1:], num_pets - num_food % 2))
+                    log.info("GAME ENGINE [self.run]:" + " Calls {}".format(get_action_name(action)) +
+                             " with parameters {}, {}".format(s[action][1:], num_pets - num_food % 2))
                     action_dict[get_action_name(action)](s[action][1:], num_pets - num_food % 2)
                 else:
                     if get_action_name(action) == 'roll':
-                        interface.logger.info("GAME ENGINE [self.run]: " +
-                                              "Calls {}".format(get_action_name(action))+" with no parameters")
+                        log.info("GAME ENGINE [self.run]: " +
+                                 "Calls {}".format(get_action_name(action)) + " with no parameters")
                         action_dict[get_action_name(action)]()
                     else:
-                        interface.logger.info("GAME ENGINE [self.run]: " + "Calls {}".format(get_action_name(action)) +
-                                              " with parameters {}".format(s[action][1:]))
+                        log.info("GAME ENGINE [self.run]: " + "Calls {}".format(get_action_name(action)) +
+                                 " with parameters {}".format(s[action][1:]))
                         action_dict[get_action_name(action)](s[action][1:])
-            interface.logger.info("GAME ENGINE [self.run]: Implements the action" +
-                                  " in the Environment\n\n\n")
+            log.info("GAME ENGINE [self.run]: Implements the action" +
+                     " in the Environment\n\n\n")
             obs, reward, done, info = env.step(action)
             if get_action_name(action) == 'end_turn':
                 # time_pause(1.5)
@@ -178,18 +179,18 @@ def run(ret):
                 battle_finished = False
                 while not battle_finished:
                     # click event
-                    interface.logger.info("TRIVIAL MOUSE ACTION [self.run]: clicking to skip the battle")
+                    log.info("TRIVIAL MOUSE ACTION [self.run]: clicking to skip the battle")
                     gui.click(1780, 200)
 
                     # check if battle is done
                     if find_paw():
-                        interface.logger.info("GAME ENGINE [self.run]: Battle is over")
+                        log.info("GAME ENGINE [self.run]: Battle is over")
                         battle_finished = True
                     else:
                         # check if game is over
                         if find_arena():
                             time_pause(0.2)
-                            interface.loggger.info("GAME ENGINE [self.run]: Game is over! Start new game")
+                            log.info("GAME ENGINE [self.run]: Game is over! Start new game")
                             gui.click(600, 400)
 
                 gui.click(1780, 200)
