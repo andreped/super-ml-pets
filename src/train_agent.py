@@ -132,5 +132,5 @@ def train_with_masks(ret):
         if done:
             obs = env.reset()
         rewards.append(reward)
-    log.info(sum(rewards), len(rewards), np.mean(rewards))
+    log.info(" ".join([sum(rewards), len(rewards), np.mean(rewards)]))
     env.close()
