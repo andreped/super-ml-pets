@@ -34,7 +34,7 @@ def main():
                         help="set which gamma to use for MaskablePPO training.")
     parser.add_argument('--verbose', metavar='--v', type=int, nargs='?', default=1,
                         help="sets the verbose level.")
-    ret = parser.parse_args(sys.argv[1:])
+    ret = parser.parse_known_args(sys.argv[1:])
 
     # set verbose handler
     define_logger(verbose=ret.verbose)
