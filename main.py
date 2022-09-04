@@ -4,7 +4,8 @@ import os
 from src.utils import define_logger
 import logging as log
 
-if __name__ == "__main__":
+
+def main():
     parser = ArgumentParser()
     parser.add_argument('--task', metavar='--t', type=str, nargs='?', default="train",
                         help="which task to perform - either 'train' or 'eval'.")
@@ -57,3 +58,7 @@ if __name__ == "__main__":
         run(ret)
     else:
         raise ValueError("Unknown task specified. Available tasks include {'train', 'deploy'}, but used:", ret.task)
+
+
+if __name__ == "__main__":
+    main()
