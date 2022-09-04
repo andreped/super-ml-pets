@@ -126,22 +126,16 @@ def run(ret):
                                   " to make for the given state from the loaded model")
             action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
             s = env._avail_actions()
-            # print(s[action][1:])
+
             time_pause(1.0)  # 0.5
-            # print("Action")
-            # print(action)
             interface.logger.info("GAME ENGINE [self.run]:" +
                                   " Current Team and Shop \n{}".format(s[action][0]))
             interface.logger.info("GAME ENGINE [self.run]:" +
                                   " Best Action = {} {}".format(action, get_action_name(action)))
             interface.logger.info("GAME ENGINE [self.run]: Instruction given " +
                                   "by the model = {}".format(s[action][1:]))
-            # print(get_action_name(action))
-            # print(s[action][0])
             # interface.logger.info("GAME ENGINE [self.en")
-            # print(s[action][1:])
             if env._is_valid_action(action):
-                # print("\nACTION IS VALID!\n")
                 interface.logger.info("GAME ENGINE [self.run]: Action is valid")
                 if get_action_name(action) == 'buy_food':
                     num_pets = 0
@@ -179,27 +173,23 @@ def run(ret):
             obs, reward, done, info = env.step(action)
             if get_action_name(action) == 'end_turn':
                 # time_pause(1.5)
-                # when end turn is pressed, I want it to spam clicking until it sees end turn button again (game is over).
+                # end turned press, start clicking until end turn button shows again (game is over)
                 time_pause(3.0)
                 battle_finished = False
                 while not battle_finished:
                     # click event
-                    # print("click event occured")
-                    interface.logger.info("TRIVIAL MOUSE ACTION [self.run]: clicking"+
-                                          " to skip the battle")
+                    interface.logger.info("TRIVIAL MOUSE ACTION [self.run]: clicking to skip the battle")
                     gui.click(1780, 200)
 
                     # check if battle is done
                     if find_paw():
                         interface.logger.info("GAME ENGINE [self.run]: Battle is over")
-                        # print("battle is done!")
                         battle_finished = True
                     else:
                         # check if game is over
                         if find_arena():
                             time_pause(0.2)
-                            interface.loggger.info("GAME ENGINE [self.run]: Game is over! Start new game 8)")
-                            # print("Game is over! Start new game 8)")
+                            interface.loggger.info("GAME ENGINE [self.run]: Game is over! Start new game")
                             gui.click(600, 400)
 
                 gui.click(1780, 200)
