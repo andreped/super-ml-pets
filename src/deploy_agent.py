@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
 import logging as log
-from utils import opponent_generator
+from .utils import opponent_generator
 
 # global variable
 stop_program = False

@@ -14,7 +14,7 @@ import numpy as np
 import os
 import sys
 import logging as log
-from utils import opponent_generator
+from .utils import opponent_generator
 
 
 def train_with_masks(ret):
