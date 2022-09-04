@@ -98,17 +98,17 @@ def train_with_masks(ret):
             log.info("One full iter is done")
             retry_counter += 1
         except AssertionError as e1:
-            log.info("AssertionError: " + e1)
+            log.info("AssertionError: %s", e1)
             retry_counter += 1
         except TypeError as e2:
-            log.info("TypeError: " + e2)
+            log.info("TypeError: %s", e2)
             log.info("Model stopped training...")
             retry_counter += 1
         except ValueError as e3:
-            log.info("ValueError: " + e3)
+            log.info("ValueError: %s", e3)
             retry_counter += 1
         except Exception as e4:
-            log.info("Exception: " + e4)
+            log.info("Exception: %s", e4)
             retry_counter += 1
 
     # save best model
