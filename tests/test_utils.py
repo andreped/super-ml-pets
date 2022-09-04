@@ -1,5 +1,4 @@
-from src.train_agent import opponent_generator
-from src.utils import define_logger
+from src.utils import define_logger, opponent_generator
 
 
 def test_gen():
@@ -7,7 +6,5 @@ def test_gen():
 
 
 def test_logger():
-    define_logger(1)
-
-
-
+    for i in range(4):
+        define_logger(i)
