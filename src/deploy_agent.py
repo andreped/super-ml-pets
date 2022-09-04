@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
 import logging as log
+from utils import opponent_generator
 
 # global variable
 stop_program = False
@@ -73,13 +74,6 @@ def remove_nothing(pet_list):
         if i != 'nothing':
             pets.append(i)
     return pets
-
-
-def opponent_generator(num_turns):
-    """
-    returns teams to fight against in the gym
-    """
-    return biggest_numbers_horizontal_opp_generator(25)
 
 
 def run(ret):

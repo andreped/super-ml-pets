@@ -14,15 +14,7 @@ import numpy as np
 import os
 import sys
 import logging as log
-
-
-# @TODO: Should remove num_turns argument or set default value to 25
-#   Also, there is an identical method somewhere else. Should remove the copy and move it to a utils.py or similar
-def opponent_generator(num_turns):
-    """
-    returns teams to fight against in the gym
-    """
-    return biggest_numbers_horizontal_opp_generator(25)
+from utils import opponent_generator
 
 
 def train_with_masks(ret):

@@ -6,6 +6,7 @@ import tkinter as tk
 import numpy as np
 import logging as log
 import os
+from sapai_gym.opponent_gen.opponent_generators import biggest_numbers_horizontal_opp_generator
 
 
 def define_logger(verbose=1):
@@ -106,3 +107,10 @@ def custom_easeOutQuad(n):
       (float) The line progress, starting at 0.0 and ending at 1.0. Suitable for passing to getPointOnLine().
     """
     return -n * (n-2)
+
+
+def opponent_generator(num_turns):
+    """
+    returns teams to fight against in the gym - value set to 25
+    """
+    return biggest_numbers_horizontal_opp_generator(25)
