@@ -13,6 +13,7 @@ from tqdm import tqdm
 import numpy as np
 import os
 import sys
+import logging as log
 
 
 # @TODO: Should remove num_turns argument or set default value to 25
@@ -66,16 +67,16 @@ def train_with_masks(ret):
                 "gamma": ret.gamma,
             }
 
-        print("Finetuning...")
+        log.info("Finetuning...")
         model = MaskablePPO.load(ret.finetune, custom_objects=custom_objects)
         model.set_env(env)
     else:
-        print("Training from scratch...")
+        log.info("Training from scratch...")
         model = MaskablePPO("MlpPolicy", env, verbose=0, batch_size=ret.batch_size, learning_rate=ret.learning_rate,
                             gamma=ret.gamma)
 
     # train
-    print("Training...")
+    log.info("Starting training...")
     training_flag = True
     retry_counter = 0
     while training_flag:
@@ -94,20 +95,20 @@ def train_with_masks(ret):
 
             # if we reach 1M iterations, then training can stop, else, restart!
             # training_flag = False
-            print("one full iter is done")
+            log.info("One full iter is done")
             retry_counter += 1
         except AssertionError as e1:
-            print("AssertionError:", e1)
+            log.info("AssertionError: " + e1)
             retry_counter += 1
         except TypeError as e2:
-            print("TypeError:", e2)
-            print("Model stopped training...")
+            log.info("TypeError: " + e2)
+            log.info("Model stopped training...")
             retry_counter += 1
         except ValueError as e3:
-            print("ValueError:", e3)
+            log.info("ValueError: " + e3)
             retry_counter += 1
         except Exception as e4:
-            print("Exception:", e4)
+            log.info("Exception: " + e4)
             retry_counter += 1
 
     # save best model
@@ -117,7 +118,7 @@ def train_with_masks(ret):
     # load model
     trained_model = MaskablePPO.load("./models/" + ret.model_name)
 
-    print("Predicting...")
+    log.info("Predicting...")
 
     # predict
     obs = env.reset()
@@ -131,5 +132,5 @@ def train_with_masks(ret):
         if done:
             obs = env.reset()
         rewards.append(reward)
-    print(sum(rewards), len(rewards), np.mean(rewards))
+    log.info(sum(rewards), len(rewards), np.mean(rewards))
     env.close()
