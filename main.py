@@ -1,6 +1,8 @@
 from argparse import ArgumentParser
 import sys
 import os
+from src.utils import define_logger
+import logging as log
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -29,8 +31,14 @@ if __name__ == "__main__":
                         help="set frequency of how often models are saved using checkpoint callback.")
     parser.add_argument('--gamma', metavar='--gm', type=float, nargs='?', default=0.99,
                         help="set which gamma to use for MaskablePPO training.")
+    parser.add_argument('--verbose', metavar='--v', type=int, nargs='?', default=1,
+                        help="sets the verbose level.")
     ret = parser.parse_args(sys.argv[1:])
-    print(ret)
+
+    # set verbose handler
+    define_logger(verbose=ret.verbose)
+
+    log.debug(ret)
 
     if ret.task == "train":
         from src.train_agent import train_with_masks
@@ -42,10 +50,10 @@ if __name__ == "__main__":
             raise ValueError("The model chosen for deployment does not exist. Chosen model:", ret.infer_model)
 
         from src.deploy_agent import run, pause
-        print("Pausing...")
+        log.info("Pausing...")
         pause()
 
-        print("Running...")
+        log.info("Running...")
         run(ret)
     else:
         raise ValueError("Unknown task specified. Available tasks include {'train', 'deploy'}, but used:", ret.task)

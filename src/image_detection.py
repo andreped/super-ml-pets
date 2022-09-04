@@ -48,7 +48,6 @@ def matching(image, needle_img):
     """
     result = cv2.matchTemplate(image, needle_img, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, _ = cv2.minMaxLoc(result)
-    # print(max_val)
     if max_val > 0.7:
         return 1
     return 0
@@ -87,7 +86,6 @@ def find_the_animals(directory: str):
         temp = i.split('/')
         list_of_animals1.append(temp[-2])
     list_of_animals1 = tuple(list_of_animals1)
-    # print(list_of_animals1)
     references = tuple(references)
     if len(list_of_animals1) == 0:
         return list_of_animals1

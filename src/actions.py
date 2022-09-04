@@ -7,6 +7,7 @@ from .utils import *
 import time
 import logging as log
 
+
 class SuperAutoPetsMouse:
     """
     A Class that implements the interface between reinforcement agent and game
@@ -18,11 +19,6 @@ class SuperAutoPetsMouse:
     def __init__(self):
         self.position = get_position()
         self.team_position = [1] * 5
-        log.basicConfig(filename="last_game.log", 
-        format = "%(levelname)s %(filename)s %(lineno)s %(message)s",
-        level=log.DEBUG,
-        filemode='w'
-        )
         self.logger = log.getLogger()
 
     def _shop2team(self, n1, n2):
@@ -31,8 +27,8 @@ class SuperAutoPetsMouse:
         """
         # print("_shop2team")
         # print(n1, n2)
-        self.logger.info("MOUSE ACTION [self._shop2team]: Buys Pet from"+ 
-        "{}th Shop Slot to {}th Team Slot".format(n1,n2))
+        self.logger.info("MOUSE ACTION [self._shop2team]: Buys Pet from" +
+                         "{}th Shop Slot to {}th Team Slot".format(n1, n2))
         gui.click(self.position[str(n1) + '_slot'])
         gui.click(self.position[str(n2) + '_team_slot'])
 
