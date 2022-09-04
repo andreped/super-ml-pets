@@ -1,4 +1,5 @@
-from src.utils import define_logger, opponent_generator
+from src.utils import define_logger, opponent_generator, custom_easeOutQuad, move_drag_tween
+import numpy as np
 
 
 def test_gen():
@@ -8,3 +9,13 @@ def test_gen():
 def test_logger():
     for i in range(4):
         define_logger(i)
+
+
+def test_easeOutQuad():
+    x = np.linscape(0, 1, 1e4)
+    custom_easeOutQuad(x)
+
+
+def test_move_drag_tween():
+    x = np.linscape(0, 1, 1e4)
+    move_drag_tween(x)
