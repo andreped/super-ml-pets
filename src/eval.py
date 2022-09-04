@@ -39,6 +39,7 @@ class Evaluate:
         for episode in tqdm(range(self.test_episodes), "Iter:"):
             total_training_rewards = 0
             observation = self.env.get_scaled_state()
+            verbose_step = 10
             done = False
 
             while not done:
@@ -46,7 +47,7 @@ class Evaluate:
                 # model dims are (batch, env.observation_space.n)
                 encoded = observation
                 encoded_reshaped = encoded.reshape([1, encoded.shape[0]])
-                action = best_model.predict(encoded_reshaped, verbose=0).flatten()
+                action = self.best_model.predict(encoded_reshaped, verbose=0).flatten()
 
                 self.env.step(action)
 
@@ -55,7 +56,7 @@ class Evaluate:
                 reward = self.env.score
                 done = self.env.isGameOver()
                 info = None
-                replay_memory.append([observation, action, reward, new_observation, done])
+                # replay_memory.append([observation, action, reward, new_observation, done])
 
                 observation = new_observation
                 total_training_rewards += reward
@@ -67,12 +68,12 @@ class Evaluate:
                     total_training_rewards += 1
                     break
 
-            data.total_wins += self.env.wins
-            data.total_losses += self.env.losses
-            data.total_draws += self.env.draws
+            #data.total_wins += self.env.wins
+            #data.total_losses += self.env.losses
+            #data.total_draws += self.env.draws
 
-            if episode % verbose_step == 0:
-                print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
+            #if episode % verbose_step == 0:
+            #    print("stats: ", data.total_wins, "/", data.total_draws, "/", data.total_losses)
 
 
 def apply(best_model_path: str, target_model_path: str, test_episodes: int):
@@ -88,4 +89,4 @@ def apply(best_model_path: str, target_model_path: str, test_episodes: int):
 if __name__ == "__main__":
     model_path = "./best_models/model_sap_gym_sb3_280822_finetuned_641057_steps"
     target_path = "./best_models/model_sap_gym_sb3_200822_422718_steps"
-    apply(model_path, target_path, test_episodes=100)
+    #apply(model_path, target_path, test_episodes=100)
