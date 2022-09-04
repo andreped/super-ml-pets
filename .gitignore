@@ -9,3 +9,4 @@
 *history/
 .idea/
 .coverage
+*.log
