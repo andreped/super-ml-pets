@@ -37,7 +37,7 @@ pip install -r requirements.txt
 <details>
 <summary>
 
-### Additional setup for Ubuntu only </summary>
+### Additional setup for Ubuntu only</summary>
 ```
 sudo apt install python3-tk
 sudo su
@@ -56,7 +56,7 @@ This framework currently supports training and deploying RL models for SAP.
 <details open>
 <summary>
 
-### Training </summary>
+### Training</summary>
 
 For training in simulated environment, using default arguments, simply run:
 ```
@@ -78,7 +78,7 @@ python main.py --help
 <details open>
 <summary>
 
-### Testing </summary>
+### Testing</summary>
 
 1. To use a trained model in battle, start the game Super Auto Pets.
 
@@ -102,7 +102,7 @@ It might take a few seconds, but you should now be able to see the AI start play
 <details>
 <summary>
 
-### Training history </summary>
+### Training history</summary>
 
 To plot training history, run:
 ```
@@ -118,7 +118,7 @@ python src/plot_history.py --log /path/to/history/progress.csv
 <details>
 <summary>
 
-### Troubleshoot </summary>
+### Troubleshoot</summary>
 
 If you do not have virtualenv in the path, you can run it by (assuming you have it installed):
 ```
