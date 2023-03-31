@@ -21,6 +21,7 @@ import sys
 import logging as log
 from .utils import opponent_generator
 
+
 # global variable
 stop_program = False
 
