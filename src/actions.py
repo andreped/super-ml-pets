@@ -18,7 +18,7 @@ class SuperAutoPetsMouse:
 
     def __init__(self):
         self.position = get_position()
-        self.team_position = [1] * 5
+        self.team_position = [1 for _ in range(5)]
         self.logger = log.getLogger()
 
     def _shop2team(self, n1, n2):
