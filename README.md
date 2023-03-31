@@ -122,17 +122,17 @@ python src/plot_history.py --log /path/to/history/progress.csv
 
 ### Troubleshoot</summary>
 
-If you do not have virtualenv in the path, you can run it by (assuming you have it installed):
-```
-python -m virtualenv -ppython3 venv --clear
-```
-
-To install virtulenv, run:
+To install virtualenv, run:
 ```
 pip install virtualenv
 ```
 
-To activate virtual environment on Ubuntu or macOS, run:
+If you do not have virtualenv in the path, you can access it by:
+```
+python -m virtualenv -ppython3 venv --clear
+```
+
+To activate virtual environment on UNIX-based systems (e.g., macOS or Ubuntu), run:
 ```
 source venv/bin/activate
 ```
@@ -145,9 +145,9 @@ pip install numpy==1.23.2 --force-reinstall
 On both Ubuntu and macOS, it might require sudo permissions to run deployment. This has to do with keyboard events not being able to be recognized without
 sudo rights. On Windows, administrative rights is **not needed**. For more information, see [here](https://pynput.readthedocs.io/en/latest/limitations.html).
  
-On macOS, when you are downloading the models (.zip files) from Releases, they might be unzipped automatically. This is **bad**. To fix this, disable the "Open safe opening of files" in the Safari Preferences.
+On macOS, when you are downloading the models (.zip files) from [Releases](https://github.com/andreped/super-ml-pets/releases), they might be unzipped automatically. This is **bad** as the model extension is `.zip`. To fix this, disable the `Open safe files after downloading` in the Safari Preferences (see [here](https://www.lifewire.com/disable-open-safe-files-after-downloading-in-safari-446562) for more information).
  
-If deployment fails to start (do any movements with the mouse or act), it may be because your screen resolution differ from the expected resolution. The current machine vision system expects the screen resolution to be `1920x1080`. Please, adjust the resolution to this. This will be fixed in the future.
+If deployment fails to start (no mouse movements or events), it may be because your screen resolution differ from the expected resolution. The current machine vision system expects the screen resolution to be `1920x1080`. Please, adjust the resolution to this. This will be fixed in the future.
 
 </details>
 
