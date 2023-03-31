@@ -13,7 +13,7 @@ Train AIs for Super Auto Pets through a simulated environment and test the train
 
 </div>
 
-NOTE: Framework supports Python 3.7-3.10 and works cross-platform (Ubuntu, Windows, macOS). Can also be used with the [web app](https://teamwood.itch.io/super-auto-pets).
+NOTE: Framework supports Python `3.7-3.10` and works cross-platform (Ubuntu, Windows, macOS). Can also be used with the [web app](https://teamwood.itch.io/super-auto-pets).
 
 Training has also been tested with GitHub Codespaces (see [here](https://github.com/features/codespaces) for more information).
 
@@ -84,7 +84,7 @@ python main.py --help
 
 1. To use a trained model in battle, start the game Super Auto Pets.
 
-2. Ensure that the game is in full screen mode, disable all unneccessary prompts, enable auto name picker, and set speed to 200% (you might also have to enable auto battle which can only be done in the first battle - if this is the first time you are playing this game).
+2. Ensure that the game is in full screen mode, disable all unneccessary prompts, enable auto name picker, and set speed to `200%` (you might also have to enable auto battle which can only be done in the first battle - if this is the first time you are playing this game).
 
 3. Enter the arena by clicking `Arena mode`.
 
@@ -135,20 +135,20 @@ To activate virtual environment on Ubuntu or macOS, run:
 source venv/bin/activate
 ```
 
-If you are using newer versions of Python (e.g., 3.10.x), you might have issues with installing and/or using `numpy` with the other dependencies. If that happens, try downgrading numpy by:
+If you are using newer versions of Python (e.g., `3.10`), you might have issues with installing and/or using `numpy` with the other dependencies. If that happens, try downgrading numpy by:
 ```
 pip install numpy==1.23.2 --force-reinstall
 ```
 
-Note that Python 3.11 is not supported as dependencies such as `scipy` fail to install. This will probably
-change in the future, but for now only python versions 3.7-3.10 are supported.
+Note that Python `3.11` is not supported as dependencies such as `scipy` fail to install. This will probably
+change in the future, but for now only python versions `3.7-3.10` are supported.
  
 On both Ubuntu and macOS, it might require sudo permissions to run deployment. This has to do with keyboard events not being able to be recognized without
 sudo rights. On Windows, administrative rights is **not needed**. For more information, see [here](https://pynput.readthedocs.io/en/latest/limitations.html).
  
 On macOS, when you are downloading the models (.zip files) from Releases, they might be unzipped automatically. This is **bad**. To fix this, disable the "Open safe opening of files" in the Safari Preferences.
  
-If deployment fails to start (do any movements with the mouse or act), it may be because your screen resolution differ from the expected resolution. The current machine vision system expects the screen resolution to be 1920x1080. Please, adjust the resolution to this. This will be fixed in the future.
+If deployment fails to start (do any movements with the mouse or act), it may be because your screen resolution differ from the expected resolution. The current machine vision system expects the screen resolution to be `1920x1080`. Please, adjust the resolution to this. This will be fixed in the future.
 
 </details>
 
