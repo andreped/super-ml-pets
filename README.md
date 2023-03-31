@@ -13,7 +13,7 @@ Train AIs for Super Auto Pets through a simulated environment and test the train
 
 </div>
 
-NOTE: Framework supports Python `3.7-3.10` and works cross-platform (Ubuntu, Windows, macOS). Can also be used with the [web app](https://teamwood.itch.io/super-auto-pets).
+NOTE: Framework supports Python `3.7-3.11` and works cross-platform (Ubuntu, Windows, macOS). Can also be used with the [web app](https://teamwood.itch.io/super-auto-pets).
 
 Training has also been tested with GitHub Codespaces (see [here](https://github.com/features/codespaces) for more information).
 
@@ -139,9 +139,6 @@ If you are using newer versions of Python (e.g., `3.10`), you might have issues 
 ```
 pip install numpy==1.23.2 --force-reinstall
 ```
-
-Note that Python `3.11` is not supported as dependencies such as `scipy` fail to install. This will probably
-change in the future, but for now only python versions `3.7-3.10` are supported.
  
 On both Ubuntu and macOS, it might require sudo permissions to run deployment. This has to do with keyboard events not being able to be recognized without
 sudo rights. On Windows, administrative rights is **not needed**. For more information, see [here](https://pynput.readthedocs.io/en/latest/limitations.html).
