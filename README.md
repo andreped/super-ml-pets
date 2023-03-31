@@ -109,7 +109,7 @@ To plot training history, run:
 python src/plot_history.py --log /path/to/history/progress.csv
 ```
 
-<p align="left">
+<p align="center">
   <img src="assets/training_history_example.png" width="60%" alt='super-auto-pets'>
 </p>
 
