@@ -11,6 +11,7 @@ from skimage.metrics import structural_similarity as ssim
 import matplotlib.pyplot as plt
 from .utils import get_curr_screen_geometry
 
+
 # global for all functions
 paw_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../assets/paw_icon.png")
 arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../assets/arena_mode_icon.png")
@@ -36,9 +37,11 @@ def get_animal_from_screen():
     img_05 = img.crop((730, 0, 860, img_n_width))
     img_06 = img.crop((875, 0, 1005, img_n_width))
     images0 = [img_00, img_01, img_02, img_03, img_04, img_05, img_06]
+
     images = []
     for i in images0:
         images.append(cv2.cvtColor(np.array(i), cv2.COLOR_RGB2BGR))
+
     return images, images0
 
 
@@ -48,8 +51,10 @@ def matching(image, needle_img):
     """
     result = cv2.matchTemplate(image, needle_img, cv2.TM_CCOEFF_NORMED)
     _, max_val, _, _ = cv2.minMaxLoc(result)
+
     if max_val > 0.7:
         return 1
+        
     return 0
 
 
@@ -71,6 +76,7 @@ def find_the_animals(directory: str):
     """
     list_of_animals = []
     images, references = get_animal_from_screen()
+
     # go through all the animals images in the directory
     for i in images:
         for j in get_image_directory(directory):
@@ -79,16 +85,21 @@ def find_the_animals(directory: str):
             if matching(i, im):
                 list_of_animals.append(j)
                 break
+    
     if len(list_of_animals) > 7:
         return 0
+
     list_of_animals1 = []
     for i in list_of_animals:
         temp = i.split('/')
         list_of_animals1.append(temp[-2])
+        
     list_of_animals1 = tuple(list_of_animals1)
     references = tuple(references)
+
     if len(list_of_animals1) == 0:
         return list_of_animals1
+
     return list_of_animals1, references
 
 
@@ -105,6 +116,7 @@ def find_arena():
     """
     full_img = get_img_from_coords((310, 180, 1164, 671))
     value = ssim(arena_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+
     if value > 0.4:
         return True
     else:
@@ -117,6 +129,7 @@ def find_paw():
     """
     full_img = get_img_from_coords((1737.5, 15, 1812.5 + 4, 85 + 8))
     value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+
     if value > 0.4:
         return True
     else:
