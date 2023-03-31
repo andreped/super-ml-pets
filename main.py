@@ -8,7 +8,7 @@ import logging as log
 def main():
     parser = ArgumentParser()
     parser.add_argument('-t', '--task', type=str, nargs='?', default="train",
-                        help="which task to perform - either 'train' or 'eval'.")
+                        help="which task to perform. Either 'train' or 'eval'.")
     parser.add_argument('-nt', '--nb_steps', type=int, nargs='?', default=10000,
                         help="number of time steps when training RL model.")
     parser.add_argument('-ng', '--nb_games', type=int, nargs='?', default=10000,
@@ -18,10 +18,9 @@ def main():
     parser.add_argument('-m', '--model_name', type=str, nargs='?', default="rl_model",
                         help="which name to use for the model.")
     parser.add_argument('-nr', '--nb_retries', type=int, nargs='?', default=1,
-                        help="number of times training is restarted (continued) if it crashes. Set to -1 to train "
-                             "forever.")
+                        help="number of times training is restarted (continued) if it crashes. Set to -1 to train forever.")
     parser.add_argument('-im', '--infer_model', type=str, nargs='?', default=None,
-                        help="which model to use for deployment (give full path, without extension '.zip'.")
+                        help="which model to use for deployment. Full path excluding '.zip' extension.")
     parser.add_argument('-py', '--infer_pversion', type=str, nargs='?', default="3.7",
                         help="define which python version the current deployment model is trained with.")
     parser.add_argument('-bs', '--batch_size', type=int, nargs='?', default=512,
