@@ -6,5 +6,6 @@ pyautogui
 tqdm
 opencv-python
 scikit-image
+scikit-learn
 numpy<=1.23.2
 pynput
