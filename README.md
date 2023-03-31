@@ -91,7 +91,9 @@ python main.py --help
 4. Go outside the game and download a pretrained model from [here](https://github.com/andreped/super-ml-pets/releases/tag/v0.0.2), or use any pretrained model you might have.
 
 5. Then, simply start the AI by running this command from the terminal (with example path to pretrained model, **without extension .zip**):  
-    > python main.py --task deploy --infer_model /path/to/trained/model_sap_gym_sb3_280822_finetuned_641057_steps
+```
+python main.py --task deploy --infer_model /path/to/trained/model_sap_gym_sb3_280822_finetuned_641057_steps
+```
 
 6. Go back into the game and press the `Space` keyboard button (when you are in the Arena (in team preparation, before battle).
 
