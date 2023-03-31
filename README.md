@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/01/Super-Auto-Pets-How-To-Level-Quickly-Feature-Image.jpg" width="50%" alt='super-auto-pets'>
+<img src="assets/SMLP.svg" width="50%" alt='super-auto-pets'>
 <h1 align="center">super-ml-pets</h1>
 <h3 align="center">Framework for training and deploying AIs for Super Auto Pets</h3>
 
