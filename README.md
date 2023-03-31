@@ -108,7 +108,7 @@ python src/plot_history.py --log /path/to/history/progress.csv
 ```
 
 <p align="left">
-  <img src="assets/training_history_example.png" width="80%" alt='super-auto-pets'>
+  <img src="assets/training_history_example.png" width="60%" alt='super-auto-pets'>
 </p>
 
 </details>
