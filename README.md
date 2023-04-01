@@ -153,3 +153,5 @@ If deployment fails to start (no mouse movements or events), it may be because y
 
 ## Acknowledgements
 This implementation is based on multiple different projects. The core implementation is derived from [GoldExplosion](https://github.com/GoldExplosion/SuperAutoPets-RL-Agent), which further was based upon the super auto pets engine [sapai](https://github.com/manny405/sapai) and RL training through [sapai-gym](https://github.com/alexdriedger/sapai-gym).
+
+All credit to @jpdfrutos for designing the amazing [header figure](https://github.com/andreped/super-ml-pets/blob/main/assets/SMLP.svg).
