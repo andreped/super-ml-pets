@@ -15,7 +15,7 @@ Train AIs for Super Auto Pets through a simulated environment and test the train
 
 Framework supports Python `3.7-3.11` and works cross-platform (Ubuntu, Windows, macOS). Deployment is also compatible with the [web app](https://teamwood.itch.io/super-auto-pets).
 
-Training has also been tested with GitHub Codespaces (see [here](https://github.com/features/codespaces) for more information).
+Training has also been tested with [GitHub Codespaces](https://github.com/features/codespaces) and [Google Colab](https://colab.research.google.com/). A demonstration of model training can be seen in [this gist](https://colab.research.google.com/gist/andreped/cc0789bd711874f792c0991978b2f981/super-ml-pets-test.ipynb).
 
 ## Getting started
 
