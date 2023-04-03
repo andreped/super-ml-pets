@@ -1,6 +1,6 @@
-setuptools
+setuptools==66
 git+https://github.com/andreped/sapai-gym.git@catch-errors
-sb3-contrib>=1.7.0
+sb3-contrib
 keyboard
 pyautogui
 tqdm
