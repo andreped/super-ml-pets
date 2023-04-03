@@ -33,6 +33,7 @@ virtualenv -ppython3 venv --clear
 
 3. Install requirements:
 ```
+pip install setuptools==66
 pip install -r requirements.txt
 ```
 
