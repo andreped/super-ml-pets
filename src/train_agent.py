@@ -2,7 +2,7 @@
 Methods for performing training of RL models, also support finetuning
 """
 
-from sb3_contrib.ppo_mask import MaskablePPO
+from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.utils import get_action_masks
 from stable_baselines3.common.callbacks import CheckpointCallback, EvalCallback
