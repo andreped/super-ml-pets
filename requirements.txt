@@ -1,5 +1,5 @@
 setuptools==66
-git+https://github.com/andreped/sapai-gym.git@v1.1.0
+https://github.com/andreped/sapai-gym/releases/download/v0.1.1/sapai_gym-0.1.1-py3-none-any.whl
 sb3-contrib
 keyboard
 pyautogui
