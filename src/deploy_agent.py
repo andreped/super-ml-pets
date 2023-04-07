@@ -14,7 +14,6 @@ from sapai.shop import *
 from .image_detection import *
 from .actions import *
 import pynput
-import keyboard  # @TODO: Should swap 'keyboard' package with something that does not require sudo on Ubuntu
 import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
@@ -42,7 +41,8 @@ def pause():
     method which pauses until 'space' keyboard key is pressed
     """
     while True:
-        if keyboard.read_key() == 'space':
+        #if keyboard.read_key() == 'space':
+        if key == pynput.keyboard.Key.space:
             break
 
 
