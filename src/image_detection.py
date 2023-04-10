@@ -63,6 +63,7 @@ def get_image_directory(directory):
     returns filenames one-by-one from SAP_res folder of animals and items
     """
     dir = os.listdir(directory)
+    dir = list(filter((".DS_Store").__ne__, dir))  # remove occurences of ".DS_Store" relevant for macOS
     for folder in dir:
         for filename in os.listdir(os.path.join(directory, folder)):
             file = os.path.join(folder, filename)
