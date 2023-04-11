@@ -35,10 +35,9 @@ jobs:
   test:
     runs-on: ${{ matrix.os}}
     strategy:
-      max-parallel: 12
       matrix:
         os: [windows-2019, ubuntu-20.04, macos-11]
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{matrix.python-version}}
@@ -47,12 +46,9 @@ jobs:
           python-version: ${{matrix.python-version}}
 
       - name: Install dependencies
-        if: "${{matrix.os}} != 'macos-11' && ${{matrix.python-version}} != '3.11'"
         run: |
-          pip install setuptools==66
           pip install -r requirements.txt
 
       - name: Run tests
-        if: "${{matrix.os}} != 'macos-11' && ${{matrix.python-version}} != '3.11'"
         run: |
           python main.py --task train --nb_steps 1000 --nb_games 1000 --nb_retries 1
