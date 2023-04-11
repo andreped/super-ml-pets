@@ -2,7 +2,6 @@
 Script for generating training history plot
 """
 
-from stable_baselines3.common.logger import Figure
 import matplotlib.pyplot as plt
 import pandas as pd
 import os
@@ -11,10 +10,10 @@ from argparse import ArgumentParser
 import sys
 
 
-if __name__ == "__main__":
+def plot_logs():
     parser = ArgumentParser()
     parser.add_argument('--log', metavar='--l', type=str, nargs='?',
-                        help="which model history to plot (e.g., '/path/to/history/sb3_log_180822/progress.csv'.")
+                        help="which model history to plot (e.g., './history/sb3_log/progress.csv'.")
     ret = parser.parse_args(sys.argv[1:])
     print(ret)
 
@@ -33,3 +32,7 @@ if __name__ == "__main__":
     ax[1].grid("on")
     plt.tight_layout()
     plt.show()
+
+
+if __name__ == "__main__":
+    plot_logs()
