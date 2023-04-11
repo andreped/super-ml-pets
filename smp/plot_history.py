@@ -14,7 +14,7 @@ def plot_logs():
     parser = ArgumentParser()
     parser.add_argument('--log', metavar='--l', type=str, nargs='?',
                         help="which model history to plot (e.g., './history/sb3_log/progress.csv'.")
-    ret = parser.parse_args(sys.argv[1:])
+    ret = parser.parse_known_args(sys.argv[1:])[0]
     print(ret)
 
     data = pd.read_csv(ret.log)
