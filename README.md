@@ -33,6 +33,8 @@ virtualenv -ppython3 venv --clear
 ./venv/Scripts/activate
 ```
 
+To activate the virtual environment on UNIX-based systems, instead of the last line run `source venv/bin/activate`
+
 3. Install requirements:
 ```
 pip install -r requirements.txt
