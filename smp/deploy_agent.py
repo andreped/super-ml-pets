@@ -62,7 +62,7 @@ def get_action_name(k: int) -> str:
     for (start_name, _), (end_name, end_val) in zip(name_val[:-1], name_val[1:]):
         if k < end_val:
             return start_name
-    else:  # @TODO: this can't possibly be the corrct placement, or?
+    else:  # @TODO: this can't possibly be the correct placement, or?
         return end_name
 
 
