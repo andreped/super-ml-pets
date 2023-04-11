@@ -192,6 +192,13 @@ def run(ret):
                             gui.click(600, 400)
 
                 gui.click(1780, 200)
+                
+               # waits for the turn 3 event, clicking through it
+                time.sleep(2)
+           
+                gui.click(1780, 200)
+
+                print("ending turn")
 
         listener.join()
 
