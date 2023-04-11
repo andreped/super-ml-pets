@@ -7,7 +7,7 @@
 ![CI](https://github.com/andreped/super-ml-pets/workflows/CI/badge.svg)
 ![CodeQL](https://github.com/andreped/super-ml-pets/workflows/CodeQL/badge.svg)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
-[![codecov](https://codecov.io/gh/andreped/super-ml-pets/branch/main/graph/badge.svg?token=9YF7NANQTE)](https://codecov.io/gh/andreped/super-ml-pets)
+[![codecov](https://codecov.ioandreped/super-ml-pets/tests/gh/andreped/super-ml-pets/branch/main/graph/badge.svg?token=9YF7NANQTE)](https://codecov.io/gh/andreped/super-ml-pets)
  
 Train AIs for Super Auto Pets through a simulated environment and test the trained model against real opponents in the actual game! AI is trained using reinforcement learning and a machine vision system is used to capture the screen to give information to the AI.
 
@@ -107,7 +107,7 @@ It might take a few seconds, but you should now be able to see the AI start play
 
 To plot training history, run:
 ```
-python src/plot_history.py --log /path/to/history/progress.csv
+python smp/plot_history.py --log /path/to/history/progress.csv
 ```
 
 <p align="center">

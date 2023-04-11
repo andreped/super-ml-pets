@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 import sys
 import os
-from src.utils import define_logger
+from smp.utils import define_logger
 import logging as log
 
 
@@ -41,7 +41,7 @@ def main():
     log.debug(ret)
 
     if ret.task == "train":
-        from src.train_agent import train_with_masks
+        from smp.train_agent import train_with_masks
         train_with_masks(ret)
     elif ret.task == "deploy":
         if ret.infer_model is None:
@@ -49,7 +49,7 @@ def main():
         elif not os.path.exists(ret.infer_model + ".zip"):
             raise ValueError("The model chosen for deployment does not exist. Chosen model:", ret.infer_model)
 
-        from src.deploy_agent import run, pause
+        from smp.deploy_agent import run, pause
         log.info("Pausing...")
         pause()
 
