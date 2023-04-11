@@ -12,7 +12,7 @@ import sys
 
 def plot_logs():
     parser = ArgumentParser()
-    parser.add_argument('--log', metavar='--l', type=str, nargs='?', default='./history/sb3_log/progress.csv',
+    parser.add_argument('--log', metavar='--l', type=str, nargs='?', default='./history/history_rl_model/progress.csv',
                         help="full path to which model history to plot.")
     ret = parser.parse_known_args(sys.argv[1:])[0]
     print(ret)
