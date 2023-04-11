@@ -1,5 +1,6 @@
 from smp.plot_history import plot_logs
 from main import main
+import pytest
 
 
 @pytest.fixture
