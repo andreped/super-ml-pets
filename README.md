@@ -17,6 +17,8 @@ Framework supports Python `3.7-3.11` and works cross-platform (Ubuntu, Windows, 
 
 Training has also been tested with [GitHub Codespaces](https://github.com/features/codespaces) and [Google Colab](https://colab.research.google.com/). A demonstration of model training can be seen in [this gist](https://colab.research.google.com/gist/andreped/cc0789bd711874f792c0991978b2f981/super-ml-pets-test.ipynb).
 
+**Disclaimer:** We recommend using **Windows for deployment** as the UNIX-based systems require root permissions to launch the program out-of-the-box.
+
 ## Getting started
 
 1. Clone the repo:
