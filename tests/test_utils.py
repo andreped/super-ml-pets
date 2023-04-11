@@ -1,4 +1,4 @@
-from src.utils import define_logger, opponent_generator, custom_easeOutQuad, move_drag_tween
+from smp.utils import define_logger, opponent_generator, custom_easeOutQuad, move_drag_tween
 import numpy as np
 
 
