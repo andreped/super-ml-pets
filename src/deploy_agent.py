@@ -122,7 +122,7 @@ def run(ret):
                                   " to make for the given state from the loaded model")
             action, _states = model.predict(obs, action_masks=action_masks, deterministic=True)
             s = env._avail_actions()
-
+            action = int(action) 
             time_pause(1.0)  # 0.5
             log.info("GAME ENGINE [self.run]:" +
                                   " Current Team and Shop \n{}".format(s[action][0]))
