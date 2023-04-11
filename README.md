@@ -19,7 +19,7 @@ Training has also been tested with [GitHub Codespaces](https://github.com/featur
 
 **Disclaimer:** We recommend using **Windows for deployment** as the UNIX-based systems require root permissions to launch the program out-of-the-box. Also, changing UI style for the web app does not always work.
 
-## Getting started
+## [Getting started](https://github.com/andreped/super-ml-pets#getting-started)
 
 1. Clone the repo:
 ```
@@ -55,7 +55,7 @@ Note that the command `sudo su` enables sudo rights. This seems to be required b
 
 </details>
 
-## Usage
+## [Usage](https://github.com/andreped/super-ml-pets/edit/main/README.md#usage)
 This framework currently supports training and deploying RL models for SAP.
 
 <details open>
@@ -148,7 +148,7 @@ If deployment fails to start (no mouse movements or events), it may be because y
 
 </details>
 
-## Acknowledgements
+## [Acknowledgements](https://github.com/andreped/super-ml-pets/edit/main/README.md#acknowledgements)
 This implementation is based on multiple different projects. The core implementation is derived from [GoldExplosion](https://github.com/GoldExplosion/SuperAutoPets-RL-Agent), which further was based upon the super auto pets engine [sapai](https://github.com/manny405/sapai) and RL training through [sapai-gym](https://github.com/alexdriedger/sapai-gym).
 
 All credit to [jpdefrutos](https://github.com/jpdefrutos) for designing the amazing [header figure](https://github.com/andreped/super-ml-pets/blob/main/assets/SMLP.svg).
