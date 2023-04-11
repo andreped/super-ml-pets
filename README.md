@@ -107,7 +107,7 @@ It might take a few seconds, but you should now be able to see the AI start play
 
 To plot training history, run:
 ```
-python smp/plot_history.py --log /path/to/history/progress.csv
+python smp/plot_history.py --log /path/to/history/history_rl_model/progress.csv
 ```
 
 <p align="center">
