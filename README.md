@@ -71,7 +71,7 @@ python main.py --task train
 
 Given an existing model, it is also possible to finetune it by (with example):
 ```
-python main.py --task train --finetune /path/to/model_sap_gym_sb3_180822_checkpoint_2175_steps.zip
+python main.py --task train --finetune /path/to/model_sap_gym_sb3_180822_checkpoint_2175_steps
 ```
 
 The script supports other arguments. To see what is possible, run:
