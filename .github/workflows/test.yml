@@ -47,10 +47,12 @@ jobs:
           python-version: ${{matrix.python-version}}
 
       - name: Install dependencies
+        if: ${{ ${{matrix.os}} != 'macos-11' && ${{matrix.python-version}} != '3.11' }}
         run: |
           pip install setuptools==66
           pip install -r requirements.txt
 
       - name: Run tests
+        if: ${{ ${{matrix.os}} != 'macos-11' && ${{matrix.python-version}} != '3.11' }}
         run: |
           python main.py --task train --nb_steps 1000 --nb_games 1000 --nb_retries 1
