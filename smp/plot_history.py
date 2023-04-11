@@ -14,13 +14,13 @@ def plot_logs():
     parser = ArgumentParser()
     parser.add_argument('--log', metavar='--l', type=str, nargs='?', default='./history/history_rl_model/progress.csv',
                         help="full path to which model history to plot.")
-    ret = parser.parse_known_args(sys.argv[1:])[0]
-    print(ret)
-
+    ret = parser.parse_known_args(sys.argv[1:])[0]; print(ret)
+    
+    # convert log to pandas dataframe
     data = pd.read_csv(ret.log)
 
     # set plot config
-    rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})  # , 'size': 16})
+    rc('font', **{'family': 'serif', 'serif': ['Computer Modern']})
 
     # load history and make plot
     fig, ax = plt.subplots(2, 1)
