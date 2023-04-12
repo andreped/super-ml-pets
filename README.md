@@ -17,7 +17,7 @@ Framework supports Python `3.7-3.11` and works cross-platform (Ubuntu, Windows, 
 
 Training has also been tested with [GitHub Codespaces](https://github.com/features/codespaces) and [Google Colab](https://colab.research.google.com/). A demonstration of model training can be seen in [this gist](https://colab.research.google.com/gist/andreped/cc0789bd711874f792c0991978b2f981/super-ml-pets-test.ipynb).
 
-**Disclaimer:** We recommend using **Windows for deployment** as the UNIX-based systems require root permissions to launch the program out-of-the-box. Also, changing UI style for the web app does not always work.
+**Disclaimer:** We recommend using **Windows for deployment** as the UNIX-based systems require root permissions to launch the program out-of-the-box.
 
 ## [Getting started](https://github.com/andreped/super-ml-pets#getting-started)
 
@@ -86,17 +86,19 @@ python main.py --help
 2. Ensure that the game is in full screen mode, disable all unneccessary prompts, enable auto name picker, and set speed to `200%` (you might also have to enable auto battle which can only be done in the first battle - if this is the first time you are playing this game).
 
 3. Change the UI style to classic for all options in customize including "Food art", "Background art", "Menu background", "Buff style", and "Held food".
+ 
+4. Change UI style for pets to classic by going to the `pets` settings.
 
-4. Enter the arena by clicking `Arena mode`.
+5. Enter the arena by clicking `Arena mode`.
 
-5. Go outside the game and download a pretrained model from [here](https://github.com/andreped/super-ml-pets/releases/tag/v0.0.2), or use any pretrained model you might have.
+6. Go outside the game and download a pretrained model from [here](https://github.com/andreped/super-ml-pets/releases/tag/v0.0.2), or use any pretrained model you might have.
 
-6. Then, simply start the AI by running this command from the terminal (with example path to pretrained model, **without extension .zip**):  
+7. Then, simply start the AI by running this command from the terminal (with example path to pretrained model, **without extension .zip**):  
 ```
 python main.py --task deploy --infer_model /path/to/model_sap_gym_sb3_280822_finetuned_641057_steps
 ```
 
-7. Go back into the game and press the `Space` keyboard button (when you are in the Arena (in team preparation, before battle).
+8. Go back into the game and press the `Space` keyboard button (when you are in the Arena (in team preparation, before battle).
 
 It might take a few seconds, but you should now be able to see the AI start playing. Please, let it play in peace, or else it might get angry and you may have accidentally created [Skynet](https://en.wikipedia.org/wiki/Skynet_(Terminator)). If you accidentally exit the game, or dont have the game in fullscreen, the machine vision system will fail, and you will have to start a completely new game to use the AI (properly).
 
