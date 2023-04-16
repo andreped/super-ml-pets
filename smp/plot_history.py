@@ -33,8 +33,8 @@ def plot_logs(show=True):
     plt.tight_layout()
     
     if show:
-        plt.show()
+        plt.show()  # pragma: no cover
 
 
 if __name__ == "__main__":
-    plot_logs()
+    plot_logs()  # pragma: no cover

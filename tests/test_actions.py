@@ -24,5 +24,7 @@ def test_class():
     sap.roll()
     sap.end_turn(0)
 
-    sap.sell_buy(nth_slot=[1], nth_team_slot=[2])
+    #sap.sell_buy(nth_slot=[1], nth_team_slot=[2])
+
+    sap.move_pet(1, 2)
 
