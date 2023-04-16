@@ -142,7 +142,11 @@ def find_arena():
     method to detect whether the game is in pre-arena state (game menu)
     """
     full_img = get_img_from_coords((310, 180, 1164, 671))
-    value = ssim(arena_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+    try:
+        value = ssim(arena_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+    except RuntimeWarning:
+        # this is not a critical error. We can disregard this and continue running
+        value = 0
 
     if value > 0.4:
         return True
@@ -155,7 +159,11 @@ def find_paw():
     method to detect if the game is in pre-battle state (detects if paw icon is in top-right corner)
     """
     full_img = get_img_from_coords((1737.5, 15, 1816.5, 93))
-    value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+    try:
+        value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
+    except RuntimeWarning:
+        # this is not a critical error. We can disregard this and continue running
+        value = 0
 
     if value > 0.4:
         return True
