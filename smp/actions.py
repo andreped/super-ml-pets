@@ -198,8 +198,6 @@ class SuperAutoPetsMouse:
         """
         method to reorder the team
         """
-        # print("\nREORDERING!")
-        # print("current order:", order)
         order_str = " ".join(map(str, order[0]))
         self.logger.info("MOUSE ACTION [self.reorder]: Reorders The Team "+
         " to the order ({})".format(order_str))
