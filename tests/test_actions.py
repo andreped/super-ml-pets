@@ -27,4 +27,16 @@ def test_class():
     #sap.sell_buy(nth_slot=[1], nth_team_slot=[2])
 
     sap.move_pet(1, 2)
+    sap.move_pet(1, 1)
 
+    sap.reorder([[4, 3, 2, 1, 0]])
+
+    sap.buy_team_food(nth_slot=[6], num_pets=5)
+
+    try:
+        sap.buy_team_food(nth_slot=[9], num_pets=5)
+    except Exception as e:
+        pass
+
+    sap.buy(nth_slot=[0])
+    # sap.sell_buy(nth_slot=0, nth_team_slot=0)
