@@ -24,6 +24,7 @@ jobs:
           sudo apt install -y xvfb xserver-xephyr xauth
           touch ~/.Xauthority
           pip install pytest-xvfb
+          pip install xlib
 
       - name: Install dependencies
         run: |
