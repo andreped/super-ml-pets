@@ -56,23 +56,25 @@ def get_animal_from_screen():
     # template dimensions -> to be scaled if necessary
     img_n_width = 130
     bboxes = [
-        (10, 0, 140, img_n_width),
-        (155, 0, 285, img_n_width),
-        (300, 0, 430, img_n_width),
-        (445, 0, 575, img_n_width),
-        (590, 0, 720, img_n_width),
-        (730, 0, 860, img_n_width),
-        (875, 0, 1005, img_n_width),
+        [10, 0, 140, img_n_width],
+        [155, 0, 285, img_n_width],
+        [300, 0, 430, img_n_width],
+        [445, 0, 575, img_n_width],
+        [590, 0, 720, img_n_width],
+        [730, 0, 860, img_n_width],
+        [875, 0, 1005, img_n_width],
     ]
 
     images = []
+    images0 = []
     for bbox in bboxes:
-        bbox[0] = dimensions_scale[0]
-        bbox[1] = dimensions_scale[1]
-        bbox[2] = dimensions_scale[0]
-        bbox[3] = dimensions_scale[1]
+        bbox[0] = dimensions_scale[0] * bbox[0]
+        bbox[1] = dimensions_scale[1] * bbox[1]
+        bbox[2] = dimensions_scale[0] * bbox[2]
+        bbox[3] = dimensions_scale[1] * bbox[3]
         
-        image = img.crop(bbox)
+        image = img.crop(tuple(bbox))
+        images0.append(image)
         images.append(cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR))
 
     return images, images0
@@ -159,6 +161,10 @@ def find_paw():
     method to detect if the game is in pre-battle state (detects if paw icon is in top-right corner)
     """
     full_img = get_img_from_coords((1737.5, 15, 1816.5, 93))
+    print(full_img.shape)
+    print(paw_img.shape)
+    #if full_img.shape != paw_img.shape:
+
     try:
         value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
     except RuntimeWarning:

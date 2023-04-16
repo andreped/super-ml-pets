@@ -1,5 +1,6 @@
 import pyautogui
 import os
+from smp.utils import define_logger
 
 try:
     from pyvirtualdisplay.display import Display
@@ -11,5 +12,9 @@ try:
     pyautogui._pyautogui_x11._display = Xlib.display.Display(os.environ['DISPLAY'])
 except FileNotFoundError:  # Need to handle both regular and virtual displays for local and testing in the cloud
     pass
+
+# need to define logger here, as some tests require logger to be defined,
+# but it is only defined in main.py
+define_logger()
 
 # @TODO: Need to be able to gracefully kill the virtual display when finished
