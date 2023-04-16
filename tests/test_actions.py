@@ -1,6 +1,3 @@
-import os
-os.environ['DISPLAY'] = ':0'
-
 from smp.actions import *
 
 
