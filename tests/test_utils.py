@@ -25,7 +25,7 @@ def test_logger():
             define_logger(i)
         except ValueError as e:
             if i != 4:
-                raise e
+                raise e  # pragma: no cover
 
 
 def test_easeOutQuad():
