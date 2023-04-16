@@ -22,6 +22,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y xvfb xserver-xephyr xauth
+          sudo apt install wget
           touch ~/.Xauthority
           pip install pytest-xvfb
           pip install xlib
@@ -31,6 +32,9 @@ jobs:
           pip install wheel flake8 pytest-cov
           pip install xvfbwrapper
           pip install -r requirements.txt
+        
+      - name: Download test model
+        run: wget https://github.com/andreped/super-ml-pets/releases/download/v0.0.5/model_sap_gym_sb3_210822_finetuned_212756_steps.zip
 
       - name: Run tests and collect coverage
         run: pytest --cov .

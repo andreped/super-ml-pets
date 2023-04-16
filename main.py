@@ -62,4 +62,4 @@ def main(virtual_screen=False):
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pragma: no cover
