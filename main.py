@@ -9,9 +9,9 @@ def main():
     parser = ArgumentParser()
     parser.add_argument('-t', '--task', type=str, nargs='?', default="train",
                         help="which task to perform. Either 'train' or 'eval'.")
-    parser.add_argument('-nt', '--nb_steps', type=int, nargs='?', default=10000,
+    parser.add_argument('-nt', '--nb_steps', type=int, nargs='?', default=1024,
                         help="number of time steps when training RL model.")
-    parser.add_argument('-ng', '--nb_games', type=int, nargs='?', default=10000,
+    parser.add_argument('-ng', '--nb_games', type=int, nargs='?', default=1024,
                         help="number of games to run when evaluating model after training.")
     parser.add_argument('-fn', '--finetune', type=str, nargs='?', default=None,
                         help="whether to finetune using pretrained model. Provide path to model if yes.")
@@ -27,7 +27,7 @@ def main():
                         help="set which batch size to use for training.")
     parser.add_argument('-lr', '--learning_rate', type=float, nargs='?', default=0.0003,
                         help="set which learning rate to use for training.")
-    parser.add_argument('-sf', '--save_freq', type=int, nargs='?', default=10000,
+    parser.add_argument('-sf', '--save_freq', type=int, nargs='?', default=1024,
                         help="set frequency of how often models are saved using checkpoint callback.")
     parser.add_argument('-gm', '--gamma', type=float, nargs='?', default=0.99,
                         help="set which gamma to use for MaskablePPO training.")
