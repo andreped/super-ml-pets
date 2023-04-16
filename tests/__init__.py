@@ -1,5 +1,6 @@
-import pyautogui
 import os
+import pyautogui
+import pytest
 from smp.utils import define_logger
 
 try:
@@ -18,3 +19,16 @@ except FileNotFoundError:  # Need to handle both regular and virtual displays fo
 define_logger()
 
 # @TODO: Need to be able to gracefully kill the virtual display when finished
+
+
+@pytest.fixture(scope="session", autouse=True)
+def cleanup(request):
+    """Cleanup a testing directory once we are finished."""
+    #def remove_test_dir():
+    #    shutil.rmtree(TESTING_DIR)
+    #request.addfinalizer(remove_test_dir)
+
+    try:
+        disp.stop()
+    except Exception as e:
+        print(e)

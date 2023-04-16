@@ -5,7 +5,7 @@ from smp.utils import define_logger
 import logging as log
 
 
-def main():
+def main(virtual_screen=False):
     parser = ArgumentParser()
     parser.add_argument('-t', '--task', type=str, nargs='?', default="train",
                         help="which task to perform. Either 'train' or 'eval'.")
@@ -50,8 +50,10 @@ def main():
             raise ValueError("The model chosen for deployment does not exist. Chosen model:", ret.infer_model)
 
         from smp.deploy_agent import run, pause
-        log.info("Pausing...")
-        pause()
+        
+        if virtual_screen:
+            log.info("Pausing...")
+            pause()
 
         log.info("Running...")
         run(ret)
