@@ -66,16 +66,28 @@ def get_position():
         'img_06': (875, 1005),
     }
 
-    # scale these positions to match current screen resolution
-    ''' # disable scaling for now
+    # scale these positions to match current screen resolution 
+    # disable scaling for now
     curr_geometry = get_curr_screen_geometry()
+    log.info("Current display dimensions: (" + str(curr_geometry[0]) + ", " + str(curr_geometry[1]) + ")")
     for key in position.keys():
         curr_position = position[key]
         # # note that there is an intended height/width switch!
-        position[key] = (int(np.round(curr_position[0] * float(curr_geometry[1]) / template_resolution[0])),
-                         int(np.round(curr_position[1] * float(curr_geometry[0]) / template_resolution[1])))
-    '''
+        position[key] = (int(np.round(curr_position[0] * float(curr_geometry[0]) / template_resolution[0])),
+                         int(np.round(curr_position[1] * float(curr_geometry[1]) / template_resolution[1])))
+
     return position
+
+
+def get_screen_scale():
+    """
+    Returns dimension scale difference between current screen dimensions and template.
+    Defined as scale = curr_screen_dims / template_dims
+    """
+    template_resolution = [1920, 1080]  # height, width
+    curr_geometry = get_curr_screen_geometry()
+
+    return np.array(curr_geometry) / np.array(template_resolution)
 
 
 def get_curr_screen_geometry():

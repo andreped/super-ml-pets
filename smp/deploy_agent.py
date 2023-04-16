@@ -19,11 +19,14 @@ import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
 import logging as log
-from .utils import opponent_generator
+from .utils import opponent_generator, get_screen_scale
 
 
 # global variable
 stop_program = False
+
+# get screen resolution scale, store as global variable in this scope
+dimensions_scale = get_screen_scale()  # width, height
 
 
 def kill_process(key):
@@ -178,7 +181,7 @@ def run(ret):
                 while not battle_finished:
                     # click event
                     log.info("TRIVIAL MOUSE ACTION [self.run]: clicking to skip the battle")
-                    gui.click(1780, 200)
+                    gui.click(1780 * dimensions_scale[0], 200 * dimensions_scale[1])  # x, y
 
                     # check if battle is done
                     if find_paw():
@@ -189,16 +192,16 @@ def run(ret):
                         if find_arena():
                             time_pause(0.2)
                             log.info("GAME ENGINE [self.run]: Game is over! Start new game")
-                            gui.click(600, 400)
+                            gui.click(600 * dimensions_scale[0], 400 * dimensions_scale[1])  # x, y
 
-                gui.click(1780, 200)
+                gui.click(1780 * dimensions_scale[0], 200 * dimensions_scale[1])  # x, y
                 
                # waits for the turn 3 event, clicking through it
                 time.sleep(2)
            
-                gui.click(1780, 200)
+                gui.click(1780 * dimensions_scale[0], 200 * dimensions_scale[1])  # x, y
 
-                print("ending turn")
+                log.info("Ending turn")
 
         listener.join()
 

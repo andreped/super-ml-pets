@@ -9,7 +9,7 @@ from PIL import ImageGrab, Image, ImageChops
 import os
 from skimage.metrics import structural_similarity as ssim
 import matplotlib.pyplot as plt
-from .utils import get_curr_screen_geometry
+from .utils import get_screen_scale
 
 
 # global for all functions
@@ -19,28 +19,61 @@ arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../assets
 paw_img = cv2.cvtColor(cv2.imread(paw_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
 arena_img = cv2.cvtColor(cv2.imread(arena_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
 
-# get screen resolution, store as global variable in this scope
-curr_geometry = get_curr_screen_geometry()
+# get screen resolution scale, store as global variable in this scope
+dimensions_scale = get_screen_scale()
+
+
+def get_img_from_coords(coords, to_numpy=True):
+    """
+    method to get cropped image from coordinates
+    """
+    # as tuple does not support item assignment, change to np.array
+    coords = np.array(coords)
+
+    # scale coords
+    coords[0] = coords[0] * dimensions_scale[0]
+    coords[1] = coords[1] * dimensions_scale[1]
+    coords[2] = coords[2] * dimensions_scale[0]
+    coords[3] = coords[3] * dimensions_scale[1]
+
+    coords = tuple(np.round(coords).astype(int))
+
+    # snip image of screen from scaled coords
+    img = ImageGrab.grab(bbox=coords)  # bbox = (left_x, top_y, right_x, bottom_y)
+
+    if to_numpy:
+        img = np.array(img)
+
+    return img
 
 
 def get_animal_from_screen():
     """
     captures images of the current animals on screen (to be classified at a later stage)
     """
+    img = get_img_from_coords(coords=(450, 620, 1500, 750), to_numpy=False)  # bbox: left, top, right, bottom
+
+    # template dimensions -> to be scaled if necessary
     img_n_width = 130
-    img = ImageGrab.grab(bbox=(450, 620, 1500, 750))  # bbox: left, top, right, bottom
-    img_00 = img.crop((10, 0, 140, img_n_width))
-    img_01 = img.crop((155, 0, 285, img_n_width))
-    img_02 = img.crop((300, 0, 430, img_n_width))
-    img_03 = img.crop((445, 0, 575, img_n_width))
-    img_04 = img.crop((590, 0, 720, img_n_width))
-    img_05 = img.crop((730, 0, 860, img_n_width))
-    img_06 = img.crop((875, 0, 1005, img_n_width))
-    images0 = [img_00, img_01, img_02, img_03, img_04, img_05, img_06]
+    bboxes = [
+        (10, 0, 140, img_n_width),
+        (155, 0, 285, img_n_width),
+        (300, 0, 430, img_n_width),
+        (445, 0, 575, img_n_width),
+        (590, 0, 720, img_n_width),
+        (730, 0, 860, img_n_width),
+        (875, 0, 1005, img_n_width),
+    ]
 
     images = []
-    for i in images0:
-        images.append(cv2.cvtColor(np.array(i), cv2.COLOR_RGB2BGR))
+    for bbox in bboxes:
+        bbox[0] = dimensions_scale[0]
+        bbox[1] = dimensions_scale[1]
+        bbox[2] = dimensions_scale[0]
+        bbox[3] = dimensions_scale[1]
+        
+        image = img.crop(bbox)
+        images.append(cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR))
 
     return images, images0
 
@@ -104,13 +137,6 @@ def find_the_animals(directory: str):
     return list_of_animals1, references
 
 
-def get_img_from_coords(coords):
-    """
-    method to get cropped image from coordinates
-    """
-    return np.array(ImageGrab.grab(bbox=coords))
-
-
 def find_arena():
     """
     method to detect whether the game is in pre-arena state (game menu)
@@ -128,7 +154,7 @@ def find_paw():
     """
     method to detect if the game is in pre-battle state (detects if paw icon is in top-right corner)
     """
-    full_img = get_img_from_coords((1737.5, 15, 1812.5 + 4, 85 + 8))
+    full_img = get_img_from_coords((1737.5, 15, 1816.5, 93))
     value = ssim(paw_img, full_img, data_range=full_img.max() - full_img.min(), channel_axis=2)
 
     if value > 0.4:
