@@ -7,4 +7,4 @@ def test_train():
 
 
 def test_plot():
-    plot_logs()
+    plot_logs(show=False)

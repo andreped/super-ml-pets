@@ -10,7 +10,7 @@ from argparse import ArgumentParser
 import sys
 
 
-def plot_logs():
+def plot_logs(show=True):
     parser = ArgumentParser()
     parser.add_argument('--log', metavar='--l', type=str, nargs='?', default='./history/history_rl_model/progress.csv',
                         help="full path to which model history to plot.")
@@ -31,7 +31,9 @@ def plot_logs():
     ax[1].set_title("Number of wins in 100 games")
     ax[1].grid("on")
     plt.tight_layout()
-    plt.show()
+    
+    if show:
+        plt.show()
 
 
 if __name__ == "__main__":
