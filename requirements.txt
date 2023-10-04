@@ -1,6 +1,6 @@
 setuptools==66
 https://github.com/andreped/sapai-gym/releases/download/v0.1.1/sapai_gym-0.1.1-py3-none-any.whl
-sb3-contrib
+sb3-contrib==1.8.0
 keyboard
 pyautogui
 tqdm
