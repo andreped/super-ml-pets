@@ -43,6 +43,13 @@ To activate the virtual environment on UNIX-based systems, instead of the last l
 pip install -r requirements.txt
 ```
 
+4. Download all pets, food, and misc icons
+```
+wget https://github.com/andreped/super-ml-pets/releases/download/pets-01-2024/pets.zip && unzip pets.zip && rm pets.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/food-01-2024/food.zip && unzip food.zip && rm food.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/misc-01-2024/misc.zip && unzip misc.zip && rm misc.zip
+```
+
 <details>
 <summary>Additional setup for Ubuntu only</summary>
 
