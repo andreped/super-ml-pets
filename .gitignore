@@ -11,3 +11,8 @@
 .coverage
 *.log
 *.DS_Store
+*__MACOSX/
+*pets/
+*pets.zip
+*food/
+*food.zip
