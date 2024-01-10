@@ -126,3 +126,14 @@ def opponent_generator(num_turns):
     returns teams to fight against in the gym - value set to 25
     """
     return biggest_numbers_horizontal_opp_generator(25)
+
+
+def kill_process(key):
+    """
+    method to stop agent from running if 'escape' key is pressed
+    """
+    global stop_program
+    if key == pynput.keyboard.Key.esc:
+        print("\nEscape pressed, stopping agent...")
+        stop_program = True
+        return False

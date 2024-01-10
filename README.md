@@ -43,6 +43,13 @@ To activate the virtual environment on UNIX-based systems, instead of the last l
 pip install -r requirements.txt
 ```
 
+4. Download all pets, food, and misc icons
+```
+wget https://github.com/andreped/super-ml-pets/releases/download/pets-01-2024/pets.zip && unzip pets.zip && rm pets.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/food-01-2024/food.zip && unzip food.zip && rm food.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/misc-01-2024/misc.zip && unzip misc.zip && rm misc.zip
+```
+
 <details>
 <summary>Additional setup for Ubuntu only</summary>
 
@@ -54,7 +61,7 @@ xhost +
 export DISPLAY=:0.0
 ```
 
-Note that the command `sudo su` enables sudo rights. This seems to be required by `keyboard` as mentioned in issue https://github.com/andreped/super-ml-pets/issues/23. The xhost + DISPLAY stuff is needed as the screen might not be found, hence, initializing one solves this issue.
+Note that the command `sudo su` enables administrator rights. This seems to be required by `keyboard` as mentioned in issue https://github.com/andreped/super-ml-pets/issues/23. The xhost + DISPLAY stuff is needed as the screen might not be found, hence, initializing one solves this issue.
 
 </details>
 
@@ -94,7 +101,10 @@ python main.py --help
 
 5. Enter the arena by clicking `Arena mode`.
 
-6. Go outside the game and download a pretrained model from [here](https://github.com/andreped/super-ml-pets/releases/tag/v0.0.2), or use any pretrained model you might have.
+6. Go outside the game and download a pretrained model from [here](https://github.com/andreped/super-ml-pets/releases/tag/v0.0.2), or use any pretrained model you might have. For simplicity, you can also run the following to download a example model:
+```
+wget https://github.com/andreped/super-ml-pets/releases/download/v0.0.6/model_sap_gym_sb3_280822_finetuned_641057_steps.zip
+```
 
 7. Then, simply start the AI by running this command from the terminal (with example path to pretrained model, **without extension .zip**):  
 ```

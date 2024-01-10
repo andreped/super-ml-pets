@@ -114,12 +114,14 @@ def find_the_animals(directory: str):
     images, references = get_animal_from_screen()
 
     # go through all the animals images in the directory
-    for i in images:
-        for j in get_image_directory(directory):
-            im = cv2.imread(j, cv2.IMREAD_UNCHANGED)
+    pet_paths = [directory + "/" + filename for filename in os.listdir(directory)]
+    for image in images:
+        for pet_path in pet_paths:
+            im = cv2.imread(pet_path, cv2.IMREAD_UNCHANGED)
+            
             # matching returns which animals
-            if matching(i, im):
-                list_of_animals.append(j)
+            if matching(image, im):
+                list_of_animals.append(pet_path)
                 break
     
     if len(list_of_animals) > 7:
