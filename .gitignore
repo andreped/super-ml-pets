@@ -10,3 +10,4 @@
 .idea/
 .coverage
 *.log
+*.DS_Store
