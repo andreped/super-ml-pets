@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import pyautogui as gui
 import sys
 import logging as log
-from .utils import opponent_generator, get_screen_scale
+from .utils import opponent_generator, get_screen_scale, kill_process
 
 
 # global variable
@@ -27,17 +27,6 @@ stop_program = False
 
 # get screen resolution scale, store as global variable in this scope
 dimensions_scale = get_screen_scale()  # width, height
-
-
-def kill_process(key):
-    """
-    method to stop agent from running if 'escape' key is pressed
-    """
-    global stop_program
-    if key == pynput.keyboard.Key.esc:
-        print("\nEscape pressed, stopping agent...")
-        stop_program = True
-        return False
 
 
 def pause():
@@ -109,7 +98,7 @@ def run(ret):
             log.info("CV SYSTEM [self.run]: Calls " +
                                   "[image_detection.find_the_animals]")
             pets, _ = find_the_animals(
-                directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "SAP_res/").replace("\\", "/"))
+                directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pets/").replace("\\", "/"))
             pets = remove_nothing(pets)
             log.info("CV SYSTEM [self.run]: The detected Pets and Food in the Shop is : {}".format(pets))
             log.info("GAME ENGINE [self.run]: Set Environment Shop = " +
