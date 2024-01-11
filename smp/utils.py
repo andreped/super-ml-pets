@@ -3,6 +3,7 @@ Convenience methods
 """
 
 import tkinter as tk
+import pynput
 import numpy as np
 import logging as log
 import os

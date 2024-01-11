@@ -84,8 +84,30 @@ def matching(image, needle_img):
     """
     performs template matching to classify which animal/food/item it contains
     """
-    result = cv2.matchTemplate(image, needle_img, cv2.TM_CCOEFF_NORMED)
-    _, max_val, _, _ = cv2.minMaxLoc(result)
+    needle_img = cv2.resize(needle_img, image.shape[:2][::-1])
+
+    needle_img = needle_img[..., ::-1]
+    image = image[..., ::-1]
+
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    needle_img = cv2.cvtColor(needle_img, cv2.COLOR_RGB2GRAY)
+
+    mask = np.zeros_like(needle_img)
+    mask[needle_img > 0] = 1
+    # mask = 1 - mask
+
+    # needle_img[needle_img == 0] = 255
+    result = cv2.matchTemplate(image, needle_img, cv2.TM_SQDIFF_NORMED, mask=mask) # cv2.TM_SQDIFF_NORMED)  # cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, _, _ = cv2.minMaxLoc(result)
+    # print(max_val)
+
+    print(min_val, max_val)
+
+    fig, ax = plt.subplots(1, 2)
+    ax[0].imshow(image)
+    ax[1].imshow(needle_img)
+    ax[1].set_title(str(min_val))
+    plt.show()
 
     if max_val > 0.7:
         return 1
@@ -114,23 +136,31 @@ def find_the_animals(directory: str):
     images, references = get_animal_from_screen()
 
     # go through all the animals images in the directory
-    pet_paths = [directory + "/" + filename for filename in os.listdir(directory)]
+    pet_paths = [directory + filename for filename in os.listdir(directory)]
+    print("N IMAGES:", len(images))
     for image in images:
-        for pet_path in pet_paths:
-            im = cv2.imread(pet_path, cv2.IMREAD_UNCHANGED)
+        #plt.imshow(image)
+        #plt.show()
+        for filename in os.listdir(directory):
+            pet_path = directory + filename
+            im = cv2.imread(pet_path, cv2.COLOR_BGR2RGB)[..., :3][:, ::-1, :]
+            im = cv2.resize(im, (150, 150))
             
             # matching returns which animals
             if matching(image, im):
-                list_of_animals.append(pet_path)
+                list_of_animals.append("pet-" + filename.split(".")[0])
                 break
     
     if len(list_of_animals) > 7:
         return 0
 
-    list_of_animals1 = []
-    for i in list_of_animals:
-        temp = i.split('/')
-        list_of_animals1.append(temp[-2])
+    #list_of_animals1 = []
+    #for i in list_of_animals:
+    #    temp = i.split('/')
+    #    list_of_animals1.append(temp[-2])
+    list_of_animals1 = list_of_animals.copy()
+
+    print(list_of_animals)
         
     list_of_animals1 = tuple(list_of_animals1)
     references = tuple(references)

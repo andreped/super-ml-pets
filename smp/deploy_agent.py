@@ -97,6 +97,7 @@ def run(ret):
                                   " in the Shop Slots")
             log.info("CV SYSTEM [self.run]: Calls " +
                                   "[image_detection.find_the_animals]")
+            print("PETS PATH:", os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pets/").replace("\\", "/"))
             pets, _ = find_the_animals(
                 directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pets/").replace("\\", "/"))
             pets = remove_nothing(pets)
