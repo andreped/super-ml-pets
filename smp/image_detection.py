@@ -84,32 +84,51 @@ def matching(image, needle_img):
     """
     performs template matching to classify which animal/food/item it contains
     """
+
     needle_img = cv2.resize(needle_img, image.shape[:2][::-1])
 
     needle_img = needle_img[..., ::-1]
     image = image[..., ::-1]
 
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
-    needle_img = cv2.cvtColor(needle_img, cv2.COLOR_RGB2GRAY)
+    #image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+    #needle_img = cv2.cvtColor(needle_img, cv2.COLOR_RGB2GRAY)
 
-    mask = np.zeros_like(needle_img)
+    #needle_img = (needle_img > 220).astype("uint8")
+    #image = (image > 220).astype("uint8")
+
+    #hd95 = hausdorff_distance(image, needle_img, method="modified")
+    #hd95 = dice(image, needle_img)
+
+    #max_val = hd95
+
+    mask = np.zeros_like(needle_img.copy())#[..., 0]
     mask[needle_img > 0] = 1
+    #mask = needle_img.copy()
     # mask = 1 - mask
 
+    # pad image to fit needle image into
+    tmp = np.zeros((int(image.shape[0] * 3), int(image.shape[1] * 3), 3), dtype="uint8")
+    tmp[image.shape[0]:(2*image.shape[0]), image.shape[1]:(2*image.shape[1]), :] = image
+    image = tmp.copy()
+
     # needle_img[needle_img == 0] = 255
-    result = cv2.matchTemplate(image, needle_img, cv2.TM_SQDIFF_NORMED, mask=mask) # cv2.TM_SQDIFF_NORMED)  # cv2.TM_CCOEFF_NORMED)
+    result = cv2.matchTemplate(image, needle_img, cv2.TM_SQDIFF_NORMED) # cv2.TM_SQDIFF_NORMED)  # cv2.TM_CCOEFF_NORMED)  # TM_CCORR_NORMED
     min_val, max_val, _, _ = cv2.minMaxLoc(result)
     # print(max_val)
 
     print(min_val, max_val)
 
-    fig, ax = plt.subplots(1, 2)
+    fig, ax = plt.subplots(1, 3)
     ax[0].imshow(image)
     ax[1].imshow(needle_img)
-    ax[1].set_title(str(min_val))
+    ax[1].set_title(str(min_val) + " | " + str(max_val))
+    ax[2].imshow(mask)
     plt.show()
 
-    if max_val > 0.7:
+    #if max_val > 0.7:
+    #    return 1
+
+    if min_val < 0.75:
         return 1
         
     return 0
