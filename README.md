@@ -45,9 +45,9 @@ pip install -r requirements.txt
 
 4. Download all pets, food, and misc icons
 ```
-wget https://github.com/andreped/super-ml-pets/releases/download/pets-01-2024/pets.zip && unzip pets.zip && rm pets.zip
-wget https://github.com/andreped/super-ml-pets/releases/download/food-01-2024/food.zip && unzip food.zip && rm food.zip
-wget https://github.com/andreped/super-ml-pets/releases/download/misc-01-2024/misc.zip && unzip misc.zip && rm misc.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/pets-01-2024/pets.zip -O pets.zip; Expand-Archive pets.zip -DestinationPath ./; Remove-Item pets.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/food-01-2024/food.zip -O food.zip; Expand-Archive food.zip; Remove-Item food.zip
+wget https://github.com/andreped/super-ml-pets/releases/download/misc-01-2024/misc.zip -O misc.zip; Expand-Archive misc.zip; Remove-Item misc.zip
 ```
 
 <details>
