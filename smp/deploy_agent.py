@@ -98,8 +98,11 @@ def run(ret):
             log.info("CV SYSTEM [self.run]: Calls " +
                                   "[image_detection.find_the_animals]")
             print("PETS PATH:", os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pets/").replace("\\", "/"))
+            pets_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pets/").replace("\\", "/")
+            food_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../food/").replace("\\", "/")
             pets, _ = find_the_animals(
-                directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pets/").replace("\\", "/"))
+                pets_directory=pets_dir, food_directory=food_dir,
+            )
             pets = remove_nothing(pets)
             log.info("CV SYSTEM [self.run]: The detected Pets and Food in the Shop is : {}".format(pets))
             log.info("GAME ENGINE [self.run]: Set Environment Shop = " +
