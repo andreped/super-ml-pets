@@ -8,8 +8,10 @@ import numpy as np
 from PIL import ImageGrab, Image, ImageChops
 import os
 from skimage.metrics import structural_similarity as ssim
+from sklearn.metrics.pairwise import cosine_similarity
 import matplotlib.pyplot as plt
 from .utils import get_screen_scale
+import tensorflow as tf
 
 
 # global for all functions
@@ -18,6 +20,10 @@ arena_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../assets
 
 paw_img = cv2.cvtColor(cv2.imread(paw_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
 arena_img = cv2.cvtColor(cv2.imread(arena_path, cv2.IMREAD_UNCHANGED)[..., :3], cv2.COLOR_BGR2RGB)
+
+# Load the pre-trained CNN model
+model = tf.keras.applications.VGG16(weights='imagenet', include_top=False, input_shape=(112, 112, 3))
+# model = tf.keras.applications.MobileNetV2(weights='imagenet', include_top=False, input_shape=(112, 112, 3))
 
 # get screen resolution scale, store as global variable in this scope
 dimensions_scale = get_screen_scale()
@@ -80,6 +86,7 @@ def get_animal_from_screen():
     return images, images0
 
 
+
 def matching(image, needle_img):
     """
     performs template matching to classify which animal/food/item it contains
@@ -101,35 +108,103 @@ def matching(image, needle_img):
 
     #max_val = hd95
 
-    mask = np.zeros_like(needle_img.copy())#[..., 0]
-    mask[needle_img > 0] = 1
+    #mask = np.zeros_like(needle_img.copy())#[..., 0]
+    #mask[needle_img > 0] = 1
     #mask = needle_img.copy()
     # mask = 1 - mask
 
     # pad image to fit needle image into
-    tmp = np.zeros((int(image.shape[0] * 3), int(image.shape[1] * 3), 3), dtype="uint8")
-    tmp[image.shape[0]:(2*image.shape[0]), image.shape[1]:(2*image.shape[1]), :] = image
-    image = tmp.copy()
+    #tmp = np.zeros((int(image.shape[0] * 3), int(image.shape[1] * 3), 3), dtype="uint8")
+    #tmp[image.shape[0]:(2*image.shape[0]), image.shape[1]:(2*image.shape[1]), :] = image
+    #image = tmp.copy()
+
+    """
+
+    # Initialize the ORB detector and detect the keypoints in the query image and scene
+    orb = cv2.ORB_create()
+    query_keypoints, query_descriptors = orb.detectAndCompute(image, None)
+    scene_keypoints, scene_descriptors = orb.detectAndCompute(needle_img, None)
+
+    # Match the keypoints using Brute Force Matcher
+    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+    matches = bf.match(query_descriptors, scene_descriptors)
+
+    # Sort the matches by distance
+    matches = sorted(matches, key=lambda x: x.distance)
+
+    # if these match, there should be a lot of matches,
+    # use that as criteria to state whether it is a match
+
+    # Calculate the distance between the matched keypoints
+    distance = np.mean([match.distance for match in matches])
+    """
+
+    # Preprocess the images
+    image_pr = cv2.resize(image, (112, 112))
+    #image_pr = Image.resize(image_pr, (112, 112))
+    #image_pr = imutils.resize(image, width=112)
+    image_pr = tf.keras.applications.vgg16.preprocess_input(image_pr)
+
+    needle_img_pr = cv2.resize(needle_img, (112, 112))
+    #needle_img = Image.resize(needle_img, (112, 112))
+    #needle_img_pr = imutils.resize(needle_img, width=112)
+    needle_img_pr = tf.keras.applications.vgg16.preprocess_input(needle_img_pr)
+
+    # Extract the features from the images
+    query_features = model.predict(np.expand_dims(image_pr, axis=0), verbose=False)
+    scene_features = model.predict(np.expand_dims(needle_img_pr, axis=0), verbose=False)
+
+    # Calculate the distance between the features -> this worked OK but not thaaat well
+    #distance = np.linalg.norm(query_features - scene_features)
+
+    # Calculate the cosine similarity between the features
+    similarity = cosine_similarity(query_features.reshape(1, -1), scene_features.reshape(1, -1))
+    distance = similarity[0][0]
+
+    # Print the similarity score
+    print(f"The similarity score between the two images is {similarity[0][0]}")
+
+
+    print(distance)
 
     # needle_img[needle_img == 0] = 255
-    result = cv2.matchTemplate(image, needle_img, cv2.TM_SQDIFF_NORMED) # cv2.TM_SQDIFF_NORMED)  # cv2.TM_CCOEFF_NORMED)  # TM_CCORR_NORMED
-    min_val, max_val, _, _ = cv2.minMaxLoc(result)
+    #result = cv2.matchTemplate(image, needle_img, cv2.TM_SQDIFF_NORMED) # cv2.TM_SQDIFF_NORMED)  # cv2.TM_CCOEFF_NORMED)  # TM_CCORR_NORMED
+    #min_val, max_val, _, _ = cv2.minMaxLoc(result)
     # print(max_val)
 
-    print(min_val, max_val)
+    #print(min_val, max_val)
 
-    fig, ax = plt.subplots(1, 3)
-    ax[0].imshow(image)
-    ax[1].imshow(needle_img)
-    ax[1].set_title(str(min_val) + " | " + str(max_val))
-    ax[2].imshow(mask)
-    plt.show()
+    if distance > 0.52: # distance < 1300:
+        #"""
+        fig, ax = plt.subplots(1, 3)
+        ax[0].imshow(image)
+        ax[1].imshow(needle_img)
+        #ax[1].set_title(str(min_val) + " | " + str(max_val))
+        ax[1].set_title(str(distance))
+        #ax[2].imshow(mask)
+        plt.show()
+        #"""
+
+        return 1
 
     #if max_val > 0.7:
     #    return 1
 
-    if min_val < 0.75:
+    if False: # (distance < 57.5) and (len(matches) > 8):
+        #for m in matches:
+        #    print(m.distance)
+
+        fig, ax = plt.subplots(1, 3)
+        ax[0].imshow(image)
+        ax[1].imshow(needle_img)
+        #ax[1].set_title(str(min_val) + " | " + str(max_val))
+        ax[1].set_title(str(distance))
+        #ax[2].imshow(mask)
+        plt.show()
         return 1
+
+    #if min_val < 0.75:
+    #    return 1
         
     return 0
 
@@ -163,7 +238,7 @@ def find_the_animals(directory: str):
         for filename in os.listdir(directory):
             pet_path = directory + filename
             im = cv2.imread(pet_path, cv2.COLOR_BGR2RGB)[..., :3][:, ::-1, :]
-            im = cv2.resize(im, (150, 150))
+            # im = cv2.resize(im, (150, 150))
             
             # matching returns which animals
             if matching(image, im):
