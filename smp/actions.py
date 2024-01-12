@@ -6,6 +6,7 @@ import pyautogui as gui
 from .utils import *
 import time
 import logging as log
+import matplotlib.pyplot as plt
 
 
 class SuperAutoPetsMouse:
@@ -29,8 +30,18 @@ class SuperAutoPetsMouse:
         # print(n1, n2)
         self.logger.info("MOUSE ACTION [self._shop2team]: Buys Pet from" +
                          "{}th Shop Slot to {}th Team Slot".format(n1, n2))
+        print("_SHOP2TEAM EVENT:")
+        print(self.position[str(n1) + '_slot'])
+        print(self.position[str(n2) + '_team_slot'])
         gui.click(self.position[str(n1) + '_slot'])
+        plt.pause(2)
         gui.click(self.position[str(n2) + '_team_slot'])
+
+        #gui.dragTo(self.position[str(n1) + '_slot'],
+        #           self.position[str(n2) + '_team_slot'],
+        #           duration=1.0,  # how long drag event should take
+        #           tween=gui.easeOutQuad,  # move_drag_tween
+        #           button='left')
 
     def _click(self, first_click):
         """
